@@ -1,0 +1,14 @@
+{
+  "name": "dstatus-user-docs",
+  "version": "1.0.0",
+  "description": "DStatus 用户文档",
+  "private": true,
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.0"
+  }
+}
+
