@@ -8,6 +8,7 @@ import { useData } from 'vitepress'
 import { Icon } from '@iconify/vue'
 import Hero from './components/Hero.vue'
 import Features from './components/Features.vue'
+import HomeContent from './components/HomeContent.vue'
 import './custom.css'
 
 export default {
@@ -27,6 +28,14 @@ export default {
         const features = frontmatter.value?.features || []
         if (features.length === 0) return null
         return h(Features, { features })
+      },
+      'home-content-after': () => {
+        const { frontmatter } = useData()
+        // 如果是首页，插入自定义内容组件
+        if (frontmatter.value?.layout === 'home') {
+          return h(HomeContent)
+        }
+        return null
       }
     })
   },
