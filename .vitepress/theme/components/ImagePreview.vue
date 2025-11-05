@@ -85,7 +85,6 @@ onUnmounted(() => {
   justify-content: center;
   z-index: 9999;
   cursor: pointer;
-  backdrop-filter: blur(4px);
 }
 
 .image-preview-container {
@@ -121,7 +120,6 @@ onUnmounted(() => {
   cursor: pointer;
   color: white;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .close-button:hover {

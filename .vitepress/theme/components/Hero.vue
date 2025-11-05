@@ -352,7 +352,6 @@ function handleKeydown(e) {
   gap: 0.5rem;
   opacity: 0;
   transition: opacity 0.3s ease;
-  backdrop-filter: blur(4px);
 }
 
 .carousel-main:hover .image-overlay {
