@@ -6,7 +6,6 @@ import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import { Icon } from '@iconify/vue'
-import Hero from './components/Hero.vue'
 import Features from './components/Features.vue'
 import './custom.css'
 
@@ -14,14 +13,6 @@ export default {
   ...DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
-      'home-hero-before': () => {
-        const { frontmatter } = useData()
-        // 如果是首页，使用自定义 Hero
-        if (frontmatter.value?.layout === 'home') {
-          return h('div', { class: 'custom-hero-wrapper' }, [h(Hero)])
-        }
-        return null
-      },
       'home-features-after': () => {
         const { frontmatter } = useData()
         const features = frontmatter.value?.features || []

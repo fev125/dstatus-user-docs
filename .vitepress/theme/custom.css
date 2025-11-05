@@ -1,16 +1,16 @@
 /**
  * 自定义样式
  * 优化首页和整体视觉效果
- * 移除渐变色，使用毛玻璃暗色背景，增大图片
+ * 主题色：科技蓝
  */
 
-/* ==================== 品牌色定制 ==================== */
+/* ==================== 品牌色定制 - 科技蓝 ==================== */
 :root {
-  /* 主品牌色 - 紫色系（纯色，无渐变） */
-  --vp-c-brand-1: #7c3aed;
-  --vp-c-brand-2: #8b5cf6;
-  --vp-c-brand-3: #a78bfa;
-  --vp-c-brand-soft: rgba(124, 58, 237, 0.14);
+  /* 主品牌色 - 科技蓝 */
+  --vp-c-brand-1: #3b82f6;
+  --vp-c-brand-2: #2563eb;
+  --vp-c-brand-3: #1d4ed8;
+  --vp-c-brand-soft: rgba(59, 130, 246, 0.14);
   
   /* 强调色 */
   --vp-c-accent: #06b6d4;
@@ -18,29 +18,15 @@
 }
 
 .dark {
-  --vp-c-brand-1: #a78bfa;
-  --vp-c-brand-2: #8b5cf6;
-  --vp-c-brand-3: #7c3aed;
-  --vp-c-brand-soft: rgba(167, 139, 250, 0.16);
+  --vp-c-brand-1: #60a5fa;
+  --vp-c-brand-2: #3b82f6;
+  --vp-c-brand-3: #2563eb;
+  --vp-c-brand-soft: rgba(96, 165, 250, 0.16);
 }
 
 /* ==================== Hero 区域优化 ==================== */
 
-/* 隐藏默认的 VitePress Hero（只隐藏默认的，不隐藏自定义的） */
-.VPHero:has(.image-container),
-.VPHero:has(.VPImage),
-.VPHero:has(.image-src) {
-  display: none !important;
-}
-
-/* 确保自定义 Hero 组件显示 */
-.custom-hero-wrapper {
-  display: block !important;
-}
-
-.custom-hero-wrapper section.VPHero {
-  display: block !important;
-}
+/* 移除自定义 Hero 相关的样式 */
 
 /* ==================== Features 区域优化 ==================== */
 
@@ -59,7 +45,7 @@
 }
 
 .vp-doc div[style*="padding: 1.5rem"]:hover {
-  box-shadow: 0 8px 16px rgba(124, 58, 237, 0.1);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.1);
   transform: translateY(-3px);
   border-color: var(--vp-c-brand-1);
 }
@@ -132,7 +118,7 @@ div[class*="language-"] {
 }
 
 .DocSearch-Button:hover {
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
 /* ==================== 响应式优化 ==================== */

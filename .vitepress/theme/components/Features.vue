@@ -85,7 +85,7 @@ function getIcon(emoji) {
 
 .VPFeature:hover {
   border-color: var(--vp-c-brand-1);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
   transform: translateY(-4px);
 }
 
