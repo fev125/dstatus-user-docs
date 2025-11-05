@@ -1,6 +1,0 @@
-# Cloudflare Pages 配置文件
-name = "dstatus-user-docs"
-
-# 静态网站配置（Pages）
-pages_build_output_dir = ".vitepress/dist"
-
