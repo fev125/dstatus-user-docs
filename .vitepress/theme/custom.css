@@ -26,7 +26,22 @@
 
 /* ==================== Hero 区域优化 ==================== */
 
-/* 移除自定义 Hero 相关的样式 */
+/* 隐藏默认的 VitePress Hero（旧的） */
+.VPHero:not(.custom-hero):has(.image-container),
+.VPHero:not(.custom-hero):has(.VPImage),
+.VPHero:not(.custom-hero):has(.image-src),
+.VPHero:not(.custom-hero) {
+  display: none !important;
+}
+
+/* 确保自定义 Hero 组件显示（新的） */
+.custom-hero-wrapper {
+  display: block !important;
+}
+
+.custom-hero-wrapper .VPHero.custom-hero {
+  display: block !important;
+}
 
 /* ==================== Features 区域优化 ==================== */
 
