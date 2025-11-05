@@ -94,8 +94,8 @@
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
   transition: all 0.4s ease;
   margin-top: 3rem;
-  width: 100%;
-  max-width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
   margin-left: 0;
   margin-right: 0;
   background: rgba(0, 0, 0, 0.3);
@@ -104,13 +104,28 @@
   padding: 0;
 }
 
-.VPHero .image-container img {
-  width: 100%;
-  height: auto;
+/* 覆盖所有可能的图片选择器 */
+.VPHero .image-container img,
+.VPHero .image-container .VPImage,
+.VPHero .image-container .image-src,
+.VPHero .VPImage,
+.VPHero img.VPImage,
+.VPHero img.image-src,
+.VPHero img[class*="VPImage"],
+.VPHero img[class*="image-src"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
   border-radius: 0;
   display: block;
   max-height: 80vh;
   object-fit: contain;
+}
+
+/* 确保图片容器内的所有元素都是全宽 */
+.VPHero .image-container > * {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 .VPHero .image-container:hover {
@@ -272,7 +287,14 @@ div[class*="language-"] {
     margin-top: 2rem;
   }
   
-  .VPHero .image-container img {
+  .VPHero .image-container img,
+  .VPHero .image-container .VPImage,
+  .VPHero .image-container .image-src,
+  .VPHero .VPImage,
+  .VPHero img.VPImage,
+  .VPHero img.image-src {
+    width: 100% !important;
+    max-width: 100% !important;
     max-height: 60vh;
   }
   
