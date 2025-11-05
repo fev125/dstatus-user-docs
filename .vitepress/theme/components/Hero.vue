@@ -18,11 +18,8 @@ const isHovered = ref(false)
           <a class="action brand" href="/quick-start">
             快速开始 →
           </a>
-          <a class="action alt" href="/pages-overview">
+          <a class="action alt" href="https://demo.vps.mom" target="_blank" rel="noopener noreferrer">
             查看演示
-          </a>
-          <a class="action alt" href="https://github.com/fev125/dstatus-user-docs">
-            GitHub
           </a>
         </div>
       </div>
