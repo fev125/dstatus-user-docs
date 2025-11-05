@@ -3,7 +3,6 @@
 // 功能：整合所有首页自定义 Vue 组件
 
 <script setup>
-import ImageGallery from './ImageGallery.vue'
 import FeatureModules from './FeatureModules.vue'
 import WhyChoose from './WhyChoose.vue'
 import QuickStart from './QuickStart.vue'
@@ -13,7 +12,6 @@ import HelpSection from './HelpSection.vue'
 
 <template>
   <div class="home-content vp-doc">
-    <ImageGallery />
     <FeatureModules />
     <WhyChoose />
     <QuickStart />
