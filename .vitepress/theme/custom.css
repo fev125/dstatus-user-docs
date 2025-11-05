@@ -1,0 +1,321 @@
+/**
+ * 自定义样式
+ * 优化首页和整体视觉效果
+ */
+
+/* ==================== 品牌色定制 ==================== */
+:root {
+  /* 主品牌色 - 紫色系 */
+  --vp-c-brand-1: #7c3aed;
+  --vp-c-brand-2: #8b5cf6;
+  --vp-c-brand-3: #a78bfa;
+  --vp-c-brand-soft: rgba(124, 58, 237, 0.14);
+  
+  /* 强调色 */
+  --vp-c-accent: #06b6d4;
+  --vp-c-green-1: #10b981;
+  
+  /* 背景渐变 */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #7c3aed 30%, #06b6d4);
+}
+
+.dark {
+  --vp-c-brand-1: #a78bfa;
+  --vp-c-brand-2: #8b5cf6;
+  --vp-c-brand-3: #7c3aed;
+  --vp-c-brand-soft: rgba(167, 139, 250, 0.16);
+}
+
+/* ==================== Hero 区域优化 ==================== */
+
+/* Hero 名称渐变效果 */
+.VPHero .name {
+  background: var(--vp-home-hero-name-background);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: var(--vp-home-hero-name-color);
+  font-size: 4rem !important;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+  .VPHero .name {
+    font-size: 2.5rem !important;
+  }
+}
+
+/* Hero 文本优化 */
+.VPHero .text {
+  font-size: 2rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.VPHero .tagline {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  max-width: 800px;
+  margin: 1rem auto 0;
+}
+
+/* Hero 图片优化 */
+.VPHero .image-container {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.VPHero .image-container:hover {
+  transform: scale(1.02);
+}
+
+/* 按钮组优化 */
+.VPHero .actions {
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.VPButton {
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.VPButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.VPButton.brand {
+  background: linear-gradient(120deg, #7c3aed, #06b6d4);
+  border: none;
+}
+
+.VPButton.brand:hover {
+  background: linear-gradient(120deg, #6d28d9, #0891b2);
+}
+
+/* ==================== Features 区域优化 ==================== */
+
+.VPFeatures {
+  padding: 3rem 1.5rem;
+}
+
+.VPFeature {
+  border-radius: 12px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.VPFeature:hover {
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);
+  transform: translateY(-4px);
+}
+
+.VPFeature .icon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.VPFeature .title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--vp-c-text-1);
+}
+
+.VPFeature .details {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--vp-c-text-2);
+}
+
+/* ==================== 自定义内容区域优化 ==================== */
+
+/* 卡片样式 */
+.vp-doc div[style*="padding: 1.5rem"] {
+  transition: all 0.3s ease;
+}
+
+.vp-doc div[style*="padding: 1.5rem"]:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* 图片网格优化 */
+.vp-doc div[style*="grid-template-columns"] img {
+  transition: transform 0.3s ease;
+}
+
+.vp-doc div[style*="grid-template-columns"] img:hover {
+  transform: scale(1.05);
+}
+
+/* 表格优化 */
+.vp-doc table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.vp-doc table thead {
+  background: var(--vp-c-bg-soft);
+}
+
+.vp-doc table tbody tr:hover {
+  background: var(--vp-c-bg-soft);
+}
+
+/* ==================== 代码块优化 ==================== */
+
+.vp-code-group {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+div[class*="language-"] {
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+/* ==================== 侧边栏优化 ==================== */
+
+.VPSidebar {
+  border-right: 1px solid var(--vp-c-divider);
+}
+
+.VPSidebarItem.is-active > .item > .link {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
+.VPSidebarItem.is-active > .item > .link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--vp-c-brand-1);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ==================== 搜索框优化 ==================== */
+
+.DocSearch-Button {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.DocSearch-Button:hover {
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+}
+
+/* ==================== 响应式优化 ==================== */
+
+@media (max-width: 768px) {
+  .VPHero {
+    padding: 2rem 1rem;
+  }
+  
+  .VPFeatures {
+    padding: 2rem 1rem;
+  }
+  
+  .vp-doc div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ==================== 滚动条优化 ==================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--vp-c-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vp-c-divider);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vp-c-brand-1);
+}
+
+/* ==================== 动画效果 ==================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.VPFeature {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.VPFeature:nth-child(1) { animation-delay: 0.1s; }
+.VPFeature:nth-child(2) { animation-delay: 0.2s; }
+.VPFeature:nth-child(3) { animation-delay: 0.3s; }
+.VPFeature:nth-child(4) { animation-delay: 0.4s; }
+.VPFeature:nth-child(5) { animation-delay: 0.5s; }
+.VPFeature:nth-child(6) { animation-delay: 0.6s; }
+
+/* ==================== 页脚优化 ==================== */
+
+.VPFooter {
+  border-top: 1px solid var(--vp-c-divider);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+/* ==================== 徽章样式 ==================== */
+
+.vp-doc .badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  margin: 0 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 4px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.vp-doc .badge.tip {
+  background: rgba(16, 185, 129, 0.14);
+  color: var(--vp-c-green-1);
+}
+
+.vp-doc .badge.warning {
+  background: rgba(245, 158, 11, 0.14);
+  color: #f59e0b;
+}
+
+.vp-doc .badge.danger {
+  background: rgba(239, 68, 68, 0.14);
+  color: #ef4444;
+}
+
