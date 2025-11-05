@@ -25,10 +25,9 @@ import HelpSection from './HelpSection.vue'
 <style scoped>
 .home-content {
   margin-top: 2rem;
-  padding: 0 1.5rem;
-  max-width: 1152px;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 0 2rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (max-width: 768px) {
