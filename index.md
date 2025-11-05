@@ -5,19 +5,6 @@ hero:
   name: DStatus
   text: 企业级分布式监控系统
   tagline: 实时性能监控 · 网络质量分析 · AI 智能告警 · 全球节点可视化
-  image:
-    src: /homepage-card-view.png
-    alt: DStatus 监控界面
-  actions:
-    - theme: brand
-      text: 快速开始 →
-      link: /quick-start
-    - theme: alt
-      text: 查看演示
-      link: /pages-overview
-    - theme: alt
-      text: GitHub
-      link: https://github.com/fev125/dstatus-user-docs
 
 features:
   - icon: 🎨

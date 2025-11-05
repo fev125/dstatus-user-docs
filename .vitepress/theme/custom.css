@@ -26,157 +26,14 @@
 
 /* ==================== Hero 区域优化 ==================== */
 
-/* Hero 容器 - 毛玻璃暗色背景，全宽 */
-.VPHero {
-  position: relative;
-  padding: 4rem 2rem;
-  margin: 0;
-  width: 100%;
-  max-width: 100%;
-  border-radius: 0;
-  overflow: hidden;
+/* 隐藏默认的 VitePress Hero，使用自定义组件 */
+.VPHero.image {
+  display: none;
 }
 
-.VPHero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 0;
-  z-index: 0;
-}
-
-.VPHero > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Hero 名称 - 纯色，无渐变 */
-.VPHero .name {
-  color: var(--vp-c-brand-1);
-  font-size: 4.5rem !important;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-@media (max-width: 768px) {
-  .VPHero .name {
-    font-size: 2.8rem !important;
-  }
-}
-
-/* Hero 文本优化 */
-.VPHero .text {
-  font-size: 2.2rem;
-  font-weight: 600;
-  opacity: 0.95;
-  color: var(--vp-c-text-1);
-}
-
-.VPHero .tagline {
-  font-size: 1.3rem;
-  opacity: 0.85;
-  max-width: 900px;
-  margin: 1.5rem auto 0;
-  color: var(--vp-c-text-2);
-}
-
-/* Hero 图片优化 - 全宽大图 */
-.VPHero .image-container {
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  transition: all 0.4s ease;
-  margin-top: 3rem;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-left: 0;
-  margin-right: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 0;
-}
-
-/* 覆盖所有可能的图片选择器 */
-.VPHero .image-container img,
-.VPHero .image-container .VPImage,
-.VPHero .image-container .image-src,
-.VPHero .VPImage,
-.VPHero img.VPImage,
-.VPHero img.image-src,
-.VPHero img[class*="VPImage"],
-.VPHero img[class*="image-src"] {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-  border-radius: 0;
-  display: block;
-  max-height: 80vh;
-  object-fit: contain;
-}
-
-/* 确保图片容器内的所有元素都是全宽 */
-.VPHero .image-container > * {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-.VPHero .image-container:hover {
-  transform: scale(1.02) translateY(-4px);
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(124, 58, 237, 0.3);
-}
-
-/* 按钮组优化 */
-.VPHero .actions {
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 2rem;
-}
-
-.VPButton {
-  border-radius: 10px;
-  padding: 0.875rem 1.75rem;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.VPButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-}
-
-.VPButton.brand {
-  background: var(--vp-c-brand-1);
-  color: white;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
-}
-
-.VPButton.brand:hover {
-  background: var(--vp-c-brand-2);
-  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.5);
-}
-
-.VPButton.alt {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--vp-c-text-1);
-}
-
-.VPButton.alt:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(124, 58, 237, 0.5);
+/* 确保自定义 Hero 组件样式正确 */
+.VPHero.hero-content {
+  /* 样式已在 Hero.vue 组件中定义 */
 }
 
 /* ==================== Features 区域优化 ==================== */
@@ -275,29 +132,6 @@ div[class*="language-"] {
 /* ==================== 响应式优化 ==================== */
 
 @media (max-width: 768px) {
-  .VPHero {
-    padding: 3rem 1rem;
-    margin: 0;
-    border-radius: 0;
-  }
-  
-  .VPHero .image-container {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 2rem;
-  }
-  
-  .VPHero .image-container img,
-  .VPHero .image-container .VPImage,
-  .VPHero .image-container .image-src,
-  .VPHero .VPImage,
-  .VPHero img.VPImage,
-  .VPHero img.image-src {
-    width: 100% !important;
-    max-width: 100% !important;
-    max-height: 60vh;
-  }
-  
   .VPFeatures {
     padding: 2rem 1rem;
   }
