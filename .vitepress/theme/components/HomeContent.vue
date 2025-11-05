@@ -4,19 +4,13 @@
 
 <script setup>
 import FeatureModules from './FeatureModules.vue'
-import WhyChoose from './WhyChoose.vue'
 import QuickStart from './QuickStart.vue'
-import DocsNavigation from './DocsNavigation.vue'
-import HelpSection from './HelpSection.vue'
 </script>
 
 <template>
   <div class="home-content vp-doc">
     <FeatureModules />
-    <WhyChoose />
     <QuickStart />
-    <DocsNavigation />
-    <HelpSection />
   </div>
 </template>
 

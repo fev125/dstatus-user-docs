@@ -74,7 +74,7 @@ function getIcon(emoji) {
 
 .VPFeature {
   border-radius: 12px;
-  border: 1px solid var(--vp-c-divider);
+  border: 2px solid var(--vp-c-divider);
   background: var(--vp-c-bg-soft);
   padding: 1.5rem;
   transition: all 0.3s ease;

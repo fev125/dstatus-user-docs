@@ -54,6 +54,39 @@
 
 /* ==================== 自定义内容区域优化 ==================== */
 
+/* 移除默认分割线 */
+.vp-doc h2 {
+  border-top: none !important;
+  padding-top: 0 !important;
+  margin-top: 32px !important;
+}
+
+/* 移除 hr 分割线样式，使用间距代替 */
+.vp-doc hr {
+  border: none !important;
+  border-top: none !important;
+  margin: 32px 0 !important;
+  height: 0 !important;
+}
+
+/* 优化表格边框 */
+.vp-doc table tr {
+  border-top: none !important;
+}
+
+.vp-doc th,
+.vp-doc td {
+  border: 2px solid var(--vp-c-divider) !important;
+}
+
+/* 优化引用块边框 */
+.vp-doc blockquote {
+  border-left: 3px solid var(--vp-c-brand-1) !important;
+  background: var(--vp-c-bg-soft);
+  padding: 1rem 1rem 1rem 1.25rem;
+  border-radius: 8px;
+}
+
 /* 卡片样式 */
 .vp-doc div[style*="padding: 1.5rem"] {
   transition: all 0.3s ease;
@@ -104,25 +137,20 @@ div[class*="language-"] {
   margin: 1.5rem 0;
 }
 
+/* 移除代码行号分割线 */
+.vp-doc .line-numbers-wrapper {
+  border-right: none !important;
+}
+
 /* ==================== 侧边栏优化 ==================== */
 
 .VPSidebar {
-  border-right: 1px solid var(--vp-c-divider);
+  border-right: none;
 }
 
 .VPSidebarItem.is-active > .item > .link {
   color: var(--vp-c-brand-1);
   font-weight: 600;
-}
-
-.VPSidebarItem.is-active > .item > .link::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 3px;
-  height: 100%;
-  background: var(--vp-c-brand-1);
-  border-radius: 0 2px 2px 0;
 }
 
 /* ==================== 搜索框优化 ==================== */
@@ -201,7 +229,7 @@ div[class*="language-"] {
 /* ==================== 页脚优化 ==================== */
 
 .VPFooter {
-  border-top: 1px solid var(--vp-c-divider);
+  border-top: none;
   padding: 2rem 1.5rem;
   text-align: center;
 }

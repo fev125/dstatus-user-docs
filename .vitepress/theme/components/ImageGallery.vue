@@ -167,17 +167,28 @@ onUnmounted(() => {
 }
 
 .section-title {
-  font-size: 1.75rem;
+  font-size: 1.875rem;
   font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-top: 0.5rem;
   margin-bottom: 2rem;
+  padding: 0.5rem 0;
   color: var(--vp-c-text-1);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
 .title-icon {
   color: var(--vp-c-brand-1);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.section-title:hover .title-icon {
+  transform: scale(1.1);
 }
 
 .carousel-container {
@@ -256,7 +267,6 @@ onUnmounted(() => {
 .image-info {
   padding: 1.5rem;
   background: var(--vp-c-bg-soft);
-  border-top: 1px solid var(--vp-c-divider);
 }
 
 .image-title {
@@ -385,6 +395,8 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .section-title {
     font-size: 1.5rem;
+    gap: 0.625rem;
+    margin-bottom: 1.5rem;
   }
   
   .carousel-btn {

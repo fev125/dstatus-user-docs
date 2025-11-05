@@ -7,6 +7,7 @@
 * [Windows 运行教程](Agent-Windows运行教程.md)
 * [OpenWrt 运行教程](Agent-OpenWrt运行教程.md)
 
-## 功能页面
+## 使用指南
+* [使用指南](usage.md)
 * [服务器管理](server-management.md)
 

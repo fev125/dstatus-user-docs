@@ -27,8 +27,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '快速开始', link: '/quick-start' },
-      { text: '使用指南', link: '/usage-guide' },
-      { text: '功能页面', link: '/pages-overview' },
+      { text: '使用指南', link: '/usage' },
     ],
     
     // 侧边栏配置
@@ -46,23 +45,9 @@ export default defineConfig({
           text: '📖 使用指南',
           collapsible: true,
           items: [
-            { text: '操作指南', link: '/usage-guide' },
-            { text: '使用教程', link: '/usage' },
-          ]
-        },
-        {
-          text: '🖥️ 手动部署Agent',
-          collapsible: true,
-          items: [
-            { text: 'Windows 运行教程', link: '/Agent-Windows运行教程' },
-            { text: 'OpenWrt 运行教程', link: '/Agent-OpenWrt运行教程' },
-          ]
-        },
-        {
-          text: '📑 功能页面',
-          collapsible: true,
-          items: [
+            { text: '使用指南', link: '/usage' },
             { text: '页面总览', link: '/pages-overview' },
+            { text: '登录管理', link: '/login-management' },
             // 监控管理分组
             { text: '网络监控配置', link: '/monitor' },
             { text: '服务器管理', link: '/server-management' },
@@ -75,6 +60,14 @@ export default defineConfig({
             { text: '通知设置', link: '/notification-settings' },
             { text: '高级设置', link: '/advanced-settings' },
             { text: '许可证管理', link: '/license-management' },
+          ]
+        },
+        {
+          text: '🖥️ 手动部署Agent',
+          collapsible: true,
+          items: [
+            { text: 'Windows 运行教程', link: '/Agent-Windows运行教程' },
+            { text: 'OpenWrt 运行教程', link: '/Agent-OpenWrt运行教程' },
           ]
         }
       ]
