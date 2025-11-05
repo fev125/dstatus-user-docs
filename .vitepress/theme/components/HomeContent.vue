@@ -8,7 +8,7 @@ import FeatureModules from './FeatureModules.vue'
 </script>
 
 <template>
-  <div class="home-content">
+  <div class="home-content vp-doc">
     <ImageGallery />
     <FeatureModules />
   </div>
@@ -17,6 +17,16 @@ import FeatureModules from './FeatureModules.vue'
 <style scoped>
 .home-content {
   margin-top: 2rem;
+  padding: 0 1.5rem;
+  max-width: 1152px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .home-content {
+    padding: 0 1rem;
+  }
 }
 </style>
 

@@ -27,15 +27,10 @@ export default {
         const { frontmatter } = useData()
         const features = frontmatter.value?.features || []
         if (features.length === 0) return null
-        return h(Features, { features })
-      },
-      'home-content-after': () => {
-        const { frontmatter } = useData()
-        // 如果是首页，插入自定义内容组件
-        if (frontmatter.value?.layout === 'home') {
-          return h(HomeContent)
-        }
-        return null
+        return h('div', [
+          h(Features, { features }),
+          h(HomeContent)
+        ])
       }
     })
   },
