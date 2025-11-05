@@ -26,14 +26,20 @@
 
 /* ==================== Hero 区域优化 ==================== */
 
-/* 隐藏默认的 VitePress Hero，使用自定义组件 */
-.VPHero.image {
-  display: none;
+/* 隐藏默认的 VitePress Hero（只隐藏默认的，不隐藏自定义的） */
+.VPHero:has(.image-container),
+.VPHero:has(.VPImage),
+.VPHero:has(.image-src) {
+  display: none !important;
 }
 
-/* 确保自定义 Hero 组件样式正确 */
-.VPHero.hero-content {
-  /* 样式已在 Hero.vue 组件中定义 */
+/* 确保自定义 Hero 组件显示 */
+.custom-hero-wrapper {
+  display: block !important;
+}
+
+.custom-hero-wrapper section.VPHero {
+  display: block !important;
 }
 
 /* ==================== Features 区域优化 ==================== */
