@@ -10,13 +10,21 @@ export default defineConfig({
   title: 'DStatus 文档中心',
   description: 'DStatus 分布式监控系统完整文档',
   lang: 'zh-CN',
-  
+
   // 站点基础配置
   base: '/',
   cleanUrls: true,
-  
+
   // 插件配置
   plugins: [lastUpdated()],
+
+  // Vite 配置 - 解决 SSR 兼容性问题
+  vite: {
+    ssr: {
+      noExternal: ['@iconify/vue'],
+      external: ['@tsparticles/vue3', '@tsparticles/slim', '@tsparticles/engine']
+    }
+  },
   
   // 主题配置
   themeConfig: {

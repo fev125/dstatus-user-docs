@@ -6,8 +6,6 @@ import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import { Icon } from '@iconify/vue'
-import Particles from '@tsparticles/vue3'
-import { loadSlim } from '@tsparticles/slim'
 import Hero from './components/Hero.vue'
 import Features from './components/Features.vue'
 import HomeContent from './components/HomeContent.vue'
@@ -39,11 +37,18 @@ export default {
   enhanceApp({ app }) {
     // 注册全局图标组件
     app.component('Icon', Icon)
-    // 注册粒子背景插件（官方正确用法）
-    app.use(Particles, {
-      init: async engine => {
-        await loadSlim(engine)
-      }
-    })
+
+    // 只在客户端注册粒子背景插件
+    if (typeof window !== 'undefined') {
+      import('@tsparticles/vue3').then(({ default: Particles }) => {
+        import('@tsparticles/slim').then(({ loadSlim }) => {
+          app.use(Particles, {
+            init: async engine => {
+              await loadSlim(engine)
+            }
+          })
+        })
+      })
+    }
   }
 }
