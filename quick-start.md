@@ -27,3 +27,4 @@ https://client.vps.mom
 ## 下一步
 
 - [使用教程](usage.md)
+- [面板迁移教程](panel-migration.md)
