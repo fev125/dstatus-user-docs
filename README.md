@@ -26,7 +26,7 @@ npm run build
    - **Framework preset**: VitePress
    - **Build command**: `npm run build`
    - **Build output directory**: `.vitepress/dist`
-   - **Root directory**: `工作区/user-docs` (如果文档在子目录)
+   - **Root directory**: 文档所在目录（仓库根目录就留空；如果在子目录就填子目录名，例如 `dstatus-user-docs`）
 5. 点击 **Save and Deploy**
 
 ### 方式二：使用 Wrangler CLI
@@ -62,7 +62,7 @@ on:
     branches:
       - main
     paths:
-      - '工作区/user-docs/**'
+      - '**'
 
 jobs:
   deploy:
@@ -76,11 +76,11 @@ jobs:
           node-version: '20'
           
       - name: Install dependencies
-        working-directory: 工作区/user-docs
+        working-directory: .
         run: npm ci
         
       - name: Build
-        working-directory: 工作区/user-docs
+        working-directory: .
         run: npm run build
         
       - name: Deploy to Cloudflare Pages
@@ -89,7 +89,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: dstatus-docs
-          directory: 工作区/user-docs/.vitepress/dist
+          directory: .vitepress/dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 ```
 

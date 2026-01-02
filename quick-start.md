@@ -19,6 +19,8 @@ https://client.vps.mom
 ```
 ![部署](/deployment.png)
 
+提示：部署脚本会从 `down.vps.mom` 拉取安装资源，请确保你的服务器能访问该域名。
+
 2. 访问系统：
 打开浏览器访问 `http://ip:5555`，默认登录密码 `dstatus`，首次登录请务必修改为强密码，并记住密码。
 
