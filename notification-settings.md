@@ -1,15 +1,15 @@
 # 通知设置页面
 
-## 📍 页面路径
+## 页面路径
 管理后台 → 通知设置（`/admin/notification`）
 
-## 🎯 页面功能
+## 页面功能
 - 配置 Telegram 和邮件通知渠道
 - 管理通知类型开关
 - 创建自定义通知任务
 - 测试通知配置
 
-## 📋 页面布局
+## 页面布局
 
 ### 通知类型管理
 统一管理所有通知渠道的通知类型开关：
@@ -24,7 +24,7 @@
 ### Telegram 通知设置
 配置 Telegram Bot 通知：
 - **启用开关**：开启/关闭 Telegram 通知
-- **Bot Token**：Telegram Bot 的认证令牌（从 @BotFather 获取）
+- **Bot 令牌**：Telegram Bot 的认证令牌（从 @BotFather 获取）
 - **Chat IDs**：接收通知的用户ID或频道用户名（多个用逗号分隔）
 - **高级设置**：
   - Webhook 模式（实验性功能）
@@ -54,20 +54,20 @@
 - **任务筛选**：按服务器、状态、周期筛选
 - **批量操作**：批量启用、禁用、删除任务
 
-## 🔧 操作步骤
+## 操作步骤
 
 ### 配置 Telegram 通知
 1. 点击"Telegram 通知设置"卡片展开配置
 2. 开启"启用 Telegram 通知"开关
-3. **获取 Bot Token**：
+3. **获取 Bot 令牌**：
    - 打开 Telegram，搜索 @BotFather
    - 发送 `/newbot` 创建新 Bot
-   - 保存收到的 Bot Token
+   - 保存收到的 Bot 令牌
 4. **获取 Chat ID**：
    - 个人用户：搜索 @getidbot 获取个人 Chat ID
    - 频道/群组：将 Bot 添加到群组，向 Bot 发送消息后使用 getUpdates API 获取
 5. **填写配置**：
-   - 在"Bot Token"字段粘贴 Token
+   - 在"Bot 令牌"字段粘贴令牌
    - 在"Chat IDs"字段输入 Chat ID（多个用逗号分隔）
 6. **高级设置**（可选）：
    - 点击"高级设置"展开
@@ -116,16 +116,16 @@
    - 可在任务列表中禁用/启用
 5. 保存任务
 
-## 🚨 常见问题
+## 常见问题
 
 ### Telegram 测试失败
 **可能原因**：
-- Bot Token 无效或已过期
+- Bot 令牌无效或已过期
 - Chat ID 错误
 - 服务器无法访问 api.telegram.org
 
 **解决方法**：
-1. 重新从 @BotFather 获取 Bot Token
+1. 重新从 @BotFather 获取 Bot 令牌
 2. 使用 @getidbot 重新获取 Chat ID
 3. 检查服务器网络连接和防火墙设置
 

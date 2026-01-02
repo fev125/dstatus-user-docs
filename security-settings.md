@@ -1,9 +1,9 @@
 # 安全设置页面
 
-## 📍 页面路径
+## 页面路径
 管理后台 → 安全设置（`/admin/security-settings`）
 
-## 🎯 页面功能
+## 页面功能
 - 查看安全状态概览
 - 配置登录通知
 - 配置双因子认证（2FA）
@@ -11,7 +11,7 @@
 - 配置 HTTP 安全设置
 - 管理登录入口路径
 
-## 📋 页面布局
+## 页面布局
 
 ### 安全状态概览
 显示当前安全配置状态：
@@ -39,7 +39,7 @@
 ### GitHub OAuth 配置
 配置 GitHub OAuth 登录：
 - **Client ID**：GitHub 应用的 Client ID
-- **Client Secret**：GitHub 应用的 Client Secret
+- **Client 密钥**：GitHub 应用的 Client 密钥
 - **回调 URL**：显示系统回调 URL（需在 GitHub 应用中配置）
 - **白名单配置**：配置允许登录的 GitHub 用户名和组织
 - **信任 2FA**：是否信任 GitHub 用户的 2FA 状态
@@ -59,7 +59,7 @@
 - **自定义路径**：设置自定义登录路径
 - **变更历史**：查看登录路径变更历史
 
-## 🔧 操作步骤
+## 操作步骤
 
 ### 配置登录通知
 1. 进入"登录通知设置"区域
@@ -77,9 +77,9 @@
 6. **重要**：下载并保存备份码，用于丢失设备时恢复
 
 ### 配置 GitHub OAuth
-1. 在 GitHub 创建 OAuth App，获取 Client ID 和 Client Secret
+1. 在 GitHub 创建 OAuth App，获取 Client ID 和 Client 密钥
 2. 配置回调 URL 为系统显示的回调地址
-3. 在"GitHub OAuth 配置"区域输入 Client ID 和 Client Secret
+3. 在"GitHub OAuth 配置"区域输入 Client ID 和 Client 密钥
 4. 点击"保存配置"
 5. 配置白名单（可选）：输入允许登录的 GitHub 用户名或组织
 6. 点击"保存白名单"
@@ -101,7 +101,7 @@
    - 查看变更历史：查看历史记录
 4. **重要**：路径变更后需记录新路径，原路径将失效
 
-## ⚠️ 注意事项
+## 注意事项
 
 - **2FA 备份码**：必须妥善保管，丢失设备时需使用备份码恢复
 - **登录路径变更**：变更后原路径失效，需通知所有管理员
