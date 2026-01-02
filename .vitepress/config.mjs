@@ -48,35 +48,52 @@ export default defineConfig({
           items: [
             { text: '首页', link: '/' },
             { text: '快速开始', link: '/quick-start' },
+            { text: '使用指南', link: '/usage' },
+            { text: '页面总览', link: '/pages-overview' },
           ]
         },
         {
-          text: '📖 使用指南',
+          text: '📊 监控管理',
           collapsible: true,
           items: [
-            { text: '使用指南', link: '/usage' },
-            { text: '页面总览', link: '/pages-overview' },
-            { text: '登录管理', link: '/login-management' },
-            // 监控管理分组
             { text: '网络监控配置', link: '/monitor' },
             { text: '服务器管理', link: '/server-management' },
             { text: '分组管理', link: '/groups' },
             { text: '自动发现', link: '/autodiscovery' },
-            // 系统管理分组
-            { text: 'SSH脚本', link: '/ssh-scripts' },
-            { text: '安全设置', link: '/security-settings' },
+          ]
+        },
+        {
+          text: '⚙️ 系统管理',
+          collapsible: true,
+          items: [
+            { text: '登录管理', link: '/login-management' },
             { text: '系统设置', link: '/system-settings' },
-            { text: '通知设置', link: '/notification-settings' },
             { text: '高级设置', link: '/advanced-settings' },
             { text: '许可证管理', link: '/license-management' },
           ]
         },
         {
-          text: '🖥️ 手动部署Agent',
+          text: '🔔 通知与脚本',
           collapsible: true,
           items: [
-            { text: 'Windows 运行教程', link: '/Agent-Windows运行教程' },
-            { text: 'OpenWrt 运行教程', link: '/Agent-OpenWrt运行教程' },
+            { text: '通知设置', link: '/notification-settings' },
+            { text: 'SSH脚本', link: '/ssh-scripts' },
+          ]
+        },
+        {
+          text: '🔒 安全设置',
+          collapsible: true,
+          items: [
+            { text: '安全设置', link: '/security-settings' },
+          ]
+        },
+        {
+          text: '🖥️ Agent',
+          collapsible: true,
+          items: [
+            { text: 'Agent使用指南', link: '/agent-guide' },
+            { text: 'Windows运行教程', link: '/Agent-Windows运行教程' },
+            { text: 'OpenWrt运行教程', link: '/Agent-OpenWrt运行教程' },
           ]
         }
       ]
