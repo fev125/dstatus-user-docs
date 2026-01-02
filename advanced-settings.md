@@ -63,7 +63,7 @@
 ### 配置PostgreSQL数据库
 1. 在"PostgreSQL数据库配置"卡片中，打开"启用PostgreSQL"开关
 2. 填写连接信息：
-   - **主机地址**：PostgreSQL服务器地址（如 `localhost` 或 `192.168.1.100`）
+   - **主机地址**：PostgreSQL服务器地址（如 `localhost` 或 `db.example.com`）
    - **端口**：PostgreSQL端口（默认 `5432`）
    - **数据库名**：数据库名称（如 `dstatus`）
    - **用户名**：PostgreSQL用户名
