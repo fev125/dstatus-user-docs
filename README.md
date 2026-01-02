@@ -8,8 +8,8 @@
 - 基本使用：`usage.md`
 - 面板迁移：`panel-migration.md`
 - 网络质量相关：
-  - 配置入口：`monitor.md`（管理后台配置页）
-  - 查看入口：`/network-quality`（监控展示页）
+  - 配置说明：`monitor.md`（面板页面：`/admin/monitor`）
+  - 查看页面：面板 `/network-quality`
 
 ## 维护者说明
 
