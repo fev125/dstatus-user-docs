@@ -45,6 +45,7 @@ export default defineConfig({
         {
           text: '开始使用',
           collapsible: true,
+          collapsed: false,
           items: [
             { text: '首页', link: '/' },
             { text: '快速开始', link: '/quick-start' },
@@ -55,6 +56,7 @@ export default defineConfig({
         {
           text: '面板管理',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: '网络监控配置', link: '/monitor' },
             { text: '服务器管理', link: '/server-management' },
@@ -66,6 +68,7 @@ export default defineConfig({
         {
           text: '系统设置',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: '系统设置', link: '/system-settings' },
             { text: '个性化设置', link: '/personalization' },
@@ -81,6 +84,7 @@ export default defineConfig({
         {
           text: 'Agent',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Agent使用指南', link: '/agent-guide' },
             { text: 'Windows运行教程', link: '/Agent-Windows运行教程' },
