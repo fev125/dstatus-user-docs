@@ -1,53 +1,67 @@
 # Agent Windows 运行教程
 
-## 1. 下载二进制 agent 文件
-
-```bash
-访问下载对于构架的二进制文件
-https://github.com/fev125/dstatus/releases/tag/dev1.0.2
-```
-
-例如：`dstatus_windows_amd64.exe`（64位系统）
+本教程只讲“拿到二进制后怎么运行”。如果你能通过面板安装，优先使用面板生成的一键命令。
 
 ---
 
-## 2. 配置
+## 两种启动方式（选一种就够）
 
-创建 `config.yaml`：
+你可以用下面两种方式启动 Agent：
+
+- 方式 A：用配置文件（适合长期运行）
+- 方式 B：用启动参数（适合临时测试/排障）
+
+---
+
+## 方式 A：配置文件启动（推荐）
+
+1) 新建 `config.yaml`（和 `dstatus_windows_amd64.exe` 放同一目录即可）：
 
 ```yaml
-key: "your_secure_key_123"
-port: 8080
+key: "<通信密钥>"
+port: 9999
 
-# 主动上报模式（可选）
+# 可选：主动上报（面板无法直连 Agent 时才需要）
 report_enabled: true
-report_server: "http://your-server-ip:5555"
-report_server_key: "your_secure_key_123"  # 与 key 相同 你添加节点时的通信密钥
-server_id: "your server sid" 添加后的节点ID sid 
-report_interval: 5    # 上报间隔，单位为秒
+report_server: "http://panel.example.com:5555"
+report_server_key: "<上报密钥>"
+server_id: "<节点SID>"
+report_interval: 60
 ```
 
-**重要**：`key` 和 `report_server_key` 必须相同。
-
----
-
-## 3. 运行
+2) 运行：
 
 ```cmd
 dstatus_windows_amd64.exe -c config.yaml
 ```
-如提示权限问题，按照提示加上./ 即可
+
 ---
 
-## 4. 验证
+## 方式 B：启动参数（临时测试）
 
-```powershell
-curl http://localhost:8080/stat?key=your_secure_key_123
+被动模式（默认）：
+
+```cmd
+dstatus_windows_amd64.exe -key "<通信密钥>" -port 9999
+```
+
+主动上报（可选）：
+
+```cmd
+dstatus_windows_amd64.exe -key "<通信密钥>" -port 9999 -report -report-server "http://panel.example.com:5555" -report-key "<上报密钥>" -server-id "<节点SID>"
 ```
 
 ---
 
-## 5. 后台运行
+## 验证
+
+```powershell
+curl "http://localhost:9999/stat?key=<通信密钥>"
+```
+
+---
+
+## 后台运行
 
 使用 PowerShell：
 
@@ -57,10 +71,10 @@ Start-Process -NoNewWindow -FilePath "dstatus_windows_amd64.exe" -ArgumentList "
 
 ---
 
-## 6. 开机自启
+## 开机自启
 
 1. Win + R → `taskschd.msc`
 2. 创建基本任务
 3. 触发器：计算机启动时
 4. 操作：启动程序 → 选择 `dstatus_windows_amd64.exe`
-5. 参数：`-c C:\path\to\config.yaml`
+5. 参数示例：`-c C:\path\to\config.yaml`
