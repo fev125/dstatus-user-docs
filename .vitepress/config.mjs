@@ -53,38 +53,29 @@ export default defineConfig({
           ]
         },
         {
-          text: '监控管理',
+          text: '面板管理',
           collapsible: true,
           items: [
             { text: '网络监控配置', link: '/monitor' },
             { text: '服务器管理', link: '/server-management' },
             { text: '分组管理', link: '/groups' },
             { text: '自动发现', link: '/autodiscovery' },
+            { text: '账单报告', link: '/billing-report' },
           ]
         },
         {
-          text: '系统管理',
+          text: '系统设置',
           collapsible: true,
           items: [
-            { text: '登录管理', link: '/login-management' },
             { text: '系统设置', link: '/system-settings' },
+            { text: '个性化设置', link: '/personalization' },
             { text: '高级设置', link: '/advanced-settings' },
-            { text: '许可证管理', link: '/license-management' },
-          ]
-        },
-        {
-          text: '通知与脚本',
-          collapsible: true,
-          items: [
             { text: '通知设置', link: '/notification-settings' },
-            { text: 'SSH脚本', link: '/ssh-scripts' },
-          ]
-        },
-        {
-          text: '安全设置',
-          collapsible: true,
-          items: [
             { text: '安全设置', link: '/security-settings' },
+            { text: '登录管理', link: '/login-management' },
+            { text: '日志管理', link: '/log-management' },
+            { text: '许可证管理', link: '/license-management' },
+            { text: 'SSH脚本', link: '/ssh-scripts' },
           ]
         },
         {
