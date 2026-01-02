@@ -2,9 +2,9 @@
 
 ## 你要做的三件事
 
-1. 把面板跑起来（见：/quick-start）
-2. 把被控机加进来并安装 Agent（见：/server-management 或 /autodiscovery）
-3. 看监控数据、处理离线与告警（见：/notification-settings）
+1. 把面板跑起来（见：[快速开始](/quick-start)）
+2. 把被控机加进来并安装 Agent（见：[服务器管理](/server-management) 或 [自动发现](/autodiscovery)）
+3. 看监控数据、处理离线与告警（见：[通知设置](/notification-settings)）
 
 ## 添加服务器（两种方式，选一种）
 
@@ -40,7 +40,7 @@
 - 被动模式：确认通信端口可达并放行（面板默认 `9999`）
 - 主动上报：确认被控机能访问面板地址，且上报参数配置正确
 
-更完整的排查清单见：/agent-guide
+更完整的排查清单见：[Agent 使用指南](/agent-guide)
 
 ### 3) 面板打不开 / 页面卡住
 
@@ -51,5 +51,5 @@
 
 ## 你可能需要的页面
 
-- 页面总览：/pages-overview
-- 网络质量监控：/monitor（配置）与 `/network-quality`（查看）
+- 页面总览：[页面总览](/pages-overview)
+- 网络质量监控：[网络监控配置](/monitor)（配置）与 `/network-quality`（查看）

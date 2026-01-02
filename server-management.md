@@ -42,4 +42,4 @@
 
 ### 数据不更新/显示离线
 
-优先按 Agent 排障清单一步步查（见：/agent-guide）。
+优先按 Agent 排障清单一步步查（见：[Agent 使用指南](/agent-guide)）。
