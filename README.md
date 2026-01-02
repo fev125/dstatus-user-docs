@@ -10,7 +10,3 @@
 - 网络质量相关：
   - 配置说明：`monitor.md`（面板页面：`/admin/monitor`）
   - 查看页面：面板 `/network-quality`
-
-## 维护者说明
-
-本仓库的站点构建/发布说明不面向用户，已移动到 `.vitepress/internal/site-maintenance.md`。

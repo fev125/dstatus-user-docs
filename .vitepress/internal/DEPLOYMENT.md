@@ -1,4 +1,8 @@
-# 部署到 Cloudflare Pages
+# 站点发布说明（不对用户公开）
+
+以下内容仅给文档维护者使用：如何把 `dstatus-user-docs` 发布成可访问的文档站点。
+
+## 部署到 Cloudflare Pages
 
 ## 快速部署
 

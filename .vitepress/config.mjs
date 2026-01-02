@@ -7,8 +7,8 @@ import { defineConfig } from 'vitepress'
 import { lastUpdated } from './plugins/last-updated.js'
 
 export default defineConfig({
-  title: 'DStatus 文档中心',
-  description: 'DStatus 分布式监控系统完整文档',
+  title: 'DStatus 用户文档',
+  description: 'DStatus 使用文档（只讲要点）',
   lang: 'zh-CN',
 
   // 站点基础配置
@@ -43,7 +43,7 @@ export default defineConfig({
     sidebar: {
       '/': [
         {
-          text: '🚀 开始使用',
+          text: '开始使用',
           collapsible: true,
           items: [
             { text: '首页', link: '/' },
@@ -53,7 +53,7 @@ export default defineConfig({
           ]
         },
         {
-          text: '📊 监控管理',
+          text: '监控管理',
           collapsible: true,
           items: [
             { text: '网络监控配置', link: '/monitor' },
@@ -63,7 +63,7 @@ export default defineConfig({
           ]
         },
         {
-          text: '⚙️ 系统管理',
+          text: '系统管理',
           collapsible: true,
           items: [
             { text: '登录管理', link: '/login-management' },
@@ -73,7 +73,7 @@ export default defineConfig({
           ]
         },
         {
-          text: '🔔 通知与脚本',
+          text: '通知与脚本',
           collapsible: true,
           items: [
             { text: '通知设置', link: '/notification-settings' },
@@ -81,14 +81,14 @@ export default defineConfig({
           ]
         },
         {
-          text: '🔒 安全设置',
+          text: '安全设置',
           collapsible: true,
           items: [
             { text: '安全设置', link: '/security-settings' },
           ]
         },
         {
-          text: '🖥️ Agent',
+          text: 'Agent',
           collapsible: true,
           items: [
             { text: 'Agent使用指南', link: '/agent-guide' },
@@ -150,4 +150,3 @@ export default defineConfig({
     socialLinks: []
   }
 })
-
