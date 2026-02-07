@@ -13,7 +13,7 @@
 
 在后台 `安全设置` 页面（`/admin/security-settings`）填写前台域名、后台域名、源站地址后，点击“一键生成片段”。
 
-系统会同时给出前台/后台的 Nginx 与 Caddy 片段。Nginx 片段可用于 宝塔 / 1Panel / 原生 Nginx。
+系统会同时给出前台/后台的 Nginx 与 Caddy 片段。原生 Nginx 在安全设置页直接生成“完整 server 片段”。
 
 ## 核心规则
 
@@ -120,59 +120,69 @@ location / {
 
 适用：自己维护 `nginx.conf` / 站点 `server {}` 的场景。
 
-- 把下面的 `location` 规则放到对应域名的 `server {}` 内。
-- 不要复制 `#PROXY-START/` 或 `#PROXY-END/` 标记（那是面板标记）。
+- 直接使用下面完整 `server` 片段（前台一个、后台一个）。
+- 域名与源站地址优先以 `/admin/security-settings` 生成结果为准。
 
 ### 前台站点（原生 Nginx）
 
 ```nginx
-# 原生 Nginx：复制到对应域名 server {} 内
-location ^~ /admin { return 404; }
-location = /admin-login { return 404; }
-location = /login { return 404; }
-location = /logout { return 404; }
-location = /stats/update { return 404; }
-location = /api/agent { return 404; }
-location ^~ /api/agent/ { return 404; }
-location = /api/admin { return 404; }
-location ^~ /api/admin/ { return 404; }
+# 原生 Nginx：完整 server 配置（前台）
+server {
+    listen 80;
+    server_name status.example.com;
 
-location ^~ /ws/stats {
-    proxy_pass http://127.0.0.1:5555;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_read_timeout 300s;
-}
+    location ^~ /admin { return 404; }
+    location = /admin-login { return 404; }
+    location = /login { return 404; }
+    location = /logout { return 404; }
+    location = /stats/update { return 404; }
+    location = /api/agent { return 404; }
+    location ^~ /api/agent/ { return 404; }
+    location = /api/admin { return 404; }
+    location ^~ /api/admin/ { return 404; }
 
-location / {
-    proxy_pass http://127.0.0.1:5555;
-    proxy_http_version 1.1;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
+    location ^~ /ws/stats {
+        proxy_pass http://127.0.0.1:5555;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:5555;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
 }
 ```
 
 ### 后台站点（原生 Nginx）
 
 ```nginx
-# 原生 Nginx：复制到对应域名 server {} 内
-location / {
-    proxy_pass http://127.0.0.1:5555;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_read_timeout 300s;
+# 原生 Nginx：完整 server 配置（后台）
+server {
+    listen 80;
+    server_name admin.example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:5555;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
 }
 ```
 

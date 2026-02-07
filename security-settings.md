@@ -48,7 +48,7 @@
 因为系统默认会拦外部脚本，所以只在你确实需要加载第三方脚本时，再把对应域名加到“CSP 脚本域名白名单”。
 
 ## 相关页面
-- [分域部署（Nginx/宝塔/1Panel/Caddy）](./domain-split-manual.md)
+- [分域部署（Nginx/宝塔/1Panel/Caddy）](./domain-split-manual.md)（先在本页 `/admin/security-settings` 生成片段）
 - [登录与入口](./login-management.md)
 - [系统设置](./system-settings.md)
 - [通知设置](./notification-settings.md)
