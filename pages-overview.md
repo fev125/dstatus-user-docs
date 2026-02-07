@@ -29,5 +29,6 @@ DStatus 管理后台的功能页面导航。
 - [登录管理](/login-management) - 登录认证和密码管理
 - [使用指南](/usage) - 系统使用教程
 - [快速开始](/quick-start) - 快速部署指南
+- [前后台域名分离（手动）](/domain-split-manual) - Nginx/Caddy 代理分域教程
 
 ---

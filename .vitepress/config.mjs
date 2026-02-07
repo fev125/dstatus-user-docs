@@ -50,6 +50,7 @@ export default defineConfig({
             { text: '首页', link: '/' },
             { text: '快速开始', link: '/quick-start' },
             { text: '使用指南', link: '/usage' },
+            { text: '前后台域名分离', link: '/domain-split-manual' },
             { text: '页面总览', link: '/pages-overview' },
           ]
         },

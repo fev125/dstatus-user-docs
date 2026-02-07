@@ -39,3 +39,4 @@
 
 - [使用教程](usage.md)
 - [面板迁移教程](panel-migration.md)
+- [进阶：前后台域名分离](./domain-split-manual.md)
