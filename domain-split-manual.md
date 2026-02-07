@@ -13,7 +13,7 @@
 
 在后台 `安全设置` 页面（`/admin/security-settings`）填写前台域名、后台域名、源站地址后，点击“一键生成片段”。
 
-系统会同时给出前台/后台的 Nginx 与 Caddy 片段，可直接复制到你的反代配置中。
+系统会同时给出前台/后台的 Nginx 与 Caddy 片段。Nginx 片段可用于 宝塔 / 1Panel / 原生 Nginx。
 
 ## 核心规则
 
@@ -32,12 +32,12 @@
 - `/login`
 - `/logout`
 - `/stats/update`
-- `/api/agent/*`
-- `/api/admin/*`
+- `/api/agent`、`/api/agent/*`
+- `/api/admin`、`/api/admin/*`
 
-## 宝塔 Nginx 反代片段（优先）
+## Nginx 片段（宝塔 / 1Panel / 原生 Nginx 通用）
 
-### 先点这里（宝塔）
+### 宝塔放置位置
 
 在站点「反向代理」里，点当前代理右侧的「配置文件」。
 
@@ -45,6 +45,18 @@
 
 只改这里生成的反代子文件。  
 不要改主站点 `server {}`。
+
+### 1Panel 放置位置
+
+在网站的反向代理配置里，找到当前站点转发到 DStatus 的那段配置。
+
+把该段中的转发规则替换为下方对应片段（前台站点用“前台片段”，后台站点用“后台片段”）。
+
+### 原生 Nginx 放置位置
+
+把下方 `location` 规则放到对应域名的 `server {}` 内。
+
+`#PROXY-START/` 和 `#PROXY-END/` 仅用于宝塔标记，原生 Nginx 不需要这两行。
 
 ### 前台站点（`status.example.com`）
 
@@ -58,7 +70,9 @@ location = /admin-login { return 404; }
 location = /login { return 404; }
 location = /logout { return 404; }
 location = /stats/update { return 404; }
+location = /api/agent { return 404; }
 location ^~ /api/agent/ { return 404; }
+location = /api/admin { return 404; }
 location ^~ /api/admin/ { return 404; }
 
 location ^~ /ws/stats {
@@ -111,7 +125,7 @@ location / {
 
 ```txt
 status.example.com {
-  @blocked path /admin* /admin-login /login /logout /stats/update /api/agent/* /api/admin/*
+  @blocked path /admin* /admin-login /login /logout /stats/update /api/agent /api/agent/* /api/admin /api/admin/*
   respond @blocked 404
 
   @realtime path /ws/stats /ws/stats/*
