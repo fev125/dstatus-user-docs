@@ -35,7 +35,13 @@
 - `/api/agent`、`/api/agent/*`
 - `/api/admin`、`/api/admin/*`
 
-## Nginx 片段（宝塔 / 1Panel / 原生 Nginx 通用）
+## 宝塔 / 1Panel Nginx 片段
+
+适用：宝塔、1Panel 的反向代理配置。
+
+- 只替换反代规则片段。
+- 不改主站点 `server {}`。
+- 已经手动配置过反代时，不要新建第二条反代，只替换原有规则段。
 
 ### 宝塔放置位置
 
@@ -43,26 +49,15 @@
 
 ![宝塔反向代理入口（点击配置文件）](/bt-proxy-config-entry.png)
 
-只改这里生成的反代子文件。  
-不要改主站点 `server {}`。
-
 ### 1Panel 放置位置
 
 在网站的反向代理配置里，找到当前站点转发到 DStatus 的那段配置。
 
-把该段中的转发规则替换为下方对应片段（前台站点用“前台片段”，后台站点用“后台片段”）。
-
-### 原生 Nginx 放置位置
-
-把下方 `location` 规则放到对应域名的 `server {}` 内。
-
-`#PROXY-START/` 和 `#PROXY-END/` 仅用于宝塔标记，原生 Nginx 不需要这两行。
-
-### 前台站点（`status.example.com`）
-
-把该文件里 `#PROXY-START/` 到 `#PROXY-END/` 整段替换为下面内容。
+### 前台站点（宝塔 / 1Panel）
 
 ```nginx
+# 宝塔 / 1Panel：替换反代片段使用
+# 原生 Nginx 请使用“原生 Nginx 片段”
 #PROXY-START/
 
 location ^~ /admin { return 404; }
@@ -99,9 +94,11 @@ location / {
 #PROXY-END/
 ```
 
-### 后台站点（`admin.example.com`）
+### 后台站点（宝塔 / 1Panel）
 
 ```nginx
+# 宝塔 / 1Panel：替换反代片段使用
+# 原生 Nginx 请使用“原生 Nginx 片段”
 #PROXY-START/
 
 location / {
@@ -117,6 +114,66 @@ location / {
 }
 
 #PROXY-END/
+```
+
+## 原生 Nginx 片段
+
+适用：自己维护 `nginx.conf` / 站点 `server {}` 的场景。
+
+- 把下面的 `location` 规则放到对应域名的 `server {}` 内。
+- 不要复制 `#PROXY-START/` 或 `#PROXY-END/` 标记（那是面板标记）。
+
+### 前台站点（原生 Nginx）
+
+```nginx
+# 原生 Nginx：复制到对应域名 server {} 内
+location ^~ /admin { return 404; }
+location = /admin-login { return 404; }
+location = /login { return 404; }
+location = /logout { return 404; }
+location = /stats/update { return 404; }
+location = /api/agent { return 404; }
+location ^~ /api/agent/ { return 404; }
+location = /api/admin { return 404; }
+location ^~ /api/admin/ { return 404; }
+
+location ^~ /ws/stats {
+    proxy_pass http://127.0.0.1:5555;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_read_timeout 300s;
+}
+
+location / {
+    proxy_pass http://127.0.0.1:5555;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+### 后台站点（原生 Nginx）
+
+```nginx
+# 原生 Nginx：复制到对应域名 server {} 内
+location / {
+    proxy_pass http://127.0.0.1:5555;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_read_timeout 300s;
+}
 ```
 
 ## Caddy 完整示例
@@ -167,3 +224,10 @@ root 可直接执行：
 4. `https://后台域名/admin-login` 可访问
 
 一句话流程：先按上面 4 步验证，若有异常就把前后台域名都临时回指到原单域名站点并恢复旧反代配置。
+
+
+## 最容易踩坑的 3 件事
+
+1. 把片段粘到主站点配置，导致面板生成配置被覆盖。
+2. 同一个站点配了两条反代，规则互相打架。
+3. 忘了替换旧规则，页面看起来能打开但后台接口未被拦截。
