@@ -36,6 +36,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '快速开始', link: '/quick-start' },
       { text: '使用指南', link: '/usage' },
+      { text: '更新日志', link: '/changelog' },
       { text: '官网', link: 'https://client.vps.mom/', target: '_blank', rel: 'noopener noreferrer' },
     ],
     

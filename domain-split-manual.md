@@ -52,6 +52,8 @@
 ### 1Panel 放置位置
 
 在网站的反向代理配置里，找到当前站点转发到 DStatus 的那段配置。
+![1p反向代理入口（点击配置文件）](/1panel-proxy-config-entry.png)
+
 
 ### 前台站点（宝塔 / 1Panel）
 
