@@ -16,7 +16,7 @@
 - Windows 用户级安装在 Windows 11 下会显式绑定当前登录用户的自启动任务，避免创建计划任务时出现“拒绝访问”。
 - Windows 安装脚本下载失败时，现会优先尝试正式包并自动回退 GitHub 代理，同时统一使用 UTF-8 控制台输出，减少中文乱码。
 - Windows 安装命令已改为先下载 PowerShell 脚本再执行，不再依赖 `irm | iex` 的文本解码，降低中文乱码概率。
-- 自动发现页和服务器列表里的 Windows 命令已改为 `EncodedCommand` 形式，减少在 PowerShell 中因变量提前展开导致的执行失败。
+- Windows 对外安装脚本的用户提示已统一为英文，减少在旧版 PowerShell 下因文本解码造成的中文乱码。
 - macOS 默认按当前登录用户安装，无需 root；如需机器级守护，可显式指定系统级安装。
 - 自动发现页现已明确区分 Linux/macOS 与 Windows 的执行方式；Windows 会直接提示在目标主机的 PowerShell 执行安装命令。
 - 自动发现页的卸载命令现已默认显示；切换到 Windows 时会直接给出 PowerShell 卸载命令，便于当前用户移除探针。
