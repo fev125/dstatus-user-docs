@@ -15,6 +15,7 @@
 - Windows 安装脚本已改用系统原生计划任务接口；在部分 Windows 11 环境下，不再因为 `schtasks.exe` 路径解析失败而中断安装。
 - Windows 用户级安装在 Windows 11 下会显式绑定当前登录用户的自启动任务，避免创建计划任务时出现“拒绝访问”。
 - Windows 安装脚本下载失败时，现会优先尝试正式包并自动回退 GitHub 代理，同时统一使用 UTF-8 控制台输出，减少中文乱码。
+- Windows 安装命令已改为先下载 PowerShell 脚本再执行，不再依赖 `irm | iex` 的文本解码，降低中文乱码概率。
 - macOS 默认按当前登录用户安装，无需 root；如需机器级守护，可显式指定系统级安装。
 - 自动发现页现已明确区分 Linux/macOS 与 Windows 的执行方式；Windows 会直接提示在目标主机的 PowerShell 执行安装命令。
 - 自动发现页的卸载命令现已默认显示；切换到 Windows 时会直接给出 PowerShell 卸载命令，便于当前用户移除探针。
