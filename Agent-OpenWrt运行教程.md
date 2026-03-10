@@ -8,18 +8,38 @@ uname -m
 ```
 
 **常见架构对应文件名**：
-- `mips` → `dstatus_linux_mipsle`
-- `armv7l` → `dstatus_linux_arm7`
-- `aarch64` → `dstatus_linux_arm64`
-- `x86_64` → `dstatus_linux_amd64`
+- `mips` → `dstatus-agent_linux_mipsle`
+- `armv7l` → `dstatus-agent_linux_arm7`
+- `aarch64` → `dstatus-agent_linux_arm64`
+- `x86_64` → `dstatus-agent_linux_amd64`
+
+兼容说明：
+- 旧版本发布包里你可能还会看到 `dstatus_linux_*` 或 `neko-status_*`。
+- 本文档统一以 `dstatus-agent_*` 作为主口径。
+
+---
+
+## 1. 下载二进制
+
+Release 地址：
+- `https://github.com/fev125/dstatus/releases`
+
+下载示例（按你的架构替换文件名）：
+
+```bash
+wget -O dstatus-agent_linux_mipsle \
+  "https://github.com/fev125/dstatus/releases/download/agent-latest/dstatus-agent_linux_mipsle"
+```
+
+如果你要固定版本，把上面 URL 里的 `agent-latest` 改成 `agent-vX.Y.Z`。
 
 ---
 
 ## 2. 上传文件
 
 ```bash
-scp dstatus_linux_mipsle root@openwrt-host:/opt/
-chmod +x /opt/dstatus_linux_mipsle
+scp dstatus-agent_linux_mipsle root@openwrt-host:/opt/
+chmod +x /opt/dstatus-agent_linux_mipsle
 ```
 
 ---
@@ -44,9 +64,18 @@ port: 9999
 # 可选：主动上报（面板无法直连 Agent 时才需要）
 report_enabled: true
 report_server: "http://panel.example.com:5555"
-report_server_key: "<上报密钥>"
+report_server_key: "<通信密钥>"
 server_id: "<节点SID>"
 report_interval: 60
+
+# 高级可选：任务轮询（主动模式常用）
+task_poll_enabled: true
+task_poll_interval: 10
+task_poll_mock: false
+task_poll_max_batch: 5
+
+# 高级可选：自动升级（仅影响 trigger=auto 的升级任务）
+auto_upgrade_enabled: false
 EOF
 chmod 600 /etc/dstatus-agent/config.yaml
 ```
@@ -54,11 +83,15 @@ chmod 600 /etc/dstatus-agent/config.yaml
 说明：
 - `port` 建议以面板生成的安装命令/配置为准（常见是 9999）。
 - 如果你直接运行二进制且不指定端口，程序默认会监听 `8080`。
+- `task_poll_*` 与 `auto_upgrade_enabled` 已合并在上面的模板里，按需保留或修改即可。
+- `report_server_key` 与 `key` 使用同一个通信密钥。
+- `task_poll_*`：控制任务轮询开关、频率和每次处理数量。
+- `auto_upgrade_enabled`：只控制自动触发升级；手动升级不受影响。
 
 2) 运行：
 
 ```bash
-/opt/dstatus_linux_mipsle -c /etc/dstatus-agent/config.yaml
+/opt/dstatus-agent_linux_mipsle -c /etc/dstatus-agent/config.yaml
 ```
 
 ---
@@ -68,13 +101,13 @@ chmod 600 /etc/dstatus-agent/config.yaml
 被动模式（默认）：
 
 ```bash
-/opt/dstatus_linux_mipsle -key "<通信密钥>" -port 9999
+/opt/dstatus-agent_linux_mipsle -key "<通信密钥>" -port 9999
 ```
 
 主动上报（可选）：
 
 ```bash
-/opt/dstatus_linux_mipsle -key "<通信密钥>" -port 9999 -report -report-server "http://panel.example.com:5555" -report-key "<上报密钥>" -server-id "<节点SID>" &
+/opt/dstatus-agent_linux_mipsle -key "<通信密钥>" -port 9999 -report -report-server "http://panel.example.com:5555" -report-key "<通信密钥>" -server-id "<节点SID>" &
 ```
 
 ---
@@ -95,11 +128,11 @@ cat > /etc/init.d/dstatus << 'EOF'
 START=99
 
 start() {
-    /opt/dstatus_linux_mipsle -c /etc/dstatus-agent/config.yaml &
+    /opt/dstatus-agent_linux_mipsle -c /etc/dstatus-agent/config.yaml &
 }
 
 stop() {
-    killall dstatus_linux_mipsle
+    killall dstatus-agent_linux_mipsle
 }
 EOF
 

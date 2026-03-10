@@ -43,11 +43,16 @@ Agent（探针）是 DStatus 监控系统的核心组件，安装在被监控服
 - 用 `config.yaml` 配置文件（适合长期运行）
 - 直接用启动参数（适合临时测试/排障）
 
+命名口径：
+- 手动下载场景优先使用 `dstatus-agent_<platform>_<arch>`。
+- 旧名（如 `dstatus_*` / `neko-status_*`）仅作兼容回退，不作为主口径。
+
 端口以“面板生成的安装命令/配置”为准（面板默认 9999）。如果你直接运行 Agent 二进制且不指定端口，程序默认会监听 `8080`。
 
 详细步骤请参考：
 - [Windows 运行教程](/Agent-Windows运行教程)
 - [OpenWrt 运行教程](/Agent-OpenWrt运行教程)
+- OpenWrt 文档里另附“高级可选字段”（`task_poll_*`、`auto_upgrade_enabled`）说明，按需添加即可。
 
 ## 卸载 Agent
 

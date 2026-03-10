@@ -20,6 +20,7 @@
 * [安全设置](security-settings.md)
 * [登录管理](login-management.md)
 * [日志管理](log-management.md)
+* [节点分享访问](stats-share-tokens.md)
 * [SSH脚本](ssh-scripts.md)
 * [许可证管理](license-management.md)
 

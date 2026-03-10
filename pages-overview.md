@@ -20,6 +20,7 @@ DStatus 管理后台的功能页面导航。
 - **[通知设置](/notification-settings)**：告警通知配置
 - **[安全设置](/security-settings)**：安全配置和用户管理
 - **[日志管理](/log-management)**：查看/轮转/清理日志文件
+- **[节点分享访问](/stats-share-tokens)**：创建/撤销节点详情临时分享链接并查看访问日志
 - **[SSH脚本](/ssh-scripts)**：批量执行脚本管理
 - **[高级设置](/advanced-settings)**：高级功能配置
 - **[许可证管理](/license-management)**：许可证激活和功能升级
