@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vitepress dev",
+    "prebuild": "node scripts/strip-png-gamma.js",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },
