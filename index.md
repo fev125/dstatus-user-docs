@@ -4,7 +4,7 @@ layout: home
 hero:
   name: DStatus
   text: 用户文档
-  tagline: 只讲你用得上的要点
+  tagline: 服务器监控与网络质量系统
 
 features:
   - title: 快速部署面板
