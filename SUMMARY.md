@@ -33,4 +33,4 @@
 
 ## Agent
 * [Agent使用指南](agent-guide.md)
-* [被控升级教程（v1.1 -> v2.0.3）](agent-upgrade-v1.1-to-v2.0.3.md)
+* [被控升级教程（v1.1 -> 最新版）](agent-upgrade.md)

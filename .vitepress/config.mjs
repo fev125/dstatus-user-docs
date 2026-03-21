@@ -89,7 +89,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Agent使用指南', link: '/agent-guide' },
-            { text: '被控升级教程（v1.1 -> v2.0.3）', link: '/agent-upgrade-v1.1-to-v2.0.3' },
+            { text: '被控升级教程（v1.1 -> 最新版）', link: '/agent-upgrade' },
             { text: 'Windows运行教程', link: '/Agent-Windows运行教程' },
             { text: 'OpenWrt运行教程', link: '/Agent-OpenWrt运行教程' },
           ]
