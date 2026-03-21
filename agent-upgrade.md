@@ -8,7 +8,12 @@
 | 服务器列表 → 节点探针 → 下发升级任务 | 下发升级任务 | 实验功能，主动模式可用 |
 | 服务器列表 → 节点探针 → 复制重装命令 | 脚本升级 | 节点离线或手动操作 |
 
-   ![安装/升级入口](/install-agent.png)
+   <img src="/install-agent.png" alt="服务器列表安装/升级入口" style="max-width:720px;width:100%;display:block;margin-bottom:16px;" />
+   <p style="color:#666;font-size:14px;margin-bottom:16px;">图1：服务器列表 → 节点探针</p>
+   <img src="/edit-install.png" alt="编辑页面安装/升级入口" style="max-width:720px;width:100%;display:block;" />
+   <p style="color:#666;font-size:14px;">图2：节点详情 → 编辑页面</p>
+
+  
 
 ## 升级前确认
 
