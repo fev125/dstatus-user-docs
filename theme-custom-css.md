@@ -1,202 +1,65 @@
 ---
 title: 主题 CSS 自定义
-description: 前台组件与选择器对照、首页 Card 前缀与区块、整站示例 CSS
+description: 前台自定义 CSS：入口与附录示例（细节见附录代码顶部注释）
 ---
 
 # 主题 CSS 自定义
 
-**入口**：**管理后台 → 个性化设置 → 主题设置 → 前台自定义 CSS**。仅作用于**前台**（非 `/admin`）；**管理后台**不应用这段 CSS。保存时**不要**使用 `@import` 或 `url(http...)` 拉外部资源；公开同步接口**不返回** CSS 正文。
+在 **管理后台 → 个性化设置 → 主题设置 → 前台自定义 CSS** 粘贴样式，只对**前台**（非 `/admin`）生效；管理后台不注入。
+
+**注意**：不要用 `@import` 或 `url(http...)` 拉外部资源；访客同步接口**不返回** CSS 正文。  
+**选择器、分段、常用 id** 一律在下方附录 **代码最上方注释**里，按顺序读即可。
 
 ---
 
 ## 提示词（可选）
 
-将下面整段复制到能打开链接、阅读本页内容的工具；在「我的需求」里写清风格。将得到的 **CSS** 粘贴到 **个性化设置 → 主题设置 → 前台自定义 CSS**，保存即可。
+将下面整段（含链接）发给能打开网页的工具，在「我的需求」里写清风格；把返回的 CSS 粘贴到「前台自定义 CSS」并保存。
 
 ```
-请阅读并遵守此页的约束与章节说明（页面内表格与示例即规范）：
+请阅读并遵守（完整规范在本页附录 CSS 顶部注释）：
 https://docs.vps.mom/theme-custom-css
 
-我的需求：（在此描述风格，例如：整站偏赛博朋克冷色；或只改首页卡片视图，卡片更圆、阴影更轻）
+我的需求：（描述想要的风格）
 
-请只输出可直接粘贴到「前台自定义 CSS」的 CSS 代码，不要其它解释。
+请只输出可粘贴的 CSS，不要其它解释。
 ```
 
 ---
 
-## 章节速览
+## 附录：赛博朋克示例（全文）
 
-| 需求 | 见 |
-|------|-----|
-| 各页常用类名 / 锚点 | **§二** |
-| 只改首页「卡片视图」里每张服务器卡 | **§三**（固定前缀 + 禁止项） |
-| 整站变量、顶栏 / 下拉 | **§四** |
-| 一整段示例（赛博朋克风） | **§五** |
-
----
-
-## 目录
-
-1. [各节对照什么](#一各节对照什么)
-2. [页面与锚点](#二手动验证与页面锚点)
-3. [首页 Card：前缀与可改区块](#三首页-card前缀与可改区块)
-4. [整站：变量名与顶栏下拉](#四整站变量名与顶栏下拉)
-5. [附录：赛博朋克整段示例 CSS](#五附录赛博朋克整站示例-css-全文)
-
----
-
-## 一、各节对照什么 {#一各节对照什么}
-
-| 章节 | 对照内容 |
-|------|----------|
-| **§二** | 首页 Card/List、单节点、网络质量等 **页面 → 常用选择器**；附短样例 |
-| **§三** | 首页 **卡片视图** 内：服务器卡各区块类名、**必选前缀**、禁止项 |
-| **§四** | **整站** 日间/夜间变量名（`--light-*` / `--dark-*`）、顶栏 `#main-navbar`、下拉 `.dropdown-menu` 等 |
-| **§五** | **一整段** 示例 CSS，注释按块标了顶栏、首页卡、网络质量、单节点等 |
-
----
-
-## 二、页面与锚点 {#二手动验证与页面锚点}
-
-下表为**前台**常见路由；**不要**用它们去改 `/admin/*`。
-
-可选：写入后台前用浏览器插件或 DevTools 临时注入试效果，并确认后台页未被误伤。
-
-### 2.1 页面 → 锚点
-
-| 页面 | 锚点 |
-|------|------|
-| 首页 Card | `[data-home-shell="1"][data-home-view="card"]`、`#card-grid-container`、`.server-card` |
-| 首页 List | `[data-home-shell="1"][data-home-view="list"]`、`#list-grid-container`、`.server-card.list-row-card` |
-| 单节点 | `.card.glass-card.surface-card`、`#main-system-icon-container`、`.stat-chip` |
-| 网络质量 | `.network-quality-page`、`#nq-dashboard-hero-card`、`.nq-search-input` |
-
-### 2.2 常用变量名
-
-`--accent-color`、`--bg-color`、`--card-bg-color`、`--text-color`、`--border-color` 等（**§五** 示例里有成块写法）。
-
-### 2.3 样例 CSS（仅前台）
+复制下方代码框中的**全部内容**到「前台自定义 CSS」保存。
 
 ```css
-/* 前台验证样例：青绿主色 + 卡片圆角 */
-body:not(.admin) {
-  --accent-color: #0f766e;
-  --border-color: rgba(15, 118, 110, 0.18);
-  --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
-  --card-hover-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
-}
-[data-home-shell="1"] .server-card {
-  border-radius: 20px;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--card-shadow);
-}
-[data-home-shell="1"] .server-card:hover {
-  box-shadow: var(--card-hover-shadow);
-  transform: translateY(-2px);
-}
-[data-home-shell="1"] .card-title-link {
-  color: var(--accent-color);
-  font-weight: 700;
-}
-body .space-y-4 > .card.glass-card.surface-card:first-child {
-  border-radius: 24px;
-}
-.network-quality-page #nq-dashboard-hero-card {
-  border-radius: 24px;
-}
-```
-
-### 2.4 验收
-
-首页 card/list、单节点主卡、NQ 搜索框有变化，且 **`/admin/*` 未被误伤**。勿使用 `@import` 或外域资源。
-
----
-
-## 三、首页 Card：前缀与可改区块 {#三首页-card前缀与可改区块}
-
-首页 **卡片视图**（常带 `theme=card`）。下面表格即 **类名 → 能改什么**；生成或手写 CSS 时须遵守 **§3.1 前缀** 与 **§3.3 禁止项**。
-
-### 3.1 硬约束：作用域前缀
-
-每条规则选择器必须以 **`[data-home-shell="1"][data-home-view="card"]`** 开头。
-
-### 3.2 区块对照表
-
-| 区块 | 职责 | 建议 DIY |
-|------|------|----------|
-| `.server-card` | 整卡外框 | 圆角、边框、背景、阴影、hover |
-| `.offline-badge` 等 | 离线徽标 | 色、圆角；勿拆遮罩语义 |
-| `.card-title-link`、`[id$="_status_indicator"]` | 标题、状态点 | 色、字重、发光 |
-| `.progress-fill-*`、`.traffic-bar` | 进度与流量条 | 填充色、渐变 |
-| `.dstatus-tag-chip` 等 | 标签 | 胶囊样式 |
-
-**不建议**：改 `.metric-item` / `.server-card-metrics-stack` 的 `display`、`grid`、`flex-direction` 及离线遮罩定位链。
-
-### 3.3 禁止项
-
-**属性**：大范围 `display`/`position`/`grid`/`flex-direction`/`overflow`/`z-index`、`pointer-events`、`!important`、长时无限 `animation` 等。  
-**选择器**：勿以 `body`/`html`/`:root`（单独）、`.dashboard-card`、`.list-row-card`、`.network-quality-page` 等为**唯一**定位误伤其它页。
-
-### 3.4 输出约定（便于粘贴）
-
-1. 只输出 CSS  
-2. 每条选择器必须以 `[data-home-shell="1"][data-home-view="card"]` 开头  
-3. 不用 `!important`  
-4. 不要 markdown 代码块标记（便于粘贴）  
-
-### 3.5 示例
-
-```css
-[data-home-shell="1"][data-home-view="card"] .server-card {
-  border-radius: 22px;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
-}
-[data-home-shell="1"][data-home-view="card"] .card-title-link {
-  color: #0f172a;
-  font-weight: 700;
-}
-```
-
-写入后台时会有安全校验（前缀、禁外链等）。
-
----
-
-## 四、整站：变量名与顶栏 / 下拉 {#四整站变量名与顶栏下拉}
-
-与 **§五** 示例对照阅读即可。整站换肤主要改 **`--light-*`（日间）**、**`--dark-*`（夜间）**，写在 **`:root:not(.dark)`** 与 **`:root.dark`** 下，见 **§五** 第 1、2 大段。
-
-**常用选择器**：顶栏 `#main-navbar`，下拉 **`.glass-dropdown`、`.dropdown-menu`**，首页壳 **`[data-home-shell="1"]`**，网络质量 **`.network-quality-page`**。颜色多用 `var(--text-color)` 等。
-
-**顶栏 / 下拉异常时**：少给整页或大容器加极高 **`z-index`**；少加 **`transform` / `filter` / 过低 `opacity`**；避免父级 **`overflow: hidden`** 挡住下拉；优先改下拉自身样式。卡片 **`z-index` 过高** 可能盖住下拉。
-
-**毛玻璃 / 壁纸**：示例里用 **`html[data-glass="on"]`**、`body.has-background-image` 等选择器，与 **§五** 注释块一致即可。
-
----
-
-## 五、附录：赛博朋克整站示例（CSS 全文） {#五附录赛博朋克整站示例-css-全文}
-
-复制到 **前台自定义 CSS** 即可。下文按 **注释块** 对应界面：**日间/夜间变量** → **页面底** → **顶栏** → **Footer** → **下拉** → **输入框** → **首页大卡/服务器卡** → **网络质量** → **单节点** → **账单** → **标签**。
-
-**§三** 只管首页卡片「前缀」；**§五** 是整站示例。若只改卡片区域，仍以 §三 为准。
-
-### 5.1 设计对照（与下文 CSS 块序号一致）
-
-| 块 | 主要控制 |
-|----|----------|
-| 1–2 | 日间 / 夜间 `--light-*`、`--dark-*`、强调色 |
-| 3 | 前台页背景（无侧栏后台壳时） |
-| 4–5 | 顶栏 `#main-navbar`、页脚 `footer` |
-| 6–7 | 下拉、表单输入 |
-| 8–9 | 首页仪表盘大卡、服务器卡异形 |
-| 10–13 | 网络质量、单节点、账单、标签 |
-
-### 5.2 赛博朋克示例 CSS 全文（可直接复制）
-
-```css
-/* =============================================================================
-   DStatus 前台赛博朋克 · 示例（按块对应 §5.1 表）
-   ============================================================================= */
+/*
+ * DStatus 前台自定义 CSS · 赛博朋克示例
+ * 线上文档: https://docs.vps.mom/theme-custom-css
+ *
+ * 【怎么用】复制全文 → 管理后台 → 个性化设置 → 主题设置 → 前台自定义 CSS → 保存。
+ *          仅前台生效（非 /admin）；勿 @import 或 url(http...) 外链；公开接口不返回 CSS 正文。
+ *
+ * 【配色】日间改 --light-* 写在 :root:not(.dark)；夜间改 --dark-* 写在 :root.dark。
+ *        勿指望只写 :root { --text-color } 改日间，易被主题映射覆盖。
+ *
+ * 【只改首页「卡片视图」服务器卡】每条选择器必须以
+ *   [data-home-shell="1"][data-home-view="card"] 开头；勿滥用 !important；勿大范围改布局属性。
+ *
+ * 【常用锚点 · 勿误伤 /admin】
+ *   首页 Card: [data-home-shell="1"][data-home-view="card"], #card-grid-container, .server-card
+ *   首页 List: [data-home-shell="1"][data-home-view="list"], #list-grid-container
+ *   单节点: .card.glass-card.surface-card, .stat-chip
+ *   网络质量: .network-quality-page, #nq-dashboard-hero-card
+ *
+ * 【仪表盘下载/上传网速条】与卡内 .progress-fill-* 不同。桌面:
+ *   #download-progress-container / #download-speed-progress（绿）, #upload-progress-container / #upload-speed-progress
+ *   移动: #mobile-download-progress-container, #mobile-upload-progress-container 等同理。
+ *
+ * 【顶栏/下拉】少给整页加极高 z-index；避免父级 overflow:hidden 挡住 .dropdown-menu
+ *
+ * 【下行 1～13 块】1～2 日间夜间变量 3 页背景 4 顶栏 5 页脚 6 下拉 7 表单 8 仪表盘大卡
+ *              9 服务器卡异形 10 网络质量 11 单节点 12 账单 13 标签
+ * ============================================================================= */
 
 /* ----- 1) 日间：--light-* 与强调色 ----- */
 :root:not(.dark) {
