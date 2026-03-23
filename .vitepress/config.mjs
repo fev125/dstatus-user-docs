@@ -74,6 +74,7 @@ export default defineConfig({
           items: [
             { text: '系统设置', link: '/system-settings' },
             { text: '个性化设置', link: '/personalization' },
+            { text: '主题 CSS 自定义', link: '/theme-custom-css' },
             { text: '高级设置', link: '/advanced-settings' },
             { text: '通知设置', link: '/notification-settings' },
             { text: '安全设置', link: '/security-settings' },

@@ -17,6 +17,7 @@ DStatus 管理后台的功能页面导航。
 #### 系统设置
 - **[系统设置](/system-settings)**：基本配置和个性化设置
 - **[个性化设置](/personalization)**：控制显示模块、游客可见、壁纸与页脚
+- **[主题 CSS 自定义](/theme-custom-css)**：站方前台自定义 CSS（覆盖顺序、Card 契约、示例）
 - **[通知设置](/notification-settings)**：告警通知配置
 - **[安全设置](/security-settings)**：安全配置和用户管理
 - **[日志管理](/log-management)**：查看/轮转/清理日志文件

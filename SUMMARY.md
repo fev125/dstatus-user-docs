@@ -15,6 +15,7 @@
 ## 系统设置
 * [系统设置](system-settings.md)
 * [个性化设置](personalization.md)
+* [主题 CSS 自定义](theme-custom-css.md)
 * [高级设置](advanced-settings.md)
 * [通知设置](notification-settings.md)
 * [安全设置](security-settings.md)
