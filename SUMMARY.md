@@ -8,6 +8,7 @@
 ## 面板管理
 * [网络监控配置](monitor.md)
 * [服务器管理](server-management.md)
+* [本地 SSH 保险箱](ssh-local-vault.md)
 * [分组管理](groups.md)
 * [自动发现](autodiscovery.md)
 * [账单报告](billing-report.md)
