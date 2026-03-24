@@ -62,6 +62,7 @@ export default defineConfig({
           items: [
             { text: '网络监控配置', link: '/monitor' },
             { text: '服务器管理', link: '/server-management' },
+            { text: '本地 SSH 保险箱', link: '/ssh-local-vault' },
             { text: '分组管理', link: '/groups' },
             { text: '自动发现', link: '/autodiscovery' },
             { text: '账单报告', link: '/billing-report' },
