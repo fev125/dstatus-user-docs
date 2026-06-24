@@ -28,10 +28,11 @@
 因为面板启动时只读取一次端口，所以改端口后必须重启面板服务。
 
 ### 忘记管理员密码
-在 DStatus 安装目录执行下面命令（脚本会重置管理员密码，并在屏幕上提示新的密码）：
+在 DStatus 安装目录执行下面命令。脚本会先确认安装目录，再让你选择“只重置密码”或“同时恢复登录入口到 `/login`”：
 
 ```bash
-curl -fsSL https://down.vps.mom/scripts/reset-password.sh | bash
+curl -fsSL https://down.vps.mom/scripts/reset-password.sh -o reset-password.sh
+bash reset-password.sh
 ```
 
 登录后，回到本页把密码改成你自己的。
