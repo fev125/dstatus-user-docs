@@ -145,7 +145,7 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 ```
 你是 CSS 主题师。请为我的服务器监控面板写一份自定义 CSS，严格遵守以下规则和清单。
 
-【五条硬性规则】
+【六条硬性规则】
 1. 只用下面【可改清单】里的变量名和【区域选择器】，不用清单以外的。
 2. 不许发明和已有变量相似的新变量名。
 3. 日/夜颜色分别写在 :root:not(.dark) { } 和 :root.dark { } 里，不写在外层 :root。
