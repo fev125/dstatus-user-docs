@@ -164,9 +164,9 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 5. 若要整体深色风格：只改 --dark-* 一侧，不把 --light-* 写成深色；强调色不用纯白或纯黑。
 6. 若用高饱和/霓虹色系：强调色和状态色必须日夜分写——霓虹版写进 :root.dark { }，
    :root:not(.dark) { } 里用同色相的加深版本（霓虹色在白底上看不清）。
-7. 底色、卡片色、正文、次要文字、边框是一组配套关系：同一模式内，正文对卡片底色的
-   对比度要足够阅读（参考 4.5:1），边框要在卡片和页面底色上都可见。没改的项会保持
-   下面【当前默认值】，新值要和它们协调。
+7. 底色、卡片色、正文、次要文字、边框是一组配套关系。对比度参考（日夜同标准）：
+   正文对其所在底色 ≥7:1；次要文字、按钮/标签文字 ≥4.5:1；边框在卡片和页面底色上都可见。
+   没改的项会保持下面【当前默认值】，新值要和它们协调。
 8. 不许隐藏或移除任何元素：display:none、visibility:hidden、把元素挪出屏幕都不行。
    如果需求里有做不到的部分（隐藏元素、换壁纸图、调毛玻璃参数、日间刷黑等），
    在 CSS 最顶部用注释说明：/* 无法实现：xxx，原因 */，然后正常完成其余部分。
@@ -196,8 +196,14 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 - 详情页大卡：.stat-hero-surface
 - 标签页：容器 .nav-tabs 和按钮 .nav-tab 默认都是药丸形（border-radius: 9999px）——
   改形状时要么保持药丸，要么容器和按钮一起改才协调；
-  文本三态可自定义：.nav-tab（常态）/.nav-tab:hover（悬停）/.nav-tab.active（选中）的 color
-- 页脚：#footer-wrapper（装饰安全区，可加边框/背景/间距）
+  文本三态可自定义：.nav-tab（常态）/.nav-tab:hover（悬停）/.nav-tab.active（选中）的 color；
+  ⚠ 高频翻车点：.nav-tabs 容器是灰底，改主题时必须核对 tab 文字和容器底的对比
+  （常态与选中态都 ≥4.5:1），灰底配灰字是最常见的失败
+- 页脚：#footer-wrapper；顶栏：#main-navbar——两者都是装饰安全区，可加边框、CSS 渐变背景、
+  内联 SVG 背景（url("data:image/svg+xml,...") 属于内联不会被拦，外部图片网址才会被拒收）
+- 卡片风格一致性：改 .server-card 的形状（切角/异形）或背景装饰时，必须同步应用到首页
+  顶部区块 .dashboard-card，保持同一风格；**详情页卡片（.stat-hero-surface、
+  .glass-card.surface-card）不做背景装饰**，只动圆角/边框/阴影，保持信息页面干净
 - 壁纸层：#wallpaper-layer 只可改 filter / opacity / background-size 这类静态外观
   （壁纸图片/亮度/模糊三个 --wallpaper-* 变量在禁止名单，别碰）
 - 网络质量页：.network-quality-page .dashboard-card；顶卡：#nq-dashboard-hero-card
