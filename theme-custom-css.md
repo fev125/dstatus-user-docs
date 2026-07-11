@@ -140,33 +140,61 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 :root { --accent-base-color: #22d3ee; }
 ```
 
-### AI 提示词模板
-
-**路径一（AI 能打开网页）**：
+### AI 万能提示词（复制整块，最后一行填上你要的风格，直接发给 AI）
 
 ```
-请打开并阅读这个页面，按照它的规则帮我写自定义 CSS：
-（贴上你浏览器地址栏里本页的网址）
+你是 CSS 主题师。请为我的服务器监控面板写一份自定义 CSS，严格遵守以下规则和清单。
 
-我的需求：（描述风格，如"整体偏暗紫色，卡片圆角大一点"）
-只输出可直接粘贴的 CSS 代码，不要解释文字。
-```
-
-**路径二（AI 打不开网页/对话太长，只复制第 3、5 节两张表 + 下面这段）**：
-
-```
-请按以下五条硬性规则帮我写自定义 CSS：
-1. 只用【可改清单】里的变量名和选择器，不用清单以外的。
+【五条硬性规则】
+1. 只用下面【可改清单】里的变量名和【区域选择器】，不用清单以外的。
 2. 不许发明和已有变量相似的新变量名。
 3. 日/夜颜色分别写在 :root:not(.dark) { } 和 :root.dark { } 里，不写在外层 :root。
-4.【禁止清单】里的任何名字不许出现在生成的代码里。
-5. 若要整体深色风格：只改 --dark-* 一侧（用户会把站点默认切到夜间模式），
-   不把 --light-* 写成深色；强调色不用纯白或纯黑。
+4.【禁止名单】里的任何名字不许出现在生成的代码里。
+5. 若要整体深色风格：只改 --dark-* 一侧，不把 --light-* 写成深色；强调色不用纯白或纯黑。
 
-【可改清单】（贴第 3 节表）
-【禁止清单】（贴第 5 节表）
-我的需求：（描述风格）
-只输出可直接粘贴的 CSS 代码，不要解释文字。
+【可改清单】（成对变量 = 日/夜各一个）
+- 页面背景：--light-bg-color / --dark-bg-color
+- 卡片底色：--light-card-bg-color / --dark-card-bg-color
+- 正文文字：--light-text-color / --dark-text-color
+- 次要文字：--light-secondary-text-color / --dark-secondary-text-color
+- 边框：--light-border-color / --dark-border-color；强调边框：--border-accent-color
+- 全站强调色：--accent-base-color（不分日夜，写在 :root）
+- 状态色（不分日夜）：--success-color / --warning-color / --error-color / --info-color
+- 在线/离线圆点：--status-online-color / --status-offline-color
+- 进度条：--progress-bg-color（底）；--light-progress-cpu-color / --dark-progress-cpu-color
+  （同理 memory / disk / network / swap 换词尾）
+- 阴影：--shadow-sm / --shadow-md / --shadow-lg；动画时长：--theme-transition-duration
+- 悬停底色可引用：var(--hover-bg-color)
+
+【区域选择器】（只改颜色/圆角/阴影/字体等外观，别改名、别 display:none）
+- 首页卡片视图：[data-home-shell="1"][data-home-view="card"] .server-card
+- 首页列表视图：[data-home-shell="1"][data-home-view="list"] .server-card
+- 详情页大卡：.stat-hero-surface；标签按钮：.nav-tab（选中态 .nav-tab.active）
+- 网络质量页：.network-quality-page .dashboard-card；顶卡：#nq-dashboard-hero-card
+- 顶栏：#main-navbar；选中导航：.nav-link-active
+- 下拉菜单：.dropdown-menu；菜单项：.dropdown-menu__item
+- 输入框：input[type="text"], input[type="search"], textarea
+- 磨砂/实色卡：.glass-card / .surface-card
+
+【禁止名单】（这些名字不许出现在代码里）
+--glass-blur --glass-saturation --glass-border-opacity --glass-contrast
+--glass-light-opacity --glass-dark-opacity --glass-bg-alpha-dark --glass-opacity
+--glass-hover-bg-alpha-light --glass-hover-bg-alpha-dark
+--accent-runtime-color --surface-runtime-color --surface-runtime-color-rgb
+--surface-runtime-dark-color --surface-runtime-dark-rgb --dark-bg-runtime-color --dark-bg-runtime-rgb
+--hs-glass-blur --hs-glass-saturation --hs-glass-contrast --hs-accent --hs-accent-rgb
+--hs-accent-soft --hs-accent-soft-rgb --hs-border --hs-border-strong --hs-border-hover
+--hs-glow-sm --hs-glow-md --hs-glow-lg --hs-surface --hs-surface-strong
+--wallpaper-image --wallpaper-brightness --wallpaper-blur --nq-cols --agent-sidebar-width
+--text-color --bg-color --card-bg-color --card-surface-bg
+另外：不许对 #download-speed-progress、#upload-speed-progress 写位移/过渡样式；
+不许修改任何 data-* 属性值或删除/改名清单里的选择器。
+
+【输出要求】只输出可直接粘贴使用的 CSS 代码，不要解释文字。
+
+我的需求：（在这里描述你想要的风格，例如"整体偏暗紫色，卡片圆角大一点"）
 ```
+
+> 备选：如果你的 AI 能联网，也可以只发一句"请打开这个网页并按它的规则帮我写自定义 CSS：（贴本页网址）+ 我的需求"。
 
 **改坏了**：个性化 → 高级设置 → 关掉「启用站方自定义样式」，前台立即恢复，代码还留着。
