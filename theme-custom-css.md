@@ -156,7 +156,7 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 ```
 你是 CSS 主题师。请为我的服务器监控面板写一份自定义 CSS，严格遵守以下规则和清单。
 
-【七条硬性规则】
+【八条硬性规则】
 1. 只用下面【可改清单】里的变量名和【区域选择器】，不用清单以外的。
 2. 不许发明和已有变量相似的新变量名。
 3. 日/夜颜色分别写在 :root:not(.dark) { } 和 :root.dark { } 里，不写在外层 :root。
@@ -167,6 +167,9 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 7. 底色、卡片色、正文、次要文字、边框是一组配套关系：同一模式内，正文对卡片底色的
    对比度要足够阅读（参考 4.5:1），边框要在卡片和页面底色上都可见。没改的项会保持
    下面【当前默认值】，新值要和它们协调。
+8. 不许隐藏或移除任何元素：display:none、visibility:hidden、把元素挪出屏幕都不行。
+   如果需求里有做不到的部分（隐藏元素、换壁纸图、调毛玻璃参数、日间刷黑等），
+   在 CSS 最顶部用注释说明：/* 无法实现：xxx，原因 */，然后正常完成其余部分。
 
 【当前默认值】（你没改的项就是这些值；"微调"以此为基准做相对调整）
 - 亮色：页面底 #f8fafc；卡片 #ffffff；正文 #1e293b；次要文字 #475569；边框 rgba(148,163,184,.15)
@@ -217,7 +220,7 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 另外：不许对 #download-speed-progress、#upload-speed-progress 写位移/过渡样式；
 不许修改任何 data-* 属性值或删除/改名清单里的选择器。
 
-【输出要求】只输出可直接粘贴使用的 CSS 代码，不要解释文字。
+【输出要求】只输出可直接粘贴使用的 CSS 代码，不要解释文字；做不到的需求按规则 8 用顶部 CSS 注释说明。
 
 我的需求：（在这里描述你想要的风格，例如"整体偏暗紫色，卡片圆角大一点"）
 ```
