@@ -36,6 +36,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '快速开始', link: '/quick-start' },
       { text: '使用指南', link: '/usage' },
+      { text: '安全功能', link: '/security-features' },
       { text: '更新日志', link: '/changelog' },
       { text: '官网', link: 'https://dstatus.sh/', target: '_blank', rel: 'noopener noreferrer' },
     ],
@@ -50,6 +51,7 @@ export default defineConfig({
           items: [
             { text: '首页', link: '/' },
             { text: '快速开始', link: '/quick-start' },
+            { text: '面板迁移', link: '/panel-migration' },
             { text: '使用指南', link: '/usage' },
             { text: '前后台域名分离', link: '/domain-split-manual' },
             { text: '页面总览', link: '/pages-overview' },
@@ -78,11 +80,21 @@ export default defineConfig({
             { text: '主题 CSS 自定义', link: '/theme-custom-css' },
             { text: '高级设置', link: '/advanced-settings' },
             { text: '通知设置', link: '/notification-settings' },
-            { text: '安全设置', link: '/security-settings' },
-            { text: '登录管理', link: '/login-management' },
             { text: '日志管理', link: '/log-management' },
             { text: '许可证管理', link: '/license-management' },
             { text: 'SSH脚本', link: '/ssh-scripts' },
+          ]
+        },
+        {
+          text: '安全功能',
+          collapsible: true,
+          collapsed: false,
+          items: [
+            { text: '安全功能总览', link: '/security-features' },
+            { text: '安全设置', link: '/security-settings' },
+            { text: '登录与入口', link: '/login-management' },
+            { text: '本地 SSH 保险箱', link: '/ssh-local-vault' },
+            { text: '前后台域名分离', link: '/domain-split-manual' },
           ]
         },
         {
