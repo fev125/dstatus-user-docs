@@ -37,7 +37,7 @@ export default defineConfig({
       { text: '快速开始', link: '/quick-start' },
       { text: '使用指南', link: '/usage' },
       { text: '更新日志', link: '/changelog' },
-      { text: '官网', link: 'https://client.vps.mom/', target: '_blank', rel: 'noopener noreferrer' },
+      { text: '官网', link: 'https://dstatus.sh/', target: '_blank', rel: 'noopener noreferrer' },
     ],
     
     // 侧边栏配置
