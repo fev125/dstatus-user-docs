@@ -107,6 +107,14 @@ export default defineConfig({
             { text: 'Windows运行教程', link: '/Agent-Windows运行教程' },
             { text: 'OpenWrt运行教程', link: '/Agent-OpenWrt运行教程' },
           ]
+        },
+        {
+          text: '开发者',
+          collapsible: true,
+          collapsed: false,
+          items: [
+            { text: '公开 API', link: '/public-api' },
+          ]
         }
       ]
     },
