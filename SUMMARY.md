@@ -32,6 +32,9 @@
 * [本地 SSH 保险箱](ssh-local-vault.md)
 * [前后台域名分离](domain-split-manual.md)
 
+## 开发者
+* [公开 API](public-api.md)
+
 ## 迁移
 * [面板迁移](panel-migration.md)
 
