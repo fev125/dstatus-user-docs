@@ -45,3 +45,4 @@
 ## Agent
 * [Agent使用指南](agent-guide.md)
 * [被控升级教程（v1.1 -> 最新版）](agent-upgrade.md)
+* [被控更新日志](agent-changelog.md)
