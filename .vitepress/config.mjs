@@ -8,7 +8,7 @@ import { lastUpdated } from './plugins/last-updated.js'
 
 export default defineConfig({
   title: 'DStatus 用户文档',
-  description: 'DStatus 使用文档（只讲要点）',
+  description: 'DStatus 用户使用文档',
   lang: 'zh-CN',
 
   // 站点基础配置
