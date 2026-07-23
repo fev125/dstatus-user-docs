@@ -4,6 +4,45 @@
  * 主题色：科技蓝
  */
 
+/* ==================== 更新日志：面板 / 被控 切换 ==================== */
+.changelog-switch {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin: 0 0 1.25rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+}
+
+.changelog-switch__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  text-decoration: none !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.changelog-switch__item:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.changelog-switch__item.is-active {
+  color: var(--vp-c-white);
+  background: var(--vp-c-brand-1);
+}
+
+.dark .changelog-switch__item.is-active {
+  color: #0b1220;
+}
+
+
 /* ==================== 品牌色定制 - 暗蓝色 ==================== */
 :root {
   /* 主品牌色 - 暗蓝色 */

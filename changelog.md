@@ -1,5 +1,12 @@
 # 更新日志
 
+<p class="changelog-switch" role="navigation" aria-label="更新日志类型">
+  <a class="changelog-switch__item is-active" href="/changelog">面板</a>
+  <a class="changelog-switch__item" href="/agent-changelog">被控</a>
+</p>
+
+面板（主控）用户向说明。版本号对应成功 **Docker Dev** 构建的 `package.json` 版本；稳定版只标注到号。
+
 ---
 
 ## 2.26.07.007

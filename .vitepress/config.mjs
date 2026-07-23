@@ -37,7 +37,13 @@ export default defineConfig({
       { text: '快速开始', link: '/quick-start' },
       { text: '使用指南', link: '/usage' },
       { text: '安全功能', link: '/security-features' },
-      { text: '更新日志', link: '/changelog' },
+      {
+        text: '更新日志',
+        items: [
+          { text: '面板', link: '/changelog' },
+          { text: '被控', link: '/agent-changelog' }
+        ]
+      },
       { text: '官网', link: 'https://dstatus.sh/', target: '_blank', rel: 'noopener noreferrer' },
     ],
     
@@ -104,6 +110,7 @@ export default defineConfig({
           items: [
             { text: 'Agent使用指南', link: '/agent-guide' },
             { text: '被控升级教程（v1.1 -> 最新版）', link: '/agent-upgrade' },
+            { text: '被控更新日志', link: '/agent-changelog' },
             { text: 'Windows运行教程', link: '/Agent-Windows运行教程' },
             { text: 'OpenWrt运行教程', link: '/Agent-OpenWrt运行教程' },
           ]
