@@ -33,6 +33,8 @@ curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- -
 --install-dir=/你的实际安装目录
 ```
 
+更新后如果突然找不到登录入口，或密码对不上，到服务器跑救援脚本（可恢复 `/login`、可重置密码）：见 [无法登录时的服务器救援](./system-settings.md#忘记管理员密码)。
+
 ## 卸载面板
 
 卸载也使用同一个部署脚本：
