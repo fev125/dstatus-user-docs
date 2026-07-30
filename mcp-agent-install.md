@@ -10,98 +10,50 @@ next: false
 **读者：AI Agent。** 本文不进站点主导航；由用户提示词或直链打开。  
 人类用户请看：[远程 MCP](/mcp)。
 
-目标：把用户的 DStatus 远程 MCP 接到**当前本机 Agent**。用户只需在浏览器点「允许」。
+目标：把用户的 DStatus 远程 MCP 接到**当前本机 Agent**。用户只需在浏览器点“允许连接”。
 
----
+## 唯一接入真源
 
-## 输入
-
-用户会提供（或面板提示词里带有）：
+用户会提供：
 
 ```text
 MCP_URL = https://<实例域名>/mcp
-BASE    = https://<实例域名>   # 去掉末尾 /mcp
 ```
 
-若只有域名，补成 `https://域名/mcp`。必须是用户可达的 **HTTPS** 地址。
-
----
-
-## 前置（失败则停，用人话告诉用户）
-
-1. 用户已在面板 **设置中心 → 连接与授权 → 远程 MCP** 点过 **启用**。  
-2. 探测：
+先以普通 HTTP GET 读取 `MCP_URL`：
 
 ```bash
-curl -sS "{BASE}/.well-known/oauth-authorization-server"
+curl -sS -H 'Accept: application/json' "$MCP_URL"
 ```
 
-应返回 JSON，含 `authorization_endpoint` / `token_endpoint` / `registration_endpoint`。  
-404 或 MCP 未启用 → 请用户先启用远程 MCP。
+响应中的 `setup` 是当前实例的**完整机器可读安装真源**，包含：
 
----
+- HTTPS 与启用状态检查
+- Streamable HTTP 连接参数
+- OAuth 动态注册、随机回调端口、PKCE 与 `state`
+- 浏览器授权、授权码交换与凭据安全保存
+- MCP 握手、工具发现验收与 Token 回退
 
-## 步骤
+不要维护或猜测另一套固定步骤；始终以该实例当前返回的 `setup.version` 和 `setup` 内容为准。
 
-### 1. 注册本机 MCP 连接（无密钥）
+## 执行要求
 
-以 **Streamable HTTP** 把 `MCP_URL` 加入当前 Agent 的 MCP 列表，名称可用 `dstatus`，保持启用。  
-**不要** 在这一步写死 `Authorization: Bearer`（优先 OAuth）。
+1. 先检查 `setup.requirements`；未满足时停下，用人话告诉用户。
+2. 优先按 `setup.preferredFlow` 使用 OAuth；当前 MCP 客户端能自动授权时，使用客户端自带流程。
+3. 客户端不能自动 OAuth 时，逐项执行 `preferredFlow.steps`，不得跳过 PKCE、`state` 校验或随机回调端口。
+4. OAuth 无法完成时，才按 `setup.fallback` 使用管理员生成的专用 MCP Token。
+5. 使用当前 Agent 的配置命令或 API；不要让用户手动编辑配置文件。
+6. 不得在对话、日志、截图、文档或 Git 中复述 access token、refresh token 或手动 Token。
 
-使用你所在环境的 MCP 管理命令（若有 `mcp add --transport http` 一类接口则用之）。
+## 协议说明
 
-### 2. 拉起 OAuth（主会话即可，不必 Subagent）
+MCP 客户端带 `Accept: text/event-stream` 请求 `GET /mcp` 时，服务端会按 Streamable HTTP 协议返回 `405 Method Not Allowed`；这表示当前无独立 SSE 流，不是安装说明丢失。
 
-**不要**依赖「交互 TUI 里按键授权」；在**当前能跑工具的会话**里自建 OAuth 客户端：
-
-1. `bind(127.0.0.1, 0)` 申请**空闲端口**（禁止写死 8765 等）。  
-2. `REDIRECT = http://127.0.0.1:{PORT}/callback`  
-3. `POST {BASE}/mcp/oauth/register`  
-   body: `{"client_name":"…","redirect_uris":["{REDIRECT}"]}`  
-4. 生成 PKCE（S256）与 `state`。  
-5. **先**在本地监听 `REDIRECT`，**再**用系统浏览器打开：
-
-```text
-{BASE}/mcp/oauth/authorize?response_type=code&client_id=…&redirect_uri=…&code_challenge=…&code_challenge_method=S256&state=…
-```
-
-6. 对用户说：请用**管理员**账号登录（如需要），点击 **允许**。  
-7. 收到 `code` 后 `POST {BASE}/mcp/oauth/token`（`authorization_code` + `code_verifier` + 同一 `redirect_uri`）。  
-8. 将 token 写入**当前 Agent 的本机 MCP credentials**（限本人可读），键名与服务名、`MCP_URL` 对齐。  
-9. register/token 若被 Cloudflare 拦，改用 `curl`。
-
-**说明：**
-
-- 主会话能跑 shell 即可，**不需要** Subagent。  
-- 仍需用户在浏览器点「允许」，不是无人值守。  
-- `redirect_uri` 在 register / authorize / token **三处必须完全一致**。
-
-### 3. 验收
-
-- MCP 握手成功  
-- 能列出工具（≥1）  
-- 聊天中**不要**复述 access_token / refresh_token  
-
-若环境有 MCP 诊断命令，跑一遍确认健康。
-
-### 4. 回退
-
-客户端无法完成 OAuth 时：引导用户在面板 **生成 Token**，再以 `Authorization: Bearer <Token>` 配置（Token 只显示一次）。
-
----
+读取机器安装说明时，使用普通 GET 或 `Accept: application/json`。
 
 ## 对用户只说这些
 
-- 「请在浏览器用管理员点允许。」  
-- 「已经接上 / 失败原因（人话）。」  
+- “请在浏览器用管理员账号登录并点允许。”
+- “已经接上”或人话说明失败原因。
 
-不要甩 PKCE、端口、credentials 路径等术语，除非用户追问。
-
----
-
-## 明确不做
-
-- 不修改用户 DStatus 服务端代码  
-- 不把 Token 写进 git、文档、截图  
-- 不要求用户自己改配置文件  
-- 不为「拉授权」强行再开一层无必要的 Subagent（主会话可跑工具时直接做）
+不要向用户展开 PKCE、端口、凭据路径等术语，除非用户追问。

@@ -18,10 +18,12 @@
 提示词会自动带上你的地址，形如：
 
 ```text
-请先查看 https://docs.vps.mom/mcp-agent-install，再按说明把我的 DStatus 远程 MCP 接上：https://你的实例域名/mcp
+请给我安排 DStatus 远程 MCP，先读取这个地址返回的接入说明：https://你的实例域名/mcp
 ```
 
-你只负责：复制 → 发送 → 点允许。其余由 AI 按安装说明完成。
+这个 MCP 地址本身会返回完整的机器可读接入说明，AI 不需要另找安装文档。
+
+你只负责：复制 → 发送 → 点允许。其余由 AI 协助完成。
 
 </template>
 
