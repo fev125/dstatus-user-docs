@@ -9,6 +9,7 @@ import { Icon } from '@iconify/vue'
 import Hero from './components/Hero.vue'
 import Features from './components/Features.vue'
 import HomeContent from './components/HomeContent.vue'
+import DocTabs from './components/DocTabs.vue'
 import './custom.css'
 
 function syncSidebarGroups({ defaultOpenGroupText } = {}) {
@@ -62,6 +63,7 @@ export default {
   enhanceApp({ app, router }) {
     // 注册全局图标组件
     app.component('Icon', Icon)
+    app.component('DocTabs', DocTabs)
 
     // 只在客户端注册粒子背景插件
     if (typeof window !== 'undefined') {
