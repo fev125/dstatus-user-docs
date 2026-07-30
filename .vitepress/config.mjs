@@ -85,6 +85,7 @@ export default defineConfig({
             { text: '个性化设置', link: '/personalization' },
             { text: '主题 CSS 自定义', link: '/theme-custom-css' },
             { text: '高级设置', link: '/advanced-settings' },
+            { text: '远程 MCP', link: '/mcp' },
             { text: '通知设置', link: '/notification-settings' },
             { text: '日志管理', link: '/log-management' },
             { text: '许可证管理', link: '/license-management' },

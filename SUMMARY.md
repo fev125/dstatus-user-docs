@@ -19,6 +19,7 @@
 * [个性化设置](personalization.md)
 * [主题 CSS 自定义](theme-custom-css.md)
 * [高级设置](advanced-settings.md)
+* [远程 MCP](mcp.md)
 * [通知设置](notification-settings.md)
 * [日志管理](log-management.md)
 * [节点分享访问](stats-share-tokens.md)
