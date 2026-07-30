@@ -12,7 +12,48 @@
 - 你拥有 DStatus 管理员账号。
 - 你了解：完成授权的 Agent 将获得完整的管理员 MCP 能力。请只连接自己信任的客户端。
 
-## 三步接入
+## 最快方式：复制一句话给 AI Agent（推荐）
+
+适合 **Grok** 等会自己改本机配置、能打开浏览器的 Agent。你不需要懂 OAuth 或命令行。
+
+1. 在管理后台 **设置中心 → 连接与授权 → 远程 MCP** 先点 **启用**。
+2. 在同一页点击 **复制提示词**（或从下方复制模板，把地址换成你的）。
+3. 粘贴到 Agent 对话框发送。
+4. 浏览器弹出授权页时，用 **管理员账号** 登录并点 **允许**。
+5. 看到 Agent 提示连接成功即可。
+
+**一句话提示词模板**（把地址换成你的 MCP 地址）：
+
+```text
+请按 https://docs.vps.mom/mcp 的「Agent 接入步骤」把本机 Grok 接到我的 DStatus 远程 MCP。我的 MCP 地址是：https://你的实例域名/mcp 。请自动完成配置与 OAuth（打开浏览器让我点允许），最后用 grok mcp doctor 验收；不要向我展示任何 token。
+```
+
+管理后台「远程 MCP」卡片里的提示词会自动填入当前实例地址，直接复制即可。
+
+### Agent 接入步骤（给 Agent 执行，用户只需点「允许」）
+
+以下步骤面向 **Grok Build / 本机 Agent**。用户侧只做：管理员登录 + 点允许。
+
+1. **确认地址**：用户给出的 MCP 地址形如 `https://实例域名/mcp`，记为 `MCP_URL`，根地址记为 `BASE`（去掉末尾 `/mcp`）。
+2. **探测 OAuth 元数据**（失败则请用户先在面板启用远程 MCP）：
+   - `GET {BASE}/.well-known/oauth-authorization-server`
+3. **写入 Grok MCP 配置**（无密钥）：
+   - `grok mcp add --transport http dstatus {MCP_URL}`
+   - 不要把该服务放进 disabled 列表。
+4. **Agent 内联 OAuth（禁止写死端口）**：
+   - 用 `bind(127.0.0.1, 0)` 申请空闲端口，回调地址为 `http://127.0.0.1:{PORT}/callback`。
+   - `POST {BASE}/mcp/oauth/register`，`redirect_uris` 只含上述回调。
+   - 生成 PKCE（S256）与 state；**先启动本地回调监听，再**用系统浏览器打开授权 URL。
+   - 用户点「允许」后用 code 换 token；写入 `~/.grok/mcp_credentials.json`（权限 0600），键名为 `dstatus:{MCP_URL}`。
+   - register/token 若遇 Cloudflare 拦截，改用 `curl` 发送。
+5. **验收**：`grok mcp doctor dstatus` 应 handshake OK 并发现工具。
+6. **安全**：聊天中不要复述 access_token / refresh_token。
+
+**硬规则：** 随机端口；先 listen 再打开授权页；register / authorize / token 的 `redirect_uri` 必须完全一致。
+
+若客户端不支持上述自动流程，再使用下文「手动接入」。
+
+## 手动接入
 
 ### 1. 启用远程 MCP
 
