@@ -13,7 +13,7 @@
 
 1. 管理后台 → **设置中心** → **连接与授权** → **远程 MCP** → **启用**
 2. 点 **复制**，把提示词发给 AI
-3. 浏览器里用管理员账号点 **允许**
+3. 在浏览器用管理员账号登录并点 **允许**
 
 提示词会自动带上你的地址，形如：
 
@@ -43,26 +43,19 @@ https://你的实例域名/mcp
 
 ### 2. 认证
 
-- **优先浏览器授权（OAuth）**：客户端打开浏览器 → 登录 → 点允许；可在同一页撤销，无需长期保存密钥。
-- **客户端不支持时用 Token**：在「访问凭据」填用途名并生成。只显示一次，立刻保存；按设备/客户端分建，用完吊销。
+默认使用**浏览器登录授权（OAuth）**：客户端打开浏览器 → 登录 → 点允许；可在同一页撤销，无需手动处理或长期保存密钥。
+
+只有客户端无法完成浏览器授权时，才展开后台的「Token 备用连接」生成专用 Token。
 
 ### 3. 写入客户端
 
 连接类型选 **Streamable HTTP**，地址用上面的 MCP 地址。
 
-**Codex（浏览器授权）**
+**Codex**
 
 ```bash
 codex mcp add dstatus --url https://你的实例域名/mcp
 codex mcp login dstatus
-```
-
-**Codex（Token）**
-
-```bash
-export DSTATUS_MCP_TOKEN='你的 Token'
-codex mcp add dstatus --url https://你的实例域名/mcp \
-  --bearer-token-env-var DSTATUS_MCP_TOKEN
 ```
 
 **Claude Code**
@@ -71,12 +64,12 @@ codex mcp add dstatus --url https://你的实例域名/mcp \
 claude mcp add --scope user --transport http dstatus https://你的实例域名/mcp
 ```
 
-首次按客户端提示完成浏览器授权；不支持时再填 Bearer Token。
+首次按客户端提示完成浏览器登录授权。
 
 **其他客户端**  
-Streamable HTTP + MCP 地址；有 OAuth 就走浏览器，否则请求头：`Authorization: Bearer <Token>`。
+添加 Streamable HTTP + MCP 地址，并使用客户端提供的浏览器授权流程。
 
-不要把 Token 写进代码、共享脚本或 Git。
+若客户端明确不支持 OAuth，再使用后台「Token 备用连接」提供的 Bearer Token；不要把 Token 写进代码、共享脚本或 Git。
 
 </template>
 
