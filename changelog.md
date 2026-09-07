@@ -5,6 +5,14 @@
   <a class="changelog-switch__item" href="/agent-changelog">被控</a>
 </p>
 
+## 2.26.09.003
+
+### 修复
+
+- 修复 PostgreSQL 数据量较大时升级可能超时的问题；中断后重试可继续完成剩余升级。
+
+---
+
 ## 2.26.09.002
 
 ### 新增
