@@ -5,9 +5,7 @@
   <a class="changelog-switch__item" href="/agent-changelog">被控</a>
 </p>
 
-## 2.26.09.009
-
-> 尚未发布。
+## 2.26.09.009.dev-40
 
 ### 新增
 
