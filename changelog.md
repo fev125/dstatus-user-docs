@@ -5,6 +5,12 @@
   <a class="changelog-switch__item" href="/agent-changelog">被控</a>
 </p>
 
+## 待发布
+
+### 修复
+
+- 修复升级后主控 CPU 占用持续偏高、后台页面卡顿的问题。
+
 ## 2.26.10.005.dev-42
 
 ### 修复
