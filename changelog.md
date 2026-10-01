@@ -5,6 +5,10 @@
   <a class="changelog-switch__item" href="/agent-changelog">被控</a>
 </p>
 
+## 待发布
+
+- 修复后台切换分类后，菜单选中项和顶部名称没有同步更新的问题。
+
 ## 2.26.10.003.dev-41
 
 > 升级后需要重新登录一次后台。
