@@ -5,6 +5,17 @@
   <a class="changelog-switch__item" href="/agent-changelog">被控</a>
 </p>
 
+## 待发布
+
+### 修复
+
+- 修复从 SQLite 切换到 PostgreSQL 时提示「目标库缺少迁移表: email_logs」、切换失败的问题。
+- 修复早期版本切换到 PostgreSQL 的面板邮件通知发不出去的问题。
+
+### 优化
+
+- 镜像体积大幅缩小，升级下载更快。
+
 ## 2.26.10.007.dev-44
 
 ### 修复
