@@ -1,5 +1,5 @@
 <script setup>
-// 文档首页：开头 → 轮播海报 → 快速开始 → AI 运维 → 日常管理 → 帮助。
+// 文档首页：第一屏（开头文案 + 轮播海报）→ 快速开始 → AI 运维 → 日常管理 → 帮助。
 // 文案规则：标题用短语，描述用陈述句，只写已上线、用户能用到的能力。
 import HomePosters from './HomePosters.vue'
 
@@ -21,18 +21,6 @@ const DAILY = [
 
 <template>
   <div class="landing">
-    <section class="wrap hero">
-      <span class="eyebrow"><span class="dot" />DStatus 用户文档</span>
-      <h1>服务器监控与 AI 运维</h1>
-      <p class="lead">实时监控服务器状态、网络质量与续费到期。AI 登录节点排查故障、执行修复。</p>
-      <div class="actions">
-        <a class="btn primary" href="/quick-start">安装面板 →</a>
-        <a class="btn ghost" href="https://demo.vps.mom" target="_blank" rel="noreferrer">在线演示 ↗</a>
-        <a class="link" href="/agent-guide">已有面板？接入节点</a>
-      </div>
-      <div class="meta"><span>私有化部署</span><span>一条命令安装</span><span>iOS / macOS 客户端</span></div>
-    </section>
-
     <HomePosters />
 
     <section class="wrap sec">
@@ -97,26 +85,15 @@ const DAILY = [
 </template>
 
 <style scoped>
-.landing { --ok: #10b981; color: var(--vp-c-text-1); padding-bottom: 96px; }
+.landing { color: var(--vp-c-text-1); padding-bottom: 96px; }
 .landing a { text-decoration: none; color: inherit; }
 .wrap { max-width: 1152px; margin: 0 auto; padding: 0 24px; }
-.hero { padding: 72px 24px 56px; }
-.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--vp-c-text-2); border: 1px solid var(--vp-c-divider); border-radius: 999px; padding: 4px 12px 4px 10px; background: var(--vp-c-bg); }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent); }
-h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.08; font-weight: 700; letter-spacing: -.03em; margin: 20px 0 0; text-wrap: balance; }
-.lead { font-size: 18px; line-height: 1.7; color: var(--vp-c-text-2); margin: 18px 0 0; max-width: 720px; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 30px; }
 .btn { display: inline-flex; align-items: center; gap: 6px; height: 42px; padding: 0 18px; border-radius: 10px; font-size: 15px; font-weight: 600; transition: opacity .15s, border-color .15s; }
 .btn.primary { background: #111214; color: #fff !important; }
 .dark .btn.primary { background: #f5f5f4; color: #111214 !important; }
 .btn.primary:hover { opacity: .86; }
 .btn.ghost { border: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); }
 .btn.ghost:hover { border-color: var(--vp-c-text-3); }
-.link { font-size: 15px; color: var(--vp-c-text-2) !important; padding: 0 6px; }
-.link:hover { color: var(--vp-c-text-1) !important; }
-.meta { margin-top: 22px; font-size: 13px; color: var(--vp-c-text-3); display: flex; flex-wrap: wrap; gap: 6px 18px; }
-.meta span::before { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--vp-c-text-3); margin-right: 8px; vertical-align: middle; opacity: .6; }
-
 .sec { margin-top: 104px; }
 .kicker { font-size: 13px; font-weight: 600; color: var(--vp-c-text-3); letter-spacing: .04em; }
 h2 { font-size: 30px; line-height: 1.25; font-weight: 700; letter-spacing: -.015em; margin: 8px 0 0; border: 0; padding: 0; }
@@ -163,7 +140,6 @@ h3 { margin: 0; }
   .foot { margin-left: 24px; margin-right: 24px; }
 }
 @media (max-width: 640px) {
-  .hero { padding-top: 44px; }
   .steps, .list { grid-template-columns: 1fr; }
 }
 </style>

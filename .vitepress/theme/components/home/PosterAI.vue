@@ -170,7 +170,8 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 </template>
 
 <style scoped>
-.ai-vis { position: absolute; inset: 0; padding: 8px 56px 8px 0; font-family: var(--vp-font-family-base); }
+/* 全宽画布：两个窗口并排居中，终端压住卡片右下角一点 */
+.ai-vis { position: absolute; inset: 0; max-width: 1040px; margin: 0 auto; font-family: var(--vp-font-family-base); }
 .ai-vis.out .win { opacity: 0; transition: opacity .4s ease; }
 
 /* 窗口通用 */
@@ -185,7 +186,7 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 @keyframes blink { 50% { opacity: 0; } }
 
 /* AI 解读卡片 */
-.card { left: 0; top: 0; width: min(400px, 52%); transform: translateY(16px); }
+.card { left: 0; top: calc(50% - 205px); width: min(440px, 46%); transform: translateY(16px); }
 .card .ttl svg { width: 14px; height: 14px; fill: #c4b5fd; filter: drop-shadow(0 0 6px rgba(167,139,250,.8)); }
 .card .meta { white-space: nowrap; }
 .card .st.ranked, .card .st.fixing { color: #fde68a; } .card .st.ranked i, .card .st.fixing i { background: #fbbf24; box-shadow: 0 0 10px #fbbf24; animation: none; }
@@ -210,7 +211,7 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 .it.done .n { background: #34d399; color: #052e22; }
 
 /* 终端 Agent 窗口 */
-.term { right: 0; top: 200px; width: min(540px, 66%); background: rgba(9, 10, 13, .9); transform-origin: 0 0; transform: translate(-70px, -50px) scale(.93); }
+.term { right: 0; top: calc(50% - 135px); width: min(640px, 64%); background: rgba(9, 10, 13, .9); transform-origin: 0 0; transform: translate(-70px, -50px) scale(.93); }
 .term .dots { display: inline-flex; gap: 6px; margin-right: 4px; }
 .term .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.14); }
 .term .mode { padding: 2px 7px; border-radius: 6px; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: #fde68a; background: rgba(251,191,36,.14); }
@@ -238,14 +239,15 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 
 @media (max-width: 1080px) {
   /* 窄屏上下堆叠：终端窗口压住解读卡片的第 2、3 行，第 1 行（要修的那台）始终露着 */
-  .ai-vis { position: relative; inset: auto; padding: 0; }
+  .ai-vis { position: relative; inset: auto; max-width: none; }
   .win { position: relative; }
   .card { top: 0; width: 100%; }
   .term { top: 0; width: 100%; margin-top: -94px; z-index: 2; transform: translateY(24px) scale(.98); }
   .term .body { min-height: 0; line-height: 1.5; }
 }
 @media (max-width: 640px) {
-  .concl, .it:nth-child(4) { display: none; }
+  .concl, .it:nth-child(4), .term .mode { display: none; }
+  .win .ttl { white-space: nowrap; }
   .term { margin-top: -50px; }
   .term .body { font-size: 12px; line-height: 1.5; }
   .it { grid-template-columns: 22px auto auto 1fr; }
