@@ -97,9 +97,11 @@ function finale() {
   }
 }
 
-const tagOf = i => (i === 0 && stage.value === 'fixed' ? '已处理' : i === 0 && stage.value === 'fixing' ? '处理中' : ISSUES[i].tag)
-const stateOf = i => (i === 0 && stage.value === 'fixed' ? 'done' : i === 0 && stage.value === 'fixing' ? 'busy' : ISSUES[i].sev)
-const headline = () => (stage.value === 'fixed' ? '1 / 2 已处理' : stage.value === 'ranked' || stage.value === 'fixing' ? '2 台需要处理' : '解读中')
+// 淡出重播的 out 阶段沿用结局的文案，免得淡出时字先跳回去
+const isDone = () => stage.value === 'fixed' || stage.value === 'out'
+const tagOf = i => (i === 0 && isDone() ? '已处理' : i === 0 && stage.value === 'fixing' ? '处理中' : ISSUES[i].tag)
+const stateOf = i => (i === 0 && isDone() ? 'done' : i === 0 && stage.value === 'fixing' ? 'busy' : ISSUES[i].sev)
+const headline = () => (isDone() ? '1 / 2 已处理' : stage.value === 'ranked' || stage.value === 'fixing' ? '2 台需要处理' : '解读中')
 
 let reduced = false
 // 轮播切走时立刻清场，切回来不会先闪一下上次的结局
@@ -138,7 +140,7 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
           <b class="n">{{ i + 1 }}</b>
           <span class="node">{{ it.node }}</span>
           <span class="tag"><i />{{ tagOf(i) }}</span>
-          <span class="what">{{ i === 0 && stage === 'fixed' ? it.done : it.what }}</span>
+          <span class="what">{{ i === 0 && isDone() ? it.done : it.what }}</span>
         </div>
       </section>
     </div>
@@ -149,7 +151,7 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
         <span class="dots"><i /><i /><i /></span>
         <span class="ttl">香港-02 · 终端 Agent</span>
         <span class="mode">ASK 模式</span>
-        <span class="st" :class="{ done: stage === 'fixed' }"><i />{{ stage === 'fixed' ? '已完成' : '执行中' }}</span>
+        <span class="st" :class="{ done: isDone() }"><i />{{ isDone() ? '已完成' : '执行中' }}</span>
       </header>
       <div class="body">
         <div v-for="(l, i) in lines" :key="i" :class="['ln', l.k]">
