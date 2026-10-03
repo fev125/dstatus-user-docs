@@ -10,7 +10,7 @@
 - 带开关的行：直接开关；有「细项」的，点「细项」打开更多设置。
 - 改动自动保存，没有保存按钮。右上角显示「修改自动保存，到前台刷新即可看到」；保存失败时会出现「重试」。
 
-<!-- shot: personalization-overview.png | /admin/personalization | 四组布局和右上角自动保存提示 -->
+![个性化页：四组设置与右上角自动保存提示](/personalization-overview.jpg)
 
 ## 外观
 

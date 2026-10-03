@@ -10,8 +10,6 @@
 2. 「模式」选「更新」或「卸载」；面板不在默认目录 `/opt/dstatus` 时，填写「安装目录」。
 3. 复制「终端命令」，在面板服务器上执行。
 
-<!-- shot: deploy-dialog-update.png | client.vps.mom 部署弹窗 | 模式选「更新」与终端命令区 -->
-
 也可以直接执行：
 
 ```bash
@@ -42,7 +40,7 @@ curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- -
 
 异地保存：在「备份 WebDAV」填写地址、用户名、密码和远程根目录，打开「启用 WebDAV 备份同步」并点「保存 WebDAV」。之后创建的备份会自动上传。
 
-<!-- shot: settings-backup.png | /admin/settings#tab-maintenance | 数据库管理四个按钮 -->
+![数据维护里的数据库管理按钮](/settings-backup.jpg)
 
 ## 迁移到新服务器
 

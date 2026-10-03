@@ -9,7 +9,7 @@
 - 打开「跟随最新版本」，升级到最新版；关闭后按「版本」里固定的版本安装。
 - 被控访问 GitHub 不稳定时，在「下载代理 / GitHub 加速」选一个代理，点「保存」。
 
-<!-- shot: settings-agent-source.png | /admin/settings | Agent 安装源抽屉：跟随最新版本开关与下载代理 -->
+![Agent 安装源抽屉](/settings-agent-source.jpg)
 
 ## 批量升级
 
@@ -19,7 +19,7 @@
 
 面板按每台的情况自动选择方式：能领取任务的走任务升级，有 SSH 凭据的走 SSH 升级，已是最新的跳过。结果为「需复制安装/更新脚本」的节点，按下文「单台升级」用脚本处理。
 
-<!-- shot: servers-bulk-upgrade.png | /admin/servers | 工具栏「升级被控」按钮与筛选「版本落后」 -->
+![服务器列表的「升级被控」与「版本落后」筛选](/servers-bulk-upgrade.jpg)
 
 ## 单台升级
 
@@ -32,7 +32,7 @@
 
 也可以进入节点编辑页 → 「基础配置」→「探针与通讯」，点「下发升级任务」。面板会按节点情况选择任务或 SSH 方式，已是最新时会提示跳过。
 
-<!-- shot: servers-row-more.png | /admin/servers | 行「更多」抽屉中的 SSH 安装/更新 与 安装/更新脚本 -->
+![节点「更多」操作面板](/servers-row-more.jpg)
 
 ## 很老的版本
 

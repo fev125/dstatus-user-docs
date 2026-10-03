@@ -53,7 +53,7 @@
 
 可查询的时间范围受授权套餐限制，超出时页面会提示升级。
 
-<!-- shot: network-quality-explorer.png | /network-quality | 筛选栏与探索视图的延迟曲线 -->
+![网络质量页：筛选栏与探索视图](/network-quality-explorer.jpg)
 
 ## 流媒体检测
 

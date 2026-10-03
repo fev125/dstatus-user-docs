@@ -33,7 +33,7 @@
 
 首页上方的资产预览、地区分布、节点情况、网络情况等模块，在「个性化 → 首页内容」里开关。
 
-<!-- shot: home-toolbar.png | / | 工具栏的排序、分组、标签和卡片/列表切换按钮 -->
+![首页工具栏：排序、分组、标签与视图切换](/home-toolbar.jpg)
 
 ## 节点详情
 
@@ -85,7 +85,7 @@
 
 「会话」管理历史对话，可新建、改标题、删除。AI 模型在「设置中心 → 基础设置 → AI 服务」配置。
 
-<!-- shot: terminal-agent.png | /stats/<sid>#terminal | 左侧 SSH 终端与右侧 Agent 侧栏、ASK/YOLO 切换 -->
+![终端页：左侧 WebSSH，右侧 Agent 与 ASK / YOLO 切换](/terminal-agent.jpg)
 
 ## 后台菜单速查
 

@@ -4,7 +4,7 @@
 
 页面分三组：基础设置、服务与连接、数据与维护。性能模式在页面顶部标题栏右侧。
 
-<!-- shot: settings-center.png | /admin/settings | 三组入口与顶部性能档位 -->
+![设置中心与顶部性能档位](/settings-center.jpg)
 
 ## 性能模式
 

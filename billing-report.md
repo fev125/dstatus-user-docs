@@ -47,7 +47,7 @@
 - 想直接加上一个差值：点「高级设置」，打开「叠加模式」。
 - 撤销：点「清除校准」（设置过校准才显示）。输入框留空保存不会改动已有校准。
 
-<!-- shot: billing-traffic-calibration.png | /admin/servers/<sid>/ 账单与流量标签 | 「校准时已用流量 (GB)」输入框和「周期流量（当前 / 预览）」卡片 -->
+![流量校准输入框与周期流量预览](/billing-traffic-calibration.jpg)
 
 ## 账单报告
 

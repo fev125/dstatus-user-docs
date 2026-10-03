@@ -62,7 +62,7 @@
 | 口令模式 | 有用，对方不需要口令 |
 | 严格私有 | 无效，只有管理员能浏览 |
 
-<!-- shot: node-share-create.png | /admin/stats-share-tokens?sid=<sid> | 「创建分享链接」表单和「新生成链接」复制区 -->
+![创建节点分享链接](/node-share-create.jpg)
 
 ## 常见情况
 
