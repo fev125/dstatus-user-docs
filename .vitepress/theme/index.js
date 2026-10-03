@@ -6,9 +6,7 @@ import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import { Icon } from '@iconify/vue'
-import Hero from './components/Hero.vue'
-import Features from './components/Features.vue'
-import HomeContent from './components/HomeContent.vue'
+import HomeLanding from './components/home/HomeLanding.vue'
 import DocTabs from './components/DocTabs.vue'
 import './custom.css'
 
@@ -44,19 +42,10 @@ export default {
   ...DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
+      // 首页整页由 HomeLanding 渲染（index.md 不再写 hero / features）
       'home-hero-before': () => {
         const { frontmatter } = useData()
-        // 如果是首页，使用自定义 Hero
-        if (frontmatter.value?.layout === 'home') {
-          return h('div', { class: 'custom-hero-wrapper' }, [h(Hero)])
-        }
-        return null
-      },
-      'home-features-after': () => {
-        const { frontmatter } = useData()
-        const features = frontmatter.value?.features || []
-        if (features.length === 0) return null
-        return h('div', [h(Features, { features }), h(HomeContent)])
+        return frontmatter.value?.layout === 'home' ? h(HomeLanding) : null
       },
     })
   },
@@ -65,18 +54,6 @@ export default {
     app.component('Icon', Icon)
     app.component('DocTabs', DocTabs)
 
-    // 只在客户端注册粒子背景插件
-    if (typeof window !== 'undefined') {
-      import('@tsparticles/vue3').then(({ default: Particles }) => {
-        import('@tsparticles/slim').then(({ loadSlim }) => {
-          app.use(Particles, {
-            init: async (engine) => {
-              await loadSlim(engine)
-            },
-          })
-        })
-      })
-    }
 
     // 侧边栏：默认折叠，只展开当前页面所属分组；若无激活分组则默认展开“开始使用”
     if (typeof window !== 'undefined' && router) {
