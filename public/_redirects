@@ -1,0 +1,12 @@
+# 文档重组后的旧地址（Cloudflare Pages 读取本文件）
+/usage                      /agent-guide            301
+/autodiscovery              /agent-guide            301
+/Agent-Windows%E8%BF%90%E8%A1%8C%E6%95%99%E7%A8%8B       /agent-guide            301
+/Agent-OpenWrt%E8%BF%90%E8%A1%8C%E6%95%99%E7%A8%8B       /agent-guide            301
+/security-features          /security-settings      301
+/advanced-settings          /system-settings        301
+/mcp-agent-install          /mcp                    301
+/stats-share-tokens         /access-control         301
+/ssh-scripts                /tools                  301
+/log-management             /tools                  301
+/ssh-local-vault            /server-management      301

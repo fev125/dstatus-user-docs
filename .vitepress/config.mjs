@@ -33,10 +33,10 @@ export default defineConfig({
     
     // 顶部导航栏
     nav: [
-      { text: '首页', link: '/' },
-      { text: '快速开始', link: '/quick-start' },
-      { text: '使用指南', link: '/usage' },
-      { text: '安全功能', link: '/security-features' },
+      { text: '开始使用', link: '/quick-start' },
+      { text: 'AI 与 MCP', link: '/ai' },
+      { text: 'App', link: '/apple-app' },
+      { text: '常见问题', link: '/troubleshooting' },
       {
         text: '更新日志',
         items: [
@@ -46,82 +46,72 @@ export default defineConfig({
       },
       { text: '官网', link: 'https://dstatus.sh/', target: '_blank', rel: 'noopener noreferrer' },
     ],
-    
-    // 侧边栏配置
+
+    // 侧边栏：按用户路线排列（开始 → AI → 日常 → 维护 → 进阶 → 排障）
     sidebar: {
       '/': [
         {
           text: '开始使用',
-          collapsible: true,
-          collapsed: false,
           items: [
-            { text: '首页', link: '/' },
-            { text: '快速开始', link: '/quick-start' },
-            { text: '面板迁移', link: '/panel-migration' },
-            { text: '使用指南', link: '/usage' },
-            { text: '前后台域名分离', link: '/domain-split-manual' },
-            { text: '页面总览', link: '/pages-overview' },
+            { text: 'DStatus 是什么', link: '/' },
+            { text: '获取与激活授权', link: '/license-management' },
+            { text: '安装面板', link: '/quick-start' },
+            { text: '接入节点', link: '/agent-guide' },
+            { text: '配置通知', link: '/notification-settings' },
           ]
         },
         {
-          text: '面板管理',
-          collapsible: true,
-          collapsed: true,
+          text: 'AI 与自动化',
           items: [
-            { text: '网络监控配置', link: '/monitor' },
-            { text: '服务器管理', link: '/server-management' },
-            { text: '本地 SSH 保险箱', link: '/ssh-local-vault' },
-            { text: '分组管理', link: '/groups' },
-            { text: '自动发现', link: '/autodiscovery' },
-            { text: '账单报告', link: '/billing-report' },
-          ]
-        },
-        {
-          text: '系统设置',
-          collapsible: true,
-          collapsed: true,
-          items: [
-            { text: '系统设置', link: '/system-settings' },
-            { text: '个性化设置', link: '/personalization' },
-            { text: '主题 CSS 自定义', link: '/theme-custom-css' },
-            { text: '高级设置', link: '/advanced-settings' },
+            { text: 'AI 功能', link: '/ai' },
             { text: '远程 MCP', link: '/mcp' },
-            { text: '通知设置', link: '/notification-settings' },
-            { text: '日志管理', link: '/log-management' },
-            { text: '许可证管理', link: '/license-management' },
-            { text: 'SSH脚本', link: '/ssh-scripts' },
+            { text: 'iOS / macOS App', link: '/apple-app' },
           ]
         },
         {
-          text: '安全功能',
-          collapsible: true,
-          collapsed: false,
+          text: '日常使用',
           items: [
-            { text: '安全功能总览', link: '/security-features' },
-            { text: '安全设置', link: '/security-settings' },
-            { text: '登录与入口', link: '/login-management' },
-            { text: '本地 SSH 保险箱', link: '/ssh-local-vault' },
-            { text: '前后台域名分离', link: '/domain-split-manual' },
+            { text: '首页与节点详情', link: '/pages-overview' },
+            { text: '网络质量', link: '/monitor' },
+            { text: '管理服务器', link: '/server-management' },
+            { text: '分组', link: '/groups' },
+            { text: '账单与商家', link: '/billing-report' },
+            { text: '外观与个性化', link: '/personalization' },
+            { text: '访问控制与分享', link: '/access-control' },
           ]
         },
         {
-          text: 'Agent',
-          collapsible: true,
+          text: '管理与维护',
+          items: [
+            { text: '设置中心', link: '/system-settings' },
+            { text: '升级、备份与迁移', link: '/panel-migration' },
+            { text: '升级 Agent', link: '/agent-upgrade' },
+            { text: '安全设置', link: '/security-settings' },
+            { text: '进不去后台怎么办', link: '/login-management' },
+            { text: '工具', link: '/tools' },
+          ]
+        },
+        {
+          text: '进阶',
           collapsed: true,
           items: [
-            { text: 'Agent使用指南', link: '/agent-guide' },
-            { text: '被控升级教程（v1.1 -> 最新版）', link: '/agent-upgrade' },
-            { text: '被控更新日志', link: '/agent-changelog' },
-            { text: 'Windows运行教程', link: '/Agent-Windows运行教程' },
-            { text: 'OpenWrt运行教程', link: '/Agent-OpenWrt运行教程' },
+            { text: '前后台域名分离', link: '/domain-split-manual' },
+            { text: '自定义 CSS', link: '/theme-custom-css' },
+            { text: '公开 API', link: '/public-api' },
           ]
         },
         {
-          text: '开发者',
-          collapsible: true,
-          collapsed: false,
+          text: '排障',
           items: [
-            { text: '公开 API', link: '/public-api' },
+            { text: '常见问题', link: '/troubleshooting' },
+          ]
+        },
+        {
+          text: '更新日志',
+          collapsed: true,
+          items: [
+            { text: '面板', link: '/changelog' },
+            { text: '被控', link: '/agent-changelog' },
           ]
         }
       ]

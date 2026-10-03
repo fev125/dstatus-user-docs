@@ -7,17 +7,23 @@ description: 把这一页发给 AI，描述你想要的效果，它就能帮你�
 
 把这一页（或本页链接）发给任何 AI，告诉它你想要的效果，它就能生成一份能直接贴进去用的样式代码；懂 CSS 的站长也可以照下面的表自己改。颜色、边框、圆角、阴影、卡片形状都能改。
 
+## 怎么用
+
+1. 把本页链接和想要的效果发给 AI，或复制第 6 节的提示词填上需求。
+2. 把生成的 CSS 贴进 个性化 → 页脚与高级 →「自定义 CSS」，打开「启用自定义样式」。
+3. 刷新前台看效果；不满意就关掉开关，前台立即恢复。
+
 ## 1. 怎么打开
 
-1. 管理后台 → **个性化 → 高级设置**（不是"主题设置"）。
-2. 打开 **「启用站方自定义样式」** 开关——**这步最容易漏**，不开的话贴了代码也没效果。
+1. 管理后台 → **个性化 → 页脚与高级 → 自定义 CSS**。
+2. 打开 **「启用自定义样式」** 开关——**这步最容易漏**，不开的话贴了代码也没效果。
 3. 把 CSS 贴进文本框。**没有保存按钮**：停止输入约 1.5 秒自动保存，然后刷新前台看效果。
 
 只影响访客看到的前台，不影响管理后台。代码里含 `@import`、外部网址 `url(...)`、`expression` 会**保存失败并提示**（不是静默忽略）。
 
 **改坏了**：关掉启用开关立即恢复（代码还留着），或清空文本框。
 
-**顶栏快捷开关的区别**：游客点顶栏「自定义样式」开关只影响自己的浏览器（偏好存在本机，刷新后仍然生效）；管理员点同一个开关等于改全站启用状态——关闭后这个开关会从顶栏消失，需要回到这里（个性化 → 高级设置）重新打开。
+**顶栏快捷开关的区别**：游客点顶栏「自定义样式」开关只影响自己的浏览器（偏好存在本机，刷新后仍然生效）；管理员点同一个开关等于改全站启用状态——关闭后这个开关会从顶栏消失，需要回到这里（个性化 → 页脚与高级 → 自定义 CSS）重新打开。
 
 ## 2. 颜色怎么改：三层 + 三条纪律
 
@@ -46,7 +52,7 @@ description: 把这一页发给 AI，描述你想要的效果，它就能帮你�
 
 ## 3. 稳定可改清单
 
-约 40 个最常用项，按用途分组，覆盖 95% 需求。表外的变量改了效果没保证。
+按用途分组的常用项。表外的变量改了效果没保证。
 
 ```markdown
 | 变量或类名 | 管什么 | 影响哪里 |
@@ -83,8 +89,7 @@ description: 把这一页发给 AI，描述你想要的效果，它就能帮你�
 [data-home-shell="1"][data-home-view="list"] .server-card { border-bottom-color: rgba(0,184,217,.3); }
 [data-home-shell="1"][data-home-view="list"] .server-card:hover { background: var(--hover-bg-color); }
 
-/* 详情页：顶部大卡 + 标签页 */
-.stat-hero-surface { border-radius: .5rem 1.5rem; }
+/* 详情页：标签页 */
 .nav-tab.active { color: var(--accent-base-color); }   /* 标签按钮=.nav-tab，内容区=.tab-panel */
 
 /* 网络质量页 */
@@ -100,7 +105,7 @@ description: 把这一页发给 AI，描述你想要的效果，它就能帮你�
 
 ## 5. 这些不要碰
 
-闭合清单（就这些，不会再多）。它们由页面脚本实时读写或用作定位标识，覆盖后轻则设置失灵、重则功能坏掉。
+它们由页面脚本实时读写或用作定位标识，覆盖后轻则设置失灵、重则功能坏掉。
 
 ```markdown
 | 名称 | 覆盖后果 |
@@ -198,7 +203,6 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 【区域选择器】（只改颜色/圆角/阴影/字体等外观，别改名、别 display:none）
 - 首页卡片视图：[data-home-shell="1"][data-home-view="card"] .server-card
 - 首页列表视图：[data-home-shell="1"][data-home-view="list"] .server-card
-- 详情页大卡：.stat-hero-surface
 - 标签页：容器 .nav-tabs 和按钮 .nav-tab 默认都是药丸形（border-radius: 9999px）——
   改形状时要么保持药丸，要么容器和按钮一起改才协调；
   文本三态可自定义：.nav-tab（常态）/.nav-tab:hover（悬停）/.nav-tab.active（选中）的 color；
@@ -207,8 +211,8 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 - 页脚：#footer-wrapper；顶栏：#main-navbar——两者都是装饰安全区，可加边框、CSS 渐变背景、
   内联 SVG 背景（url("data:image/svg+xml,...") 属于内联不会被拦，外部图片网址才会被拒收）
 - 卡片风格一致性：改 .server-card 的形状（切角/异形）或背景装饰时，必须同步应用到首页
-  顶部区块 .dashboard-card，保持同一风格；**详情页卡片（.stat-hero-surface、
-  .glass-card.surface-card）不做背景装饰**，只动圆角/边框/阴影，保持信息页面干净
+  顶部区块 .dashboard-card，保持同一风格；**详情页卡片（.glass-card.surface-card）
+  不做背景装饰**，只动圆角/边框/阴影，保持信息页面干净
 - 壁纸层：#wallpaper-layer 只可改 filter / opacity / background-size 这类静态外观
   （壁纸图片/亮度/模糊三个 --wallpaper-* 变量在禁止名单，别碰）
 - 网络质量页：.network-quality-page .dashboard-card；顶卡：#nq-dashboard-hero-card
@@ -238,4 +242,4 @@ input[type="text"], input[type="search"], textarea { border-radius: .5rem; borde
 
 > 备选：如果你的 AI 能联网，也可以只发一句"请打开这个网页并按它的规则帮我写自定义 CSS：（贴本页网址）+ 我的需求"。
 
-**改坏了**：个性化 → 高级设置 → 关掉「启用站方自定义样式」，前台立即恢复，代码还留着。
+**改坏了**：个性化 → 页脚与高级 → 自定义 CSS → 关掉「启用自定义样式」，前台立即恢复，代码还留着。
