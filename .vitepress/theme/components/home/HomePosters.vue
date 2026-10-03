@@ -13,7 +13,7 @@ const SLIDES = [
   { key: 'ai', label: 'AI 运维', acc: '#a78bfa', dur: 11500, desc: '按优先级列出要处理的节点，AI 直接登上节点排查和修复。', href: '/ai', cta: '了解 AI 功能' }, // 这张要讲完一个修复故事，多留几秒
   { key: 'net', label: '网络质量', acc: '#34d399', desc: 'Ping、TCPing 与 HTTP 持续检测，延迟、抖动与丢包按节点回看。', href: '/monitor', cta: '查看网络质量' },
   { key: 'mtr', label: 'MTR 路由', acc: '#fbbf24', desc: '逐跳延迟与丢包按天回放，自动识别 CN2 GIA 等线路。', href: '/monitor', cta: '查看路由监控' },
-  { key: 'unlock', label: '流媒体解锁', acc: '#f472b6', desc: '定时检测 Netflix、Disney+ 等平台的解锁状态与地区。', href: '/monitor', cta: '查看解锁检测' },
+  { key: 'unlock', label: '流媒体解锁', short: '流媒体', acc: '#f472b6', desc: '定时检测 Netflix、Disney+ 等平台的解锁状态与地区。', href: '/monitor', cta: '查看解锁检测' },
   { key: 'app', label: 'iOS / macOS 客户端', short: '客户端', acc: '#60a5fa', desc: '在 iPhone 与 Mac 上查看节点、使用终端与 AI，接收告警推送。', href: '/apple-app', cta: '了解客户端' }
 ]
 // 2026-10-03 12:00 一台香港节点的真实检测结果（21 个平台）
@@ -231,16 +231,20 @@ h1 { margin: 22px 0 0; font-size: clamp(34px, 3.4vw, 48px); line-height: 1.1; fo
 .now { display: none; }
 
 @media (max-width: 1080px) {
-  .posters { padding: 28px 0 18px; }
+  /* 窄屏整块按一屏排：开头和标签条按内容占高，海报吃掉剩下的高度 */
+  .posters { padding: 24px 0 16px; display: flex; flex-direction: column; height: calc(100svh - var(--vp-nav-height, 64px)); min-height: 560px; max-height: 1000px; }
+  .posters > * { width: 100%; flex: 0 0 auto; }
   .top, .stage, .tabs { padding-left: 24px; padding-right: 24px; }
   .row { flex-direction: column; align-items: flex-start; }
-  .stage { height: 600px; margin-top: 20px; }
+  .stage { flex: 1 1 0; width: 100%; height: auto; min-height: 280px; margin-top: 18px; }
   .slide { padding: 0 24px; }
   .lat { display: none; }
   .u-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 48px; }
   .u { padding: 0 12px; } .u .nm { font-size: 13px; } .u .st { font-size: 11px; }
-  .u:nth-child(n + 13) { display: none; } /* 窄屏只放前 12 个平台 */
-  .mac { width: 100%; } .phone { width: 150px; padding: 6px; border-radius: 32px; right: 0; } .scr { border-radius: 27px; }
+  .u-grid { grid-auto-rows: 44px; gap: 8px; }
+  .u:nth-child(n + 11) { display: none; } /* 窄屏只放前 10 个平台 */
+  .mac { width: calc(100% - 136px); } .phone { width: 120px; padding: 5px; border-radius: 26px; right: 0; } .scr { border-radius: 22px; } .isl { width: 44px; height: 13px; top: 6px; }
+  .phone::before, .phone::after { display: none; }
   .tabs { gap: 10px; margin-top: 18px; } .lb { font-size: 11.5px; }
   .ds, .tab .go { display: none; }
   .now { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; max-width: 1440px; margin: 14px auto 0; padding: 0 24px; }
@@ -248,10 +252,15 @@ h1 { margin: 22px 0 0; font-size: clamp(34px, 3.4vw, 48px); line-height: 1.1; fo
   .now .go { font-size: 13.5px; font-weight: 600; color: #fff !important; border-bottom: 1px solid rgba(255,255,255,.35); padding-bottom: 1px; }
 }
 @media (max-width: 640px) {
-  .stage { height: 620px; }
+  /* 手机：去掉重复的「DStatus 用户文档」标签和次要链接，按钮挪到介绍下面 */
+  .top { display: flex; flex-direction: column; }
+  .row { order: 3; margin-top: 16px; }
+  .eyebrow, .actions .link { display: none; }
   .lb-long { display: none; } .lb-short { display: inline; }
-  .actions .link { width: 100%; padding: 2px 0 0; }
-  h1 { font-size: 32px; }
+  h1 { margin-top: 0; font-size: 30px; }
+  .lead { font-size: 15px; line-height: 1.6; }
+  .u-grid { grid-auto-rows: 40px; }
+  .u:nth-child(n + 9) { display: none; } /* 手机只放前 8 个平台 */
 }
 @media (prefers-reduced-motion: reduce) {
   .sweep, .phone, .top { animation: none !important; }

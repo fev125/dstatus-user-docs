@@ -1,8 +1,8 @@
 <script setup>
 // AI 运维海报：用产品里真实存在的两个窗口讲一个故事。
 // 「AI 解读」先给出结论、把要处理的节点按顺序列好；「终端 Agent」随即登上第一台，
-// 查出原因、征求确认、清理干净；解读卡片上这一项同步从「紧急」变成「已处理」。
-import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
+// 查出原因、直接清理；解读卡片上这一项同步从「紧急」变成「已处理」。
+import { nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 
 const props = defineProps({ active: { type: Boolean, default: true } })
 
@@ -13,14 +13,13 @@ const ISSUES = [
   { node: '新加坡-01', what: '3 天后到期', tag: '提醒', sev: 'blue' }
 ]
 const GOAL = '根分区快满了，找出原因并清理'
-// 终端 Agent 的执行脚本：cmd 由 AI 敲出，out 是节点返回，ask 是 ASK 模式下的确认
+// 终端 Agent 的执行脚本：cmd 由 AI 敲出并自动执行，out 是节点返回
 const SCRIPT = [
   { k: 'cmd', text: 'df -h /' },
   { k: 'out', rows: ['/dev/vda1    40G   38G  1.9G   95%  /'] },
   { k: 'cmd', text: 'du -sh /var/log/* | sort -rh | head -3' },
   { k: 'out', rows: ['11G    /var/log/journal', '1.2G   /var/log/nginx'] },
-  { k: 'ask', text: 'journalctl --vacuum-size=200M' },
-  { k: 'cmd', text: 'journalctl --vacuum-size=200M', instant: true },
+  { k: 'cmd', text: 'journalctl --vacuum-size=200M' },
   { k: 'out', rows: ['Vacuuming done, freed 10.8G of archived journals'] },
   { k: 'ok', text: 'systemd 日志占了 11G，已清理到 200M，磁盘 95% → 68%' }
 ]
@@ -29,8 +28,10 @@ const stage = ref('idle') // idle 待机 analyzing 解读中 ranked 已排好 fi
 const conclusion = ref('')
 const shown = ref(0) // 已列出的节点数
 const termOpen = ref(false)
+const recap = ref(false) // 修好后窄屏切回解读卡片，看「已处理」
 const lines = ref([])
 const root = ref(null)
+const body = ref(null)
 
 let timers = [], io, seen = false
 const at = (ms, fn) => timers.push(setTimeout(fn, ms))
@@ -38,7 +39,7 @@ const clear = () => { timers.forEach(clearTimeout); timers = [] }
 
 function reset() {
   clear()
-  stage.value = 'idle'; conclusion.value = ''; shown.value = 0; termOpen.value = false; lines.value = []
+  stage.value = 'idle'; conclusion.value = ''; shown.value = 0; termOpen.value = false; lines.value = []; recap.value = false
 }
 function run() {
   reset()
@@ -66,20 +67,16 @@ function run() {
 
   for (const s of SCRIPT) {
     if (s.k === 'cmd') {
-      const idx = push(t, { k: 'cmd', text: s.instant ? s.text : '', typing: !s.instant })
-      if (!s.instant) { t = typeLine(t + 60, idx, s.text, 17); at(t + 60, () => { lines.value[idx].typing = false }) }
+      const idx = push(t, { k: 'cmd', text: '', typing: true })
+      t = typeLine(t + 60, idx, s.text, 17); at(t + 60, () => { lines.value[idx].typing = false })
       t += 300
     } else if (s.k === 'out') {
       s.rows.forEach((r, i) => push(t + i * 60, { k: 'out', text: r }))
       t += s.rows.length * 60 + 320
-    } else if (s.k === 'ask') {
-      const idx = push(t, { k: 'ask', text: s.text, ok: false })
-      t += 760
-      at(t, () => { lines.value[idx].ok = true })
-      t += 360
     } else if (s.k === 'ok') {
       push(t, { k: 'ok', text: s.text })
       at(t + 160, () => { stage.value = 'fixed' })
+      at(t + 1500, () => { recap.value = true })
       t += 160
     }
   }
@@ -89,7 +86,7 @@ function run() {
 // 不想看动画的用户直接看到结局
 function finale() {
   reset()
-  stage.value = 'fixed'; conclusion.value = CONCLUSION; shown.value = ISSUES.length; termOpen.value = true
+  stage.value = 'fixed'; recap.value = true; conclusion.value = CONCLUSION; shown.value = ISSUES.length; termOpen.value = true
   lines.value = [{ k: 'user', text: GOAL }]
   for (const s of SCRIPT) {
     if (s.k === 'out') s.rows.forEach(r => lines.value.push({ k: 'out', text: r }))
@@ -103,9 +100,13 @@ const tagOf = i => (i === 0 && isDone() ? '已处理' : i === 0 && stage.value =
 const stateOf = i => (i === 0 && isDone() ? 'done' : i === 0 && stage.value === 'fixing' ? 'busy' : ISSUES[i].sev)
 const headline = () => (isDone() ? '1 / 2 已处理' : stage.value === 'ranked' || stage.value === 'fixing' ? '2 台需要处理' : '解读中')
 
+// 窄屏终端高度有限，新行出来时滚到底，最后的结果始终露着
+watch(() => lines.value.length, () => nextTick(() => { if (body.value) body.value.scrollTop = body.value.scrollHeight }))
+
 let reduced = false
 // 轮播切走时立刻清场，切回来不会先闪一下上次的结局
-watch(() => props.active, on => { if (reduced) return; if (on && seen) run(); else reset() })
+// 切走时等海报淡出后再清场，淡出过程中保持原样，不闪回「解读中」
+watch(() => props.active, on => { if (reduced) return; if (on && seen) run(); else { clear(); at(900, reset) } })
 onMounted(() => {
   reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (reduced) { finale(); return }
@@ -122,7 +123,7 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 </script>
 
 <template>
-  <div ref="root" class="ai-vis" :class="stage">
+  <div ref="root" class="ai-vis" :class="[stage, { recap }]">
     <!-- AI 解读：高级分析页里的那张卡片 -->
     <div class="win card" :class="{ in: stage !== 'idle' }">
       <header>
@@ -150,18 +151,14 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
       <header>
         <span class="dots"><i /><i /><i /></span>
         <span class="ttl">香港-02 · 终端 Agent</span>
-        <span class="mode">ASK 模式</span>
+        <span class="mode">自动执行</span>
         <span class="st" :class="{ done: isDone() }"><i />{{ isDone() ? '已完成' : '执行中' }}</span>
       </header>
-      <div class="body">
+      <div ref="body" class="body">
         <div v-for="(l, i) in lines" :key="i" :class="['ln', l.k]">
           <template v-if="l.k === 'user'"><span class="pr">›</span><span class="tx">{{ l.text }}<i v-if="l.typing" class="caret" /></span></template>
           <template v-else-if="l.k === 'cmd'"><span class="pr">$</span><span class="tx">{{ l.text }}<i v-if="l.typing" class="caret" /></span></template>
           <template v-else-if="l.k === 'out'"><span class="pr" /><span class="tx">{{ l.text }}</span></template>
-          <template v-else-if="l.k === 'ask'">
-            <span class="pr">?</span>
-            <span class="tx ask-row"><em>需要确认</em><code>{{ l.text }}</code><span class="btns"><b :class="{ hit: l.ok }">允许</b><b>拒绝</b></span></span>
-          </template>
           <template v-else><span class="pr">✓</span><span class="tx">{{ l.text }}</span></template>
         </div>
       </div>
@@ -170,12 +167,12 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 </template>
 
 <style scoped>
-/* 全宽画布：两个窗口并排居中，终端压住卡片右下角一点 */
-.ai-vis { position: absolute; inset: 0; max-width: 1040px; margin: 0 auto; font-family: var(--vp-font-family-base); }
+/* 宽屏：两个窗口并排居中，互不遮挡 */
+.ai-vis { position: absolute; inset: 0; max-width: 1040px; margin: 0 auto; display: flex; align-items: center; gap: 28px; font-family: var(--vp-font-family-base); }
 .ai-vis.out .win { opacity: 0; transition: opacity .4s ease; }
 
 /* 窗口通用 */
-.win { position: absolute; border-radius: 16px; background: rgba(16, 17, 21, .78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 0 0 1px rgba(255,255,255,.1), inset 0 1px 0 rgba(255,255,255,.06), 0 40px 80px -30px rgba(0,0,0,.85); opacity: 0; transition: opacity .6s ease, transform .75s cubic-bezier(.2,.7,.2,1); }
+.win { position: relative; min-width: 0; border-radius: 16px; background: rgba(16, 17, 21, .78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 0 0 1px rgba(255,255,255,.1), inset 0 1px 0 rgba(255,255,255,.06), 0 40px 80px -30px rgba(0,0,0,.85); opacity: 0; transition: opacity .6s ease, transform .75s cubic-bezier(.2,.7,.2,1); }
 .win.in { opacity: 1; transform: none; }
 .win header { display: flex; align-items: center; gap: 10px; padding: 14px 18px 12px; border-bottom: 1px solid rgba(255,255,255,.07); font-size: 12px; color: rgba(255,255,255,.5); }
 .win .ttl { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 650; color: #fff; }
@@ -186,7 +183,7 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 @keyframes blink { 50% { opacity: 0; } }
 
 /* AI 解读卡片 */
-.card { left: 0; top: calc(50% - 205px); width: min(440px, 46%); transform: translateY(16px); }
+.card { flex: 0 0 42%; align-self: center; transform: translateY(16px); }
 .card .ttl svg { width: 14px; height: 14px; fill: #c4b5fd; filter: drop-shadow(0 0 6px rgba(167,139,250,.8)); }
 .card .meta { white-space: nowrap; }
 .card .st.ranked, .card .st.fixing { color: #fde68a; } .card .st.ranked i, .card .st.fixing i { background: #fbbf24; box-shadow: 0 0 10px #fbbf24; animation: none; }
@@ -211,7 +208,7 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 .it.done .n { background: #34d399; color: #052e22; }
 
 /* 终端 Agent 窗口 */
-.term { right: 0; top: calc(50% - 135px); width: min(640px, 64%); background: rgba(9, 10, 13, .9); transform-origin: 0 0; transform: translate(-70px, -50px) scale(.93); }
+.term { flex: 1 1 0; margin-top: 70px; background: rgba(9, 10, 13, .9); transform: translateY(24px); }
 .term .dots { display: inline-flex; gap: 6px; margin-right: 4px; }
 .term .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.14); }
 .term .mode { padding: 2px 7px; border-radius: 6px; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: #fde68a; background: rgba(251,191,36,.14); }
@@ -226,32 +223,28 @@ onBeforeUnmount(() => { clear(); io && io.disconnect() })
 .ln.cmd { color: rgba(255,255,255,.9); margin-top: 3px; }
 .ln.cmd .pr { color: #34d399; }
 .ln.out { color: rgba(255,255,255,.48); }
-.ln.ask { margin: 6px 0 2px; }
-.ln.ask .pr { color: #fbbf24; }
-.ask-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 8px; background: rgba(251,191,36,.07); box-shadow: inset 0 0 0 1px rgba(251,191,36,.25); }
-.ask-row em { font-style: normal; font-family: var(--vp-font-family-base); font-size: 11px; font-weight: 700; color: #fde68a; }
-.ask-row code { color: #fff; font-family: inherit; font-size: inherit; background: none; padding: 0; }
-.ask-row .btns { display: inline-flex; gap: 6px; margin-left: auto; }
-.ask-row .btns b { padding: 2px 9px; border-radius: 6px; font-family: var(--vp-font-family-base); font-size: 11px; font-weight: 650; color: rgba(255,255,255,.6); background: rgba(255,255,255,.08); transition: background .25s, color .25s, transform .25s; }
-.ask-row .btns b.hit { color: #111214; background: #a78bfa; box-shadow: 0 0 16px rgba(167,139,250,.6); transform: scale(1.04); }
 .ln.ok { margin-top: 6px; color: #a7f3d0; font-family: var(--vp-font-family-base); font-size: 13px; }
 .ln.ok .pr { color: #34d399; }
 
 @media (max-width: 1080px) {
-  /* 窄屏上下堆叠：终端窗口压住解读卡片的第 2、3 行，第 1 行（要修的那台）始终露着 */
-  .ai-vis { position: relative; inset: auto; max-width: none; }
-  .win { position: relative; }
-  .card { top: 0; width: 100%; }
-  .term { top: 0; width: 100%; margin-top: -94px; z-index: 2; transform: translateY(24px) scale(.98); }
-  .term .body { min-height: 0; line-height: 1.5; }
+  /* 窄屏一次只放一个窗口：解读卡片 → 终端修复 → 回到卡片看「已处理」，不叠在一起 */
+  .ai-vis { display: grid; grid-template: 100% / 100%; align-items: center; max-width: 560px; gap: 0; }
+  .win { grid-area: 1 / 1; max-height: 100%; }
+  .card { transform: translateY(12px); }
+  .term { margin-top: 0; height: min(100%, 300px); display: flex; flex-direction: column; transform: translateY(12px); }
+  .term .body { flex: 1 1 auto; min-height: 0; overflow: hidden; line-height: 1.5; }
+  .ai-vis.fixing .card, .ai-vis.fixed:not(.recap) .card { opacity: 0; transform: translateY(-12px); pointer-events: none; }
+  .ai-vis:not(.fixing):not(.fixed) .term, .ai-vis.recap .term { opacity: 0; transform: translateY(12px); }
 }
 @media (max-width: 640px) {
-  .concl, .it:nth-child(4), .term .mode { display: none; }
+  .term .mode, .card .meta { display: none; }
   .win .ttl { white-space: nowrap; }
-  .term { margin-top: -50px; }
-  .term .body { font-size: 12px; line-height: 1.5; }
-  .it { grid-template-columns: 22px auto auto 1fr; }
-  .it .what { grid-column: 2 / 5; margin-top: 2px; white-space: normal; }
+  .win header { padding: 12px 14px 10px; }
+  .card section { padding: 12px 14px 0; }
+  .concl p { font-size: 13.5px; min-height: 0; }
+  .it { padding: 8px 10px; font-size: 12.5px; }
+  .term .body { padding: 10px 14px 12px; font-size: 11.5px; }
+  .ln.user, .ln.ok { font-size: 12.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .win, .it, .ln, .caret, .win .st i, .it .tag i { transition: none; animation: none !important; }
