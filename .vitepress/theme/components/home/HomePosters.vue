@@ -7,7 +7,7 @@ import PosterAI from './PosterAI.vue'
 
 const DURATION = 8000
 const SLIDES = [
-  { key: 'ai', label: 'AI 运维', acc: '#a78bfa' },
+  { key: 'ai', label: 'AI 运维', acc: '#a78bfa', dur: 11500 }, // 这张要讲完一个修复故事，多留几秒
   { key: 'net', label: '网络质量', acc: '#34d399' },
   { key: 'mtr', label: 'MTR 路由', acc: '#fbbf24' },
   { key: 'unlock', label: '流媒体解锁', acc: '#f472b6' },
@@ -32,7 +32,7 @@ let timer, left = DURATION, last = 0, inView = true, io
 function go(i) {
   cur.value = (i + SLIDES.length) % SLIDES.length
   round.value++
-  left = DURATION
+  left = SLIDES[cur.value].dur || DURATION
   last = Date.now()
 }
 function pause(on) {
@@ -148,7 +148,7 @@ onBeforeUnmount(() => { clearInterval(timer); io && io.disconnect() })
 
     <nav class="tabs" aria-label="切换海报">
       <button v-for="(s, i) in SLIDES" :key="s.key" :class="['tab', { on: cur === i, done: i < cur }]" :aria-current="cur === i" @click="go(i)">
-        <span class="ln"><b :key="`${round}-${i}`" :class="{ run: cur === i, hold: paused }" /></span>
+        <span class="ln"><b :key="`${round}-${i}`" :class="{ run: cur === i, hold: paused }" :style="{ '--dur': `${s.dur || DURATION}ms` }" /></span>
         <span class="lb">{{ s.label }}</span>
       </button>
     </nav>
@@ -231,7 +231,7 @@ h2 { margin: 18px 0 0; padding: 0; border: 0; font-size: clamp(38px, 4.2vw, 56px
 .tab { appearance: none; border: 0; background: none; padding: 0; text-align: left; cursor: pointer; font: inherit; color: rgba(255,255,255,.42); }
 .ln { display: block; height: 2px; border-radius: 2px; background: rgba(255,255,255,.12); overflow: hidden; }
 .ln b { display: block; height: 100%; width: 0; background: #fff; }
-.ln b.run { animation: fill 8s linear forwards; }
+.ln b.run { animation: fill var(--dur, 8s) linear forwards; }
 .ln b.hold { animation-play-state: paused; }
 .tab.done .ln b { width: 100%; }
 .lb { display: block; margin-top: 12px; font-size: 13px; font-weight: 600; transition: color .3s; }
@@ -239,7 +239,7 @@ h2 { margin: 18px 0 0; padding: 0; border: 0; font-size: clamp(38px, 4.2vw, 56px
 @keyframes fill { from { width: 0; } to { width: 100%; } }
 
 @media (max-width: 1080px) {
-  .stage { height: auto; min-height: 860px; }
+  .stage { height: auto; min-height: 900px; }
   .slide { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 24px; padding: 48px 24px 16px; }
   .copy { padding-bottom: 0; }
   .visual { margin-right: -24px; min-height: 440px; }
