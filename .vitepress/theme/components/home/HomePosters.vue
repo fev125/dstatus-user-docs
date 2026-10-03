@@ -46,7 +46,9 @@ onMounted(() => {
   timer = setInterval(() => {
     if (!paused.value && inView && Date.now() - last >= left) go(cur.value + 1)
   }, 200)
-  io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; if (inView) last = Date.now() - (DURATION - left) })
+  // 海报大半进入视野才计时，免得用户还在看开头时轮播已经悄悄翻过几张
+  inView = false
+  io = new IntersectionObserver(([e]) => { const was = inView; inView = e.isIntersecting && e.intersectionRatio >= 0.55; if (inView && !was) go(cur.value) }, { threshold: [0, 0.55, 0.8] })
   io.observe(root.value)
 })
 onBeforeUnmount(() => { clearInterval(timer); io && io.disconnect() })

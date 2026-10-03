@@ -7,6 +7,7 @@ const props = defineProps({ active: { type: Boolean, default: true } })
 const COLS = 10, ROWS = 6, SIZE = 52, GAP = 14
 // 有问题的节点：[格子序号, 严重程度]，按处理顺序排列
 const ISSUES = [[23, 'red'], [47, 'red'], [8, 'amber'], [36, 'amber']]
+// 修好后打勾覆盖在机箱上，插槽变淡
 const tiles = Array.from({ length: COLS * ROWS }, (_, i) => ({ i, x: (i % COLS) * (SIZE + GAP), y: Math.floor(i / COLS) * (SIZE + GAP) }))
 const W = COLS * (SIZE + GAP) - GAP, H = ROWS * (SIZE + GAP) - GAP
 
@@ -15,7 +16,7 @@ const flagged = ref(new Map()) // 序号 → 严重程度
 const fixed = ref(new Set())
 const orb = ref({ x: W + 60, y: H / 2, on: false })
 const scanX = ref(-80)
-let timers = []
+let timers = [], io, seen = false
 const later = (ms, fn) => timers.push(setTimeout(fn, ms))
 const center = idx => ({ x: tiles[idx].x + SIZE / 2, y: tiles[idx].y + SIZE / 2 })
 
@@ -31,20 +32,32 @@ function run() {
     later(t, () => { phase.value = 3; orb.value = { ...center(idx), on: true } })
     later(t + 650, () => { fixed.value = new Set(fixed.value).add(idx) })
   })
-  later(2600 + ISSUES.length * 1050 + 200, () => { phase.value = 4; orb.value = { x: W + 60, y: H / 2, on: false } })
+  const end = 2600 + ISSUES.length * 1050 + 200
+  later(end, () => { phase.value = 4; orb.value = { x: W + 60, y: H / 2, on: false } })
+  later(end + 1600, () => { if (props.active && seen) run() })
 }
+const root = ref(null)
 const order = idx => ISSUES.findIndex(([i]) => i === idx) + 1
 const tileClass = t => {
   if (fixed.value.has(t.i)) return 'fixed'
   return flagged.value.get(t.i) || ''
 }
-watch(() => props.active, on => { if (on) run(); else timers.forEach(clearTimeout) })
-onMounted(() => { if (props.active) run() })
-onBeforeUnmount(() => timers.forEach(clearTimeout))
+watch(() => props.active, on => { if (on && seen) run(); else timers.forEach(clearTimeout) })
+onMounted(() => {
+  // 进入视野才开始播，避免用户滚到这里时动画早已播完、只剩一片绿
+  io = new IntersectionObserver(([e]) => {
+    const was = seen
+    seen = e.isIntersecting && e.intersectionRatio >= 0.6
+    if (seen && !was && props.active) run()
+    if (!seen) timers.forEach(clearTimeout)
+  }, { threshold: [0, 0.6, 0.85] })
+  io.observe(root.value)
+})
+onBeforeUnmount(() => { timers.forEach(clearTimeout); io && io.disconnect() })
 </script>
 
 <template>
-  <div class="ai-vis">
+  <div ref="root" class="ai-vis">
     <svg :viewBox="`-40 -40 ${W + 80} ${H + 80}`" class="field" role="img" aria-label="AI 找出有问题的节点并按顺序修复">
       <defs>
         <linearGradient id="ai-beam" x1="0" x2="1">
@@ -56,8 +69,11 @@ onBeforeUnmount(() => timers.forEach(clearTimeout))
       </defs>
       <rect class="beam" x="0" y="-30" width="90" :height="H + 60" :style="{ transform: `translateX(${scanX}px)`, opacity: phase === 1 ? 1 : 0 }" />
       <g v-for="t in tiles" :key="t.i" :class="['tile', tileClass(t)]">
-        <rect :x="t.x" :y="t.y" :width="SIZE" :height="SIZE" rx="12" class="box" />
-        <circle :cx="t.x + SIZE / 2" :cy="t.y + SIZE / 2" r="5" class="led" />
+        <rect :x="t.x" :y="t.y" :width="SIZE" :height="SIZE" rx="10" class="box" />
+        <rect :x="t.x + 9" :y="t.y + 14" :width="SIZE - 18" height="9" rx="2.5" class="slot" />
+        <rect :x="t.x + 9" :y="t.y + 29" :width="SIZE - 18" height="9" rx="2.5" class="slot" />
+        <circle :cx="t.x + SIZE - 15" :cy="t.y + 18.5" r="2.6" class="led" />
+        <circle :cx="t.x + SIZE - 15" :cy="t.y + 33.5" r="2.6" class="led" />
         <g v-if="fixed.has(t.i)" class="check">
           <circle :cx="t.x + SIZE / 2" :cy="t.y + SIZE / 2" r="17" class="burst" />
           <path :d="`M ${t.x + 18} ${t.y + 27} l 6 6 l 11 -12`" class="tick" />
@@ -85,7 +101,10 @@ onBeforeUnmount(() => timers.forEach(clearTimeout))
 .field { width: 100%; max-height: 470px; overflow: visible; }
 .beam { fill: url(#ai-beam); transition: transform 1.5s cubic-bezier(.4,0,.2,1), opacity .4s; }
 .box { fill: rgba(255,255,255,.035); stroke: rgba(255,255,255,.08); transition: fill .4s, stroke .4s; }
-.led { fill: #34d399; opacity: .55; transition: fill .3s, opacity .3s; }
+.slot { fill: none; stroke: rgba(255,255,255,.14); stroke-width: 1.2; transition: stroke .3s; }
+.led { fill: #34d399; opacity: .7; transition: fill .3s, opacity .3s; }
+.tile.red .slot { stroke: rgba(248,113,113,.55); } .tile.amber .slot { stroke: rgba(251,191,36,.5); }
+.tile.fixed .slot { stroke: rgba(52,211,153,.18); }
 .tile.red .box { fill: rgba(248,113,113,.14); stroke: rgba(248,113,113,.7); }
 .tile.red .led { fill: #f87171; opacity: 1; filter: drop-shadow(0 0 8px #f87171); animation: blink 1s ease-in-out infinite; }
 .tile.amber .box { fill: rgba(251,191,36,.12); stroke: rgba(251,191,36,.65); }
