@@ -5,6 +5,12 @@
   <a class="changelog-switch__item" href="/agent-changelog">被控</a>
 </p>
 
+## 待发布
+
+### 修复
+
+- 修复部分使用 PostgreSQL 的面板升级到 2.26.10.020.dev-45 后无法启动的问题。
+
 ## 2.26.10.020.dev-45
 
 ### 新功能
