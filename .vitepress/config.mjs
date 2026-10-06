@@ -15,6 +15,9 @@ export default defineConfig({
   base: '/',
   cleanUrls: true,
 
+  // 生成 sitemap.xml，方便搜索引擎和 AI 抓取发现全部页面
+  sitemap: { hostname: 'https://docs.dstatus.sh' },
+
   // 插件配置
   plugins: [lastUpdated()],
 
