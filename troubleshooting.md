@@ -47,6 +47,33 @@
 1. 提示下载失败：确认服务器能访问 `down.vps.mom`；安装 Agent 时还要能访问 GitHub，或在 设置中心 → Agent 安装源 选下载代理。
 2. 其他报错：保留完整终端输出，到 Telegram 群反馈。
 
+## 切换到 PostgreSQL 失败
+
+切换失败不影响原有数据，面板会继续使用 SQLite。处理后在 设置中心 → 数据与维护 → 数据库 重新点「切换到 PostgreSQL」，无需重启面板。
+
+### 提示 permission denied for schema public
+
+PostgreSQL 15 及以上版本，普通用户默认不能在其他用户所有的库里建表。把数据库的所有者改为面板填写的用户名：在数据库服务器上用 PostgreSQL 管理员账号执行（库名、用户名按实际填写）：
+
+```bash
+sudo -u postgres psql -c "ALTER DATABASE dstatus OWNER TO dstatus;"
+```
+
+PostgreSQL 运行在 Docker 中时，把 `postgres` 换成容器的管理员用户名：
+
+```bash
+docker exec -it PostgreSQL容器名 psql -U postgres -c "ALTER DATABASE dstatus OWNER TO dstatus;"
+```
+
+新建数据库时直接指定所有者，可避免该问题：
+
+```sql
+CREATE USER dstatus WITH PASSWORD '你的密码';
+CREATE DATABASE dstatus OWNER dstatus;
+```
+
+每次切换前面板都会在 `data` 目录生成一份 `switch-backup-sqlite-时间.db` 备份。切换成功后，失败时留下的备份可以删除。
+
 ## 相关
 
 - [安装面板](/quick-start)
