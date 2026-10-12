@@ -12,7 +12,9 @@ DStatus 提供 iOS 与 macOS 原生 App，两端功能一致，目前公测中�
 
 ## 获取
 
-公测参与方式与首发权益以官网定价页为准：[dstatus.sh/pricing](https://dstatus.sh/pricing)。
+下载入口：[dstatus.sh/client](https://dstatus.sh/client)。macOS 版直接下载安装；iOS 版通过 TestFlight 公测，暂未上架 App Store。
+
+首发权益以官网定价页为准：[dstatus.sh/pricing](https://dstatus.sh/pricing)。
 
 ## 连接面板
 
