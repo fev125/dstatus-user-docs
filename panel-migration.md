@@ -25,6 +25,21 @@ curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- -
 
 不在默认目录时，在命令末尾加 `--install-dir=/你的安装目录`。
 
+### 升级后出问题，退回到升级前
+
+每次升级前，面板会自动留一份升级前的数据库副本（最近两次升级各一份），在 设置中心 → 数据库与存储 → 备份管理 的「升级与操作前的保护副本」里可以看到和下载。升级后数据异常、或新版本起不来时，可以按下面步骤退回（以默认目录 `/opt/dstatus`、SQLite 为例）：
+
+1. 进入安装目录：`cd /opt/dstatus`。
+2. 开了自动更新的，先暂停：`docker stop watchtower`，免得退回后又被更新上去。
+3. 停止面板：`docker compose down`（旧版 Docker 用 `docker-compose down`）。
+4. 找到要退回的副本：`ls data/backups/auto/`，文件名以 `auto-pre-upgrade-` 开头；同名的 `.json` 里 `fromVersion` 就是升级前的版本。
+5. 先把当前数据库挪开留着：`mv data/db.db data/db.db.broken`，有 `data/db.db-wal`、`data/db.db-shm` 时一起挪开。
+6. 放回升级前的数据库：`.db.gz` 用 `gunzip -c data/backups/auto/文件名 > data/db.db`；`.tar.gz` 用 `tar -xzf data/backups/auto/文件名 -C data`。
+7. 打开 `docker-compose.yml`，把面板镜像的标签改成升级前的版本：版本号最后一段（如 `2.26.10.021.dev-46` 里的 `dev-46`）就是标签。
+8. 启动：`docker compose up -d`，登录检查数据。问题版本修复后再 `docker start watchtower` 恢复自动更新。
+
+使用 PostgreSQL 的面板，升级前副本是 `.sql.gz`，只在有数据库结构升级时生成；退回时用 `gunzip -c 文件名 | psql 连接参数` 导入，或联系我们协助。
+
 ## 备份
 
 入口：设置中心 → 数据与维护 → 数据维护。
@@ -37,6 +52,8 @@ curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- -
 | 恢复数据库 | 上传备份文件恢复 | 新面板导入数据 |
 
 上面几个按钮直接下载到浏览器。要在服务器上留副本，用下方「备份文件」的「创建备份」；要自动备份，点「定时备份」。
+
+另外，面板会在每次升级前，以及恢复数据库、切换数据库、重装、重置密码之前，自动留一份保护副本（最多 3 份，压缩保存，硬盘不够时自动少留并提醒），用于出问题时退回。它们只存在本机，异地保存仍请用定时备份 + WebDAV。
 
 异地保存：在「备份 WebDAV」填写地址、用户名、密码和远程根目录，打开「启用 WebDAV 备份同步」并点「保存 WebDAV」。之后创建的备份会自动上传。
 
