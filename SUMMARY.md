@@ -20,6 +20,7 @@
 * [账单与商家](billing-report.md)
 * [外观与个性化](personalization.md)
 * [访问控制与分享](access-control.md)
+* [托管展示页](showcase.md)
 
 ## 管理与维护
 * [设置中心](system-settings.md)

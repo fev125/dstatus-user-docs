@@ -81,6 +81,7 @@ export default defineConfig({
             { text: '账单与商家', link: '/billing-report' },
             { text: '外观与个性化', link: '/personalization' },
             { text: '访问控制与分享', link: '/access-control' },
+            { text: '托管展示页', link: '/showcase' },
           ]
         },
         {
