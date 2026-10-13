@@ -21,7 +21,7 @@
 
 ![1Panel 反向代理入口](/1panel-proxy-config-entry.png)
 
-只替换反代规则，不改站点的 `server {}`；同一个站点不要配两条反代。
+宝塔 / 1Panel 只替换反代规则，不改站点的 `server {}`；同一个站点不要配两条反代。自建 Nginx 用的「原生 Nginx」片段是完整的 `server {}` 配置，单独放一个配置文件，不要塞进已有的 `server {}` 里。
 
 ## 启用后
 
