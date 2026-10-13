@@ -53,6 +53,20 @@
 1. 提示下载失败：确认服务器能访问 `down.vps.mom`；安装 Agent 时还要能访问 GitHub，或在 设置中心 → Agent 安装源 选下载代理。
 2. 其他报错：保留完整终端输出，到 Telegram 群反馈。
 
+### 安装命令没有反应，或提示 unexpected EOF
+
+执行安装命令后一直没有输出，按 Ctrl+C 后提示 `unexpected EOF while looking for matching`：服务器所在网络限制了安装脚本的下载线路，脚本只下载了一部分。服务器能 `ping` 通下载地址，不代表能完整下载。
+
+换一台能正常下载的机器（例如面板服务器或自己的电脑）执行安装命令，把命令里 `|` 后面的 `bash -s -- …` 整段放进 `ssh` 的双引号里。脚本在这台机器上下载，再通过 SSH 交给目标服务器运行：
+
+```bash
+curl -fsSL https://down.vps.mom/scripts/install-dstatus-agent.sh | ssh root@服务器地址 "bash -s -- '通讯密钥' '面板地址' 'active-report'"
+```
+
+引号里的参数以面板复制的安装命令为准。SSH 端口不是 22 时，在 `ssh` 后加 `-p 端口`。也可以让面板通过 SSH 直接安装，见 [通过 SSH 安装](/agent-guide#通过-ssh-安装)。
+
+脚本运行后还要下载 Agent 文件，这一步失败时终端会给出手动上传的步骤。
+
 ## 切换到 PostgreSQL 失败
 
 切换失败不影响原有数据，面板会继续使用 SQLite。处理后在 设置中心 → 数据库与存储 → 「切换数据库」里重新点「开始切换」，无需重启面板。
