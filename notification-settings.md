@@ -91,6 +91,7 @@
 
 ## 相关
 
+- [接收外部消息](/notification-inbound)：把其他系统的告警推进来，或给定时任务加心跳
 - [接入节点](/agent-guide)
 - [账单与商家](/billing-report)
 - [AI 功能](/ai)：Telegram 接好后可在里面直接向 AI 提问。
