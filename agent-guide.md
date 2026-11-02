@@ -19,9 +19,12 @@
 | 系统 | 选择 | 执行位置 |
 |---|---|---|
 | Linux | Linux / macOS | 终端，建议 root |
+| 群晖 DSM | Linux / macOS | SSH 终端，先用 `sudo -i` 切换到管理员，再执行复制的安装命令 |
 | OpenWrt | Linux / macOS | 终端；脚本会自动识别 OpenWrt 并注册为系统服务 |
 | macOS | Linux / macOS | 终端 |
 | Windows | Windows | PowerShell |
+
+群晖使用原生 Linux 探针，无需安装 Docker 或额外套件；已在 DSM 7.0、x86_64 设备验证。系统安装需要管理员权限，普通用户运行会受到网络探测和系统操作权限限制。
 
 ## 通讯方式
 
