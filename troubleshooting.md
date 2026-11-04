@@ -67,6 +67,17 @@ curl -fsSL https://down.vps.mom/scripts/install-dstatus-agent.sh | ssh root@服�
 
 脚本运行后还要下载 Agent 文件，这一步失败时终端会给出手动上传的步骤。
 
+### 国内服务器下载 Agent 很慢或失败
+
+安装脚本会先连 GitHub，太慢或断开会自动换加速源。都下载不了时，手动上传 Agent 文件再安装：
+
+1. 在服务器执行 `uname -m` 看架构：`x86_64` 用 `dstatus-agent_linux_amd64`，`aarch64` 用 `dstatus-agent_linux_arm64`。下载失败时终端也会直接给出文件名和链接。
+2. 在能打开 GitHub 的电脑下载该文件：`https://github.com/fev125/dstatus/releases/download/agent-latest/文件名`。同一位置的 `SHA256SUMS` 一起下载，放在同一目录，安装时会自动校验文件是否完整。
+3. 把文件上传到服务器，例如放到 `/root/`。
+4. 执行 `export DSTATUS_AGENT_FILE=/root/dstatus-agent_linux_amd64`（换成你的文件名），再执行面板里复制的安装或重装命令。脚本会跳过下载，直接用这个文件。
+
+用 `sudo` 执行时，把变量写在 `sudo` 后面：`curl ... | sudo DSTATUS_AGENT_FILE=/root/文件名 bash -s ...`。以上以 Linux 为例；macOS 和 Windows 的安装脚本同样支持这个变量，下载失败时终端会给出对应的步骤。
+
 ## 切换到 PostgreSQL 失败
 
 切换失败不影响原有数据，面板会继续使用 SQLite。处理后在 设置中心 → 数据库与存储 → 「切换数据库」里重新点「开始切换」，无需重启面板。
