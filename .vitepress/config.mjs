@@ -61,6 +61,7 @@ export default defineConfig({
             { text: '安装面板', link: '/quick-start' },
             { text: '接入节点', link: '/agent-guide' },
             { text: '配置通知', link: '/notification-settings' },
+            { text: '接收外部消息', link: '/notification-inbound' },
           ]
         },
         {
