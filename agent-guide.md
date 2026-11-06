@@ -1,85 +1,146 @@
 # 接入节点
 
-每台被监控的服务器需要运行 DStatus Agent（被控），负责采集指标并与面板通信。推荐使用「自动发现」生成安装命令。
+在目标设备上安装探针（监控程序），采集指标连回面板。探针常驻内存约 30 MB，每天双向流量约 80 MB。
 
-## 安装
+## 在哪打开
 
-1. 后台打开「服务器管理 → 自动发现」，在「安装 Agent」里选择目标系统。
-2. 点「复制」获取安装命令，在目标设备上执行。
-3. 回到页面下方「接入节点」，在「已发现」里确认节点已上线。开启了接入审核时，节点先出现在「待审核」，点「批准」后接入。
+登录后台，点左侧「服务器管理 → 自动发现」。也可在「服务器列表」点「添加服务器」。
 
-一次装了多台时，在「待审核」里勾选设备点「批准所选」「拒绝所选」，或直接点「全部批准」「全部拒绝」。
+<figure><img src="/agent-guide-workbench.webp" alt="左侧菜单「服务器管理 → 自动发现」与「安装探针」区域"><figcaption>左侧菜单「服务器管理 → 自动发现」与「安装探针」区域</figcaption></figure>
 
-![自动发现页：复制安装命令，下方批量审核待接入设备](/autodiscovery.jpg)
+## 怎么用
 
-安装授权默认 30 分钟有效，有效期内可用于多台设备，每台设备获得独立的通讯密钥；需要长期使用，在「设置」中改为「永久」。点「撤销授权」后未执行的安装命令立即失效，已接入的节点不受影响。
+### 一条命令接入
 
-## 支持的系统
+复制安装命令到目标设备执行，即可接入面板开始监控。
 
-| 系统 | 选择 | 执行位置 |
+1. 在「安装探针」选目标系统，点「复制」生成安装命令。
+2. 打开设备的终端或 PowerShell，粘贴命令执行。
+3. 在「待审核」点「批准」，或点页面下方「批准接入」。
+
+<figure><img src="/agent-guide-pending-list.webp" alt="在「接入节点」的「待审核」列表批准新设备上线"><figcaption>在「接入节点」的「待审核」列表批准新设备上线</figcaption></figure>
+
+安装授权默认 30 分钟有效，可装多台，每台获独立密钥。
+
+::: details 批量审核、已发现列表与撤销授权
+装多台时，勾选设备点「批准所选」或「拒绝所选」。也可直接点「全部批准」或「全部拒绝」。
+
+点设备行打开「设备详情」，改分组或端口后点「批准」。切到「已发现」可搜索设备，或点「删除离线节点」清理离线记录。
+
+点「复制」旁图标可「重新生成安装授权」，旧授权随即替换。点「撤销安装授权」可停用未执行的命令，已接入节点不受影响。
+:::
+
+### 支持的系统
+
+切换下方系统标签，查看对应设备的执行方式。
+
+<DocTabs :tabs="['Linux / OpenWrt', '群晖 DSM', 'macOS', 'Windows']">
+<template #tab-0>
+
+选「Linux / macOS」，用 `root` 在终端执行。自动识别 OpenWrt、Alpine，设开机自启。
+
+支持 x86_64、ARM64、ARMv7 与 v6。路由器设备还支持 MIPSle 架构。
+
+</template>
+<template #tab-1>
+
+选「Linux / macOS」，无需装 Docker。已在 DSM 7.0（x86_64）验证。
+
+1. 打开「控制面板 → 终端机和 SNMP → 终端机」。
+2. 勾选「启动 SSH 功能」，点「应用」。
+3. 用 `ssh 账号@群晖地址` 登录（改端口加 `-p`）。
+4. 执行 `sudo -i` 切到 `root`，粘贴命令运行。
+
+不用网页终端时，装好后可关掉 SSH，探针照常运行。
+
+</template>
+<template #tab-2>
+
+选「Linux / macOS」，直接在当前用户终端执行。请勿加 `sudo`，支持 Intel 与 Apple 芯片。
+
+需重启未登录也运行，先执行下面这行，再运行安装命令：
+
+```bash
+export DSTATUS_INSTALL_SCOPE=system
+```
+
+</template>
+<template #tab-3>
+
+选「Windows」，在 PowerShell 粘贴执行。默认无需管理员权限，支持 x86_64，登录后自启。
+
+需重启未登录也上线，以管理员打开 PowerShell。先执行下面这行，再粘贴安装命令运行：
+
+```powershell
+$env:DSTATUS_INSTALL_SCOPE = 'System'
+```
+
+</template>
+</DocTabs>
+
+### 主动模式与被动模式
+
+命令接入默认用「主动模式」，点右上角「接入设置」可修改。
+
+<figure><svg viewBox="0 0 680 204" width="680" height="204" role="img" aria-label="主动模式与被动模式的连接方向对比" style="display:block;width:100%;max-width:680px;height:auto"><rect x="1" y="1" width="678" height="202" rx="8" fill="var(--vp-c-bg-soft)" stroke="var(--vp-c-divider)"/><line x1="20" y1="102" x2="660" y2="102" stroke="var(--vp-c-divider)" stroke-dasharray="4 4"/><text x="24" y="42" fill="var(--vp-c-text-1)" font-size="14" font-weight="600">主动模式（默认）</text><text x="24" y="64" fill="var(--vp-c-text-2)" font-size="12">适合 NAT / 防火墙后设备</text><rect x="184" y="22" width="152" height="58" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="260" y="46" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">目标设备（探针）</text><text x="260" y="66" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">无需开放入站端口</text><text x="418" y="40" text-anchor="middle" fill="var(--vp-c-brand-1)" font-size="11" font-weight="500">主动上报 + 领任务</text><line x1="344" y1="51" x2="484" y2="51" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="482,46 492,51 482,56" fill="var(--vp-c-brand-1)"/><rect x="500" y="22" width="156" height="58" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="578" y="46" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">DStatus 面板</text><text x="578" y="66" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">节点能访问上报地址</text><text x="24" y="144" fill="var(--vp-c-text-1)" font-size="14" font-weight="600">被动模式</text><text x="24" y="166" fill="var(--vp-c-text-2)" font-size="12">适合公网或同内网设备</text><rect x="184" y="124" width="152" height="58" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="260" y="148" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">目标设备（探针）</text><text x="260" y="168" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">放行 API 端口（9999）</text><text x="418" y="136" text-anchor="middle" fill="var(--vp-c-brand-1)" font-size="11" font-weight="500">拉取监控数据</text><line x1="492" y1="145" x2="352" y2="145" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="354,140 344,145 354,150" fill="var(--vp-c-brand-1)"/><line x1="344" y1="165" x2="484" y2="165" stroke="var(--vp-c-text-2)" stroke-width="1" stroke-dasharray="4 3"/><polygon points="482,161 490,165 482,169" fill="var(--vp-c-text-2)"/><text x="418" y="180" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="10">默认仍连面板领任务</text><rect x="500" y="124" width="156" height="58" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="578" y="148" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">DStatus 面板</text><text x="578" y="168" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">能访问节点地址与端口</text></svg><figcaption>主动模式由探针主动连面板，被动模式由面板连探针端口</figcaption></figure>
+
+<figure><img src="/agent-guide-settings-drawer.webp" alt="点右上角「接入设置」修改默认通讯方式、有效期和分组"><figcaption>点右上角「接入设置」修改默认通讯方式、有效期和分组</figcaption></figure>
+
+修改后自动保存（也可点「保存」），新设置用于之后生成的命令。
+
+| 选项 | 作用 | 默认 |
 |---|---|---|
-| Linux | Linux / macOS | 终端，建议 root |
-| 群晖 DSM | Linux / macOS | SSH 终端，先用 `sudo -i` 切换到管理员，再执行复制的安装命令 |
-| OpenWrt | Linux / macOS | 终端；脚本会自动识别 OpenWrt 并注册为系统服务 |
-| macOS | Linux / macOS | 终端 |
-| Windows | Windows | PowerShell |
+| 「通讯方式」 | 选「主动模式」或「被动模式」 | 「主动模式」 |
+| 「授权有效期」 | 安装授权可用时长，可改分钟数或勾选「永久」 | 30 分钟 |
+| 「API 端口」 | 被动模式下面板连接的探针端口 | 9999 |
+| 「上报地址」 | 探针连面板的地址；反代或 CDN 后填对外域名 | 留空用面板地址 |
+| 「默认分组」 | 新节点接入后自动归入的 [分组](/groups) | 「默认」 |
+| 「接入审核」 | 勾选「需要审核」后，新节点先进入「待审核」 | 开启 |
 
-群晖使用原生 Linux 探针，无需安装 Docker 或额外套件；已在 DSM 7.0、x86_64 设备验证。系统安装需要管理员权限，普通用户运行会受到网络探测和系统操作权限限制。
+### 通过 SSH 安装
 
-群晖安装步骤：
+已有服务器的 `root` SSH 信息时，可由面板代装。
 
-1. DSM「控制面板 → 终端机和 SNMP → 终端机」，勾选「启动 SSH 功能」，点「应用」。
-2. 在电脑终端用管理员账号登录：`ssh 管理员账号@群晖IP`（改过端口的加 `-p 端口`）。
-3. 执行 `sudo -i`，再输入一次管理员密码切换到 root，然后粘贴「自动发现」复制的安装命令。
+1. 打开「服务器列表」，点右上角「添加服务器」。
+2. 点底部「通过 SSH 由面板代装」，填名称与 SSH 信息。
+3. 点底部「添加服务器」，在弹窗点「立即安装」。
 
-面板的「SSH 一键安装」不会替登录账号执行 sudo。群晖默认用管理员账号登录 SSH，请用上面的复制命令方式安装。装好后如果不需要面板终端等 SSH 功能，可以按群晖的安全建议再关掉 SSH，探针运行不受影响。
+<figure><img src="/agent-guide-add-ssh.webp" alt="在「通过 SSH 由面板代装」页面填写信息并点「添加服务器」"><figcaption>在「通过 SSH 由面板代装」页面填写信息并点「添加服务器」</figcaption></figure>
 
-## 通讯方式
+SSH 代装默认为「被动模式」，可在「通讯模式」切到主动。密码与保险箱见 [管理服务器](/server-management)。
 
-| 方式 | 连接方向 | 端口要求 | 适用场景 |
-|---|---|---|---|
-| 主动（默认） | Agent → 面板上报地址 | 被控无需开放端口 | 大多数场景，含 NAT 后的服务器 |
-| 被动 | 面板 → Agent | 被控放行 Agent 端口（默认 9999） | 被控无法访问面板时 |
+::: details 卸载探针与升级版本
+切到「卸载命令」，选系统点「复制」，到目标设备执行。也可在节点编辑页「连接方式」点「卸载探针」。
 
-## 自动发现设置
+卸载只移除探针程序，面板里的节点和数据会保留。移除记录见 [管理服务器](/server-management)，更新见 [升级 Agent](/agent-upgrade)。
+:::
 
-点「安装 Agent」区域的「设置」，修改后点「保存」。新设置用于之后生成的安装命令。
+## 常见问题
 
-| 选项 | 说明 |
-|---|---|
-| 通讯方式 | 主动或被动，见上表 |
-| 授权有效期 | 默认 30 分钟，可改分钟数或选「永久」 |
-| Agent 端口 | 仅被动通讯使用，默认 9999 |
-| 上报地址 | 安装命令里 Agent 连接面板用的地址；留空时采用面板地址 |
-| 默认分组 | 新节点自动加入此分组 |
-| 接入审核 | 开启「需要审核」后，新节点先进入待审核 |
+::: details 执行命令后节点没出现
+「接入审核」默认开启，先看「自动发现」的「待审核」列表。点「批准」或「添加服务器」页的「批准接入」后即上线。
+:::
 
-上报地址必须是被控能访问到的面板地址。面板在反向代理或 CDN 后面时，在这里填对外的域名。
+::: details 命令提示安装授权已过期或已撤销
+回到面板点「复制」或右侧图标重新生成授权，再复制新命令执行。重装已有节点，可在编辑页「连接方式」点「复制安装命令」。
+:::
 
-## 通过 SSH 安装
+::: details 安装命令卡住、提示下载失败或 unexpected EOF
+设备访问下载地址或 GitHub 受限时会出现。
 
-已经有服务器的 SSH 信息时，也可以让面板直接安装：
+在「设置中心」打开「Agent 安装源」选下载代理。仍失败见 [安装命令报错](/troubleshooting#安装命令报错)。
+:::
 
-1. 「服务器管理」点「新增服务器」，填写名称和 SSH 连接信息。
-2. 点「添加服务器」，弹出「是否立即安装探针？」时选「立即安装」。
+::: details 节点已接入但显示离线
+主动模式查能否访问「上报地址」（勿填带跳转的地址）。被动模式查防火墙是否放行「API 端口」。
 
-这种方式的通讯模式默认是被动，被控需放行 Agent 端口；可在表单的「通讯模式」开关切到主动。保存 SSH 密码或私钥前可先看 [管理服务器](/server-management)。
+完整排查步骤见 [节点显示离线](/troubleshooting#节点显示离线)。
+:::
 
-## 卸载
+::: details 群晖或普通账号使用「通过 SSH 由面板代装」提示权限不足
+面板不执行 `sudo`，SSH 代装需用 `root` 账号。群晖请按上文「支持的系统」复制命令安装。
+:::
 
-- 在「自动发现」切到「卸载命令」，选择系统后复制，在目标设备执行。
-- 或在服务器编辑页点「卸载探针」，由面板通过 SSH 卸载。
-
-卸载后到「服务器管理」删除这台服务器的记录。
-
-## 常见情况
-
-- **执行了命令，节点没出现**：先看「待审核」里有没有；开启了接入审核的节点需要批准后才会出现。
-- **命令报错或提示授权失效**：授权已过期或被撤销，点「复制」旁的刷新按钮重新生成授权，再复制新命令执行。
-- **节点出现了但显示离线**：主动方式检查被控能否访问上报地址，被动方式检查 Agent 端口是否放行。更多见 [节点显示离线](/troubleshooting#节点显示离线)。
-
-## 相关
-
-- [管理服务器](/server-management)
-- [分组](/groups)
-- [升级 Agent](/agent-upgrade)
+::: details macOS 执行安装命令提示不要使用 sudo
+macOS 默认装在当前用户下，去掉 `sudo` 直接执行。需开机未登录也运行，按上文「macOS」设系统级变量。
+:::
