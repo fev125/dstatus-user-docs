@@ -56,10 +56,13 @@ async function locate(page, target) {
   const browser = await chromium.launch({ channel: "chrome", headless: true });
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 2, locale: "zh-CN", colorScheme: "light" });
   await ctx.addInitScript(() => { try { localStorage.setItem("theme_mode", "light"); localStorage.setItem("theme", "light"); } catch (_) {} });
-  const page = await ctx.newPage();
-  await page.goto(`${BASE}/login`, { waitUntil: "domcontentloaded", timeout: 45000 });
-  await page.waitForURL(/admin/, { timeout: 30000 });
+  const login = await ctx.newPage();
+  await login.goto(`${BASE}/login`, { waitUntil: "domcontentloaded", timeout: 45000 });
+  await login.waitForURL(/admin/, { timeout: 30000 });
+  await login.close();
   for (const shot of shots) {
+    // 每张图开一个新页面：登录状态在同一个浏览器里共用，上一张留下的页面状态（如展开的 AI 侧边栏，存在 sessionStorage）不带到下一张
+    const page = await ctx.newPage();
     await page.goto(`${BASE}${shot.path}`, { waitUntil: "domcontentloaded", timeout: 45000 });
     await page.waitForTimeout(2500);
     await dismiss(page);
@@ -69,7 +72,7 @@ async function locate(page, target) {
       try { await (await locate(page, text)).click({ timeout: 8000 }); await page.waitForTimeout(1200); }
       catch (_) { console.log(`  点不到：${text}，这张跳过`); skipped = true; break; }
     }
-    if (skipped) continue;
+    if (skipped) { await page.close(); continue; }
     const boxes = [];
     for (const target of shot.highlight || []) {
       let box = null;
@@ -105,6 +108,7 @@ async function locate(page, target) {
     const out = path.join(outDir, shot.file.replace(/\.png$/, ".webp"));
     try { execFileSync("cwebp", ["-quiet", "-q", "80", "-resize", "1600", "0", png, "-o", out]); fs.unlinkSync(png); console.log(`拍好：${out}`); }
     catch (_) { console.log(`拍好（未转 webp）：${png}`); }
+    await page.close();
   }
   await browser.close();
 })().catch((e) => { console.error("截图失败：", e.message); process.exit(1); });
