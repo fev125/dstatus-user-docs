@@ -26,6 +26,8 @@
 
 <figure><img src="/agent-upgrade-drawer.webp" alt="点节点行右侧「⋯」，在「探针安装」里通过 SSH 更新或复制命令"><figcaption>点节点行右侧「⋯」，在「探针安装」里通过 SSH 更新或复制命令</figcaption></figure>
 
+<figure><img src="/agent-upgrade-edit-maintain.webp" alt="在节点编辑页「连接方式」标签底部点「升级探针」或「探针检测」"><figcaption>在节点编辑页「连接方式」标签底部点「升级探针」或「探针检测」</figcaption></figure>
+
 | 操作 | 作用 |
 |---|---|
 | 编辑页「连接方式 → 升级探针」 | 优先下发升级任务，不支持时改走已保存的 SSH 连接 |
