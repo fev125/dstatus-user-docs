@@ -100,6 +100,7 @@ export default defineConfig({
           text: '进阶',
           collapsed: true,
           items: [
+            { text: '域名解析（DDNS）', link: '/ddns' },
             { text: '前后台域名分离', link: '/domain-split-manual' },
             { text: '自定义 CSS', link: '/theme-custom-css' },
             { text: '公开 API', link: '/public-api' },

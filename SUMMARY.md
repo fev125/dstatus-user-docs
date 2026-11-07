@@ -32,6 +32,7 @@
 * [工具](tools.md)
 
 ## 进阶
+* [域名解析（DDNS）](ddns.md)
 * [前后台域名分离](domain-split-manual.md)
 * [自定义 CSS](theme-custom-css.md)
 * [公开 API](public-api.md)
