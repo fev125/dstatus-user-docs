@@ -45,14 +45,24 @@
 
 ### 支持的系统
 
+| 系统 | 架构 | 实测情况 | 和完整功能相比 |
+|---|---|---|---|
+| Linux（含群晖 DSM、OpenWrt、Alpine） | x86_64 | 多台 VPS 长期运行；群晖 DS918+（DSM 7.0）实测 | 完整 |
+| Linux | ARM64 | Debian 13 真机长期运行；Debian 12、Alpine 3.22 安装与回滚实测 | 完整 |
+| Linux | ARMv7、ARMv6、MIPS 小端（MIPSle） | 提供安装包，尚未真机验证 | 没有流媒体解锁检测；不能在面板一键升级 |
+| macOS | Intel、Apple 芯片 | Apple 芯片（macOS 26）、Intel（macOS 15）真机在运行 | 没有流媒体解锁检测，不能跑定时任务的「节点脚本」 |
+| Windows | x86_64 | Windows 机器在运行 | 没有流媒体解锁检测，不能跑定时任务的「节点脚本」 |
+
+32 位 x86（i386、i686）、MIPS 大端、MIPS64、RISC-V 等架构没有安装包。安装命令检测到程序跑不起来会直接报错退出，不会装上半截。
+
+不能一键升级的设备，升级方法见 [升级 Agent](/agent-upgrade)。
+
 切换下方系统标签，查看对应设备的执行方式。
 
 <DocTabs :tabs="['Linux / OpenWrt', '群晖 DSM', 'macOS', 'Windows']">
 <template #tab-0>
 
 选「Linux / macOS」，用 `root` 在终端执行。自动识别 OpenWrt、Alpine，设开机自启。
-
-支持 x86_64、ARM64、ARMv7 与 v6。路由器设备还支持 MIPSle 架构。
 
 </template>
 <template #tab-1>
