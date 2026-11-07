@@ -1,19 +1,28 @@
 <script setup>
-// 文档首页：第一屏（开头文案 + 轮播海报）→ 快速开始 → AI 运维 → 日常管理 → 帮助。
+// 文档首页：第一屏（开头文案 + 轮播海报）→ 实测占用 → 快速开始 → AI 运维 → 日常管理 → 帮助。
 // 文案规则：标题用短语，描述用陈述句，只写已上线、用户能用到的能力。
+// 数字只用实测（规范：主仓 docs/用户文档/文档更新规范.md「讲清能做什么」），出处与 quick-start 页一致。
 import HomePosters from './HomePosters.vue'
 
 const STEPS = [
-  ['01', '获取授权', '购买或兑换许可证。', '/license-management'],
+  ['01', '获取授权', '3 台以内免费用；节点更多时购买或兑换许可证。', '/license-management'],
   ['02', '安装面板', '复制部署命令，在服务器上执行。', '/quick-start'],
   ['03', '接入节点', '通过自动发现批量接入服务器。', '/agent-guide'],
   ['04', '配置通知', '接入 Telegram 等渠道，配置告警规则。', '/notification-settings']
 ]
+const STATS = [
+  ['500 台', '1 核 1G 主控实测带的节点数', 'CPU 约 62–65%，内存约 340 MB，上报 0 失败'],
+  ['约 30 MB', '探针常驻内存', '3 台 Linux 节点实测 28–42 MB'],
+  ['约 80 MB/天', '每台节点与主控的双向流量', '没人看页面时改为 60 秒上报一次'],
+  ['3 台免费', '不激活许可证也能用', '含网络质量、App 推送与远程 MCP']
+]
 const DAILY = [
   ['网络质量', 'Ping、TCPing、HTTP 与路由监控，流媒体与 AI 平台解锁检测。', '/monitor'],
-  ['告警与通知', '离线、流量、资源与到期告警，支持 Telegram、邮件、Webhook 与 Apple Push。', '/notification-settings'],
+  ['告警与通知', '离线、流量、资源与到期告警，支持 Telegram、邮件、Webhook 与 App 推送。', '/notification-settings'],
+  ['接收外部消息', '宝塔、备份脚本等外部消息推到面板，经通知渠道发出。', '/notification-inbound'],
   ['账单与流量', '价格、到期与流量上限管理，支持周期流量校准。', '/billing-report'],
   ['访问控制与分享', '公开、口令、私有三种访问方式，支持节点临时分享链接。', '/access-control'],
+  ['托管展示页', '由 DStatus 托管公开状态页，访客看不到主控地址。', '/showcase'],
   ['外观与个性化', '配色、壁纸、首页布局与大屏主题。', '/personalization'],
   ['升级、备份与迁移', '在线更新、数据库备份与整机迁移。', '/panel-migration']
 ]
@@ -22,6 +31,16 @@ const DAILY = [
 <template>
   <div class="landing">
     <HomePosters />
+
+    <section class="wrap sec">
+      <div class="kicker">实测占用</div>
+      <h2>1 核 1G，带 500 台节点</h2>
+      <p class="sub">下面是压测和真实节点上测到的数字。</p>
+      <div class="stats">
+        <div v-for="[n, t, d] in STATS" :key="n" class="stat"><div class="big">{{ n }}</div><h3>{{ t }}</h3><p>{{ d }}</p></div>
+      </div>
+      <a class="more-link" href="/quick-start">查看配置要求 →</a>
+    </section>
 
     <section class="wrap sec">
       <div class="kicker">快速开始</div>
@@ -109,6 +128,14 @@ h3 { margin: 0; }
 .step .more { display: block; margin-top: 14px; font-size: 13px; color: var(--vp-c-text-3); }
 .step:hover .more { color: var(--vp-c-text-1); }
 
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+.stat { border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 18px; background: var(--vp-c-bg); }
+.stat .big { font-size: 28px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.stat h3 { font-size: 15px; font-weight: 600; margin-top: 8px; }
+.stat p { font-size: 13px; line-height: 1.6; color: var(--vp-c-text-2); margin: 4px 0 0; }
+.more-link { display: inline-block; margin-top: 16px; font-size: 14px; font-weight: 500; color: var(--vp-c-text-2); }
+.more-link:hover { color: var(--vp-c-text-1); }
+
 .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
 .card { border: 1px solid var(--vp-c-divider); border-radius: 14px; background: var(--vp-c-bg-soft); padding: 22px 22px 0; display: flex; flex-direction: column; overflow: hidden; transition: border-color .15s; }
 .card:hover { border-color: var(--vp-c-text-3); }
@@ -134,12 +161,13 @@ h3 { margin: 0; }
 .foot nav { display: flex; flex-wrap: wrap; gap: 8px; }
 
 @media (max-width: 960px) {
-  .steps { grid-template-columns: repeat(2, 1fr); }
+  .steps, .stats { grid-template-columns: repeat(2, 1fr); }
   .bento { grid-template-columns: 1fr; } .card.wide { grid-column: auto; }
   .list { grid-template-columns: 1fr 1fr; }
   .foot { margin-left: 24px; margin-right: 24px; }
 }
 @media (max-width: 640px) {
   .steps, .list { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 10px; } .stat { padding: 14px; } .stat .big { font-size: 20px; white-space: nowrap; }
 }
 </style>
