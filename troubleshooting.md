@@ -1,113 +1,124 @@
 # 常见问题
 
-按现象查找。每项按顺序排查，解决不了带上截图或终端输出到 Telegram 群反馈。面板自身出错时，先到「工具 → 日志管理」看问题列表，点「让 AI 解释」；还是不行，点「打包发给作者」把文件一起发来，见 [工具](/tools#日志管理)。
+按故障现象排查面板、探针与数据库连接问题。
+
+面板自身报错时，打开「工具 → 日志管理」点「让 AI 解释」。仍未解决可点「下载排障文件」反馈，见 [日志管理](/tools#日志管理)。
 
 ## 面板无法访问
 
-1. 在面板服务器执行 `docker ps`，确认 `dstatus` 容器在运行；没有运行，进入安装目录执行 `docker compose up -d`。
-2. 容器反复重启时，执行 `docker logs dstatus` 查看报错。
-3. 确认安全组和防火墙放行了面板端口（默认 5555）。
-4. 用了反向代理时，先用 `http://服务器IP:端口` 直连，排除代理配置问题。
+在面板服务器检查容器状态，确认端口放行与域名转发。
 
-## 节点显示离线
+1. 执行 `docker ps` 查 `dstatus` 容器；未运行时进 `/opt/dstatus` 执行 `docker compose up -d`。
+2. 容器反复重启时，执行 `docker logs --tail 100 dstatus` 查看报错日志。
+3. 检查安全组和服务器防火墙，放行面板端口（默认 `5555`）。
+4. 套了反向代理（域名转发）时，先用 `http://服务器地址:5555` 直连测试。
 
-1. 服务器列表该节点「更多」，在操作面板点「探针检测」，看检测结果和原因。
-2. 主动模式：被控要能访问上报地址。在被控上用 `curl` 访问该地址测试；地址在节点编辑页「主动上报」里查看。
-3. 被动模式：面板要能访问被控的 Agent 端口（默认 9999），检查被控的防火墙和安全组。
-4. 在被控上执行 `systemctl status dstatus-agent` 查看进程；未运行时执行 `systemctl restart dstatus-agent`。
-
-## 流量统计不符
-
-1. 节点编辑页 →「账单与流量」，核对周期：月付看「流量重置日（月付）」；打开「跟随账单周期」时，周期由账单周期和到期日决定。
-2. 核对「流量统计方向」：双向、仅入站、仅出站或单向最大，与商家计费方式一致。
-3. 单位差异：面板的 GB 按 1024 进位；商家按 1000 进位时，面板数字会小约 7%。
-4. 已用量对不上时，在「校准时已用流量 (GB)」填入商家后台的已用量。校准只影响展示。
-
-## 收不到通知
-
-1. 通知管理 → 规则，在上方通知渠道里打开对应渠道的「配置」，点「测试」确认能收到。
-2. 在规则列表里确认对应规则已启用，「发到」列里有这个渠道；可在规则菜单里点「测试发送」。
-3. 「通知管理 → 记录」里打开这条通知，查看每个渠道的发送结果和失败原因。
-4. 看是否在「免打扰时段」或规则的静默时段内，服务器是否被排除或静默。
-5. 离线通知要等节点离线持续一段时间才发，时长在内置规则「掉线与恢复」的「离线多久通知」里调整。
-
-### 提示 Telegram 机器人被同时使用
-
-测试 Telegram 时提示「该 Telegram 机器人正被其他程序同时使用」或「检测到外部同 Token 实例」，投递记录显示「通道未就绪」或「机器人被其他程序同时使用，已暂停」：同一个机器人只能由一处接收消息，另一套面板或其他程序也在用它时，面板会暂停 Telegram 通知。
-
-停用另一处，或在 BotFather 新建一个机器人并换上新的 Token，然后在 Telegram 渠道点「保存设置」恢复。
+升级后新版本无法启动时，回退步骤见 [升级、备份与迁移](/panel-migration#升级与卸载)。
 
 ## 忘记密码或登录入口
 
-见 [进不去后台怎么办](/login-management)。
-
-## 网络质量无数据
-
-1. 网络监控 → 监控目标里至少有一个目标，并且有在线的执行节点。
-2. 页面提示升级套餐时，当前授权不包含网络质量功能，见 [获取与激活授权](/license-management)。
-3. Ping 一直失败时，目标可能屏蔽 ICMP，改用 TCP 并填端口。
-4. 节点在线但没有数据，先 [升级 Agent](/agent-upgrade)。
+运行救援脚本可重置密码或恢复入口，见 [进不去后台怎么办](/login-management#运行救援脚本)。
 
 ## 安装命令报错
 
-1. 提示下载失败：确认服务器能访问 `down.vps.mom`；安装 Agent 时还要能访问 GitHub，或在 设置中心 → Agent 安装源 选下载代理。
-2. 其他报错：保留完整终端输出，到 Telegram 群反馈。
+确认下载地址连通性，或切换下载代理与手动上传安装包。
 
-### 安装命令没有反应，或提示 unexpected EOF
+<figure><img src="/troubleshooting-install-proxy.webp" alt="在「设置中心 → Agent 安装源」切换「下载代理 / GitHub 加速」并点「保存」"><figcaption>在「设置中心 → Agent 安装源」切换「下载代理 / GitHub 加速」并点「保存」</figcaption></figure>
 
-执行安装命令后一直没有输出，按 Ctrl+C 后提示 `unexpected EOF while looking for matching`：服务器所在网络限制了安装脚本的下载线路，脚本只下载了一部分。服务器能 `ping` 通下载地址，不代表能完整下载。
+1. 安装面板需能访问 `down.vps.mom` 和 `ghcr.io`，请确认出站网络正常。
+2. 安装探针报下载失败时，打开「设置中心 → Agent 安装源」切换下载代理并点「保存」。
+3. 命令卡住无输出或代理均不可用时，展开下方对应方案处理。
 
-换一台能正常下载的机器（例如面板服务器或自己的电脑）执行安装命令，把命令里 `|` 后面的 `bash -s -- …` 整段放进 `ssh` 的双引号里。脚本在这台机器上下载，再通过 SSH 交给目标服务器运行：
+::: details 安装命令没有反应，或提示 unexpected EOF
+目标机器下载脚本被截断时，按 Ctrl + C 会提示 `unexpected EOF`。能 `ping` 通下载地址，不代表能完整下载脚本。
+
+在能正常下载的机器拉取脚本，经 SSH 传给目标服务器运行：
 
 ```bash
-curl -fsSL https://down.vps.mom/scripts/install-dstatus-agent.sh | ssh root@服务器地址 "bash -s -- '通讯密钥' '面板地址' 'active-report'"
+curl -fsSL https://down.vps.mom/scripts/install-dstatus-agent.sh | ssh root@服务器地址 "bash -s -- '安装授权' '面板地址' 'active-report'"
 ```
 
-引号里的参数以面板复制的安装命令为准。SSH 端口不是 22 时，在 `ssh` 后加 `-p 端口`。也可以让面板通过 SSH 直接安装，见 [通过 SSH 安装](/agent-guide#通过-ssh-安装)。
+双引号内保留原命令 `bash -s --` 后的参数，改过端口在 `ssh` 后加 `-p 端口`。也可改用 [通过 SSH 安装](/agent-guide#通过-ssh-安装) 代装。
+:::
 
-脚本运行后还要下载 Agent 文件，这一步失败时终端会给出手动上传的步骤。
+::: details 国内服务器下载探针很慢或失败（手动上传安装）
+脚本直连 GitHub 过慢会自动换加速源，全部失败时可手动上传探针文件安装。
 
-### 国内服务器下载 Agent 很慢或失败
+1. 在节点执行 `uname -m` 看架构：`x86_64` 用 `dstatus-agent_linux_amd64`，`aarch64` 用 `dstatus-agent_linux_arm64`。
+2. 在能开 GitHub 的电脑下载对应文件，同目录放 `SHA256SUMS` 可自动校验：
 
-安装脚本会先连 GitHub，太慢或断开会自动换加速源。都下载不了时，手动上传 Agent 文件再安装：
+   ```text
+   https://github.com/fev125/dstatus/releases/download/agent-latest/文件名
+   ```
 
-1. 在服务器执行 `uname -m` 看架构：`x86_64` 用 `dstatus-agent_linux_amd64`，`aarch64` 用 `dstatus-agent_linux_arm64`。下载失败时终端也会直接给出文件名和链接。
-2. 在能打开 GitHub 的电脑下载该文件：`https://github.com/fev125/dstatus/releases/download/agent-latest/文件名`。同一位置的 `SHA256SUMS` 一起下载，放在同一目录，安装时会自动校验文件是否完整。
-3. 把文件上传到服务器，例如放到 `/root/`。
-4. 执行 `export DSTATUS_AGENT_FILE=/root/dstatus-agent_linux_amd64`（换成你的文件名），再执行面板里复制的安装或重装命令。脚本会跳过下载，直接用这个文件。
+3. 把文件上传到节点目录（如 `/root/`）。
+4. 先指定本机文件路径，再在同一终端粘贴执行安装或重装命令：
 
-用 `sudo` 执行时，把变量写在 `sudo` 后面：`curl ... | sudo DSTATUS_AGENT_FILE=/root/文件名 bash -s ...`。以上以 Linux 为例；macOS 和 Windows 的安装脚本同样支持这个变量，下载失败时终端会给出对应的步骤。
+   ```bash
+   export DSTATUS_AGENT_FILE=/root/dstatus-agent_linux_amd64
+   ```
+
+用 `sudo` 时把变量放在 `sudo` 后面，如 `curl ... | sudo DSTATUS_AGENT_FILE=/root/文件名 bash -s ...`。macOS 同样用 `export` 指定路径；Windows 在同一 PowerShell 窗口先运行 `$env:DSTATUS_AGENT_FILE = 'C:\路径\文件名'`。
+:::
+
+## 节点显示离线
+
+先用「探针检测」定位断开环节，再核对网络方向与探针服务。
+
+<figure><img src="/troubleshooting-probe-test.webp" alt="在「服务器列表」点节点行右侧「⋯」，再点「探针检测」"><figcaption>在「服务器列表」点节点行右侧「⋯」，再点「探针检测」</figcaption></figure>
+
+1. 新命令接入的节点，先去「服务器管理 → 自动发现」的「待审核」点「批准」。
+2. 打开「服务器列表」，点节点右侧「⋯ → 探针检测」查看断开原因。
+3. 主动模式：在编辑页「高级」看「上报地址」，到节点用 `curl -I` 测连通。
+4. 被动模式：在节点防火墙和安全组，对面板放行「API 端口」（默认 `9999`）。
+5. 在 Linux 节点执行 `systemctl status dstatus-agent`，未运行时执行 `systemctl restart dstatus-agent`。
+
+::: details 非 systemd 系统重启探针与重装修复
+Alpine 执行 `rc-service dstatus-agent restart`，OpenWrt 执行 `/etc/init.d/dstatus-agent restart`。Windows 在 PowerShell 执行 `Start-ScheduledTask -TaskName DStatusAgent`。
+
+macOS 或改过密钥时，在编辑页「连接方式」点「复制安装命令」重装。关过「设置中心」的「探针长连接」时，重开可恢复被动节点连接。
+:::
+
+## 流量统计不符
+
+核对统计方向与重置日，或在「与商家对账」校准读数，见 [账单与商家](/billing-report#设置流量套餐与对账校准)。
+
+## 收不到通知
+
+核对渠道测试、免打扰时段与 Telegram 机器人冲突，见 [配置通知](/notification-settings#常见问题)。
+
+## 网络质量无数据
+
+核对监控目标、在线节点与探针版本，Ping 不通改测 TCP，见 [网络质量](/monitor#常见问题)。
 
 ## 切换到 PostgreSQL 失败
 
-切换失败不影响原有数据，面板会继续使用 SQLite。处理后在 设置中心 → 数据库与存储 → 「切换数据库」里重新点「开始切换」，无需重启面板。
+切换失败不影响原数据，面板会自动恢复并继续使用 SQLite。
 
-### 提示 permission denied for schema public
+<figure><img src="/troubleshooting-pg-switch.webp" alt="在「数据库与存储」点「切换数据库」，排障后点「开始切换」重试"><figcaption>在「数据库与存储」点「切换数据库」，排障后点「开始切换」重试</figcaption></figure>
 
-PostgreSQL 15 及以上版本，普通用户默认不能在其他用户所有的库里建表。把数据库的所有者改为面板填写的用户名：在数据库服务器上用 PostgreSQL 管理员账号执行（库名、用户名按实际填写）：
+1. 按页面报错处理问题，权限报错见下方折叠说明。
+2. 在「设置中心 → 数据库与存储」点「切换数据库」，再点「开始切换」重试。
+
+::: details 提示没有建表权限或 permission denied for schema public
+PostgreSQL 15 及以上版本，默认不允许普通用户在他人所有的库里建表。
+
+用管理员账号改数据库所有者，库名与用户名按实际填写：
 
 ```bash
+# 本机安装的 PostgreSQL
 sudo -u postgres psql -c "ALTER DATABASE dstatus OWNER TO dstatus;"
-```
 
-PostgreSQL 运行在 Docker 中时，把 `postgres` 换成容器的管理员用户名：
-
-```bash
+# Docker 容器中的 PostgreSQL
 docker exec -it PostgreSQL容器名 psql -U postgres -c "ALTER DATABASE dstatus OWNER TO dstatus;"
 ```
 
-新建数据库时直接指定所有者，可避免该问题：
+新建数据库时直接指定所有者，可避免该报错：
 
 ```sql
 CREATE USER dstatus WITH PASSWORD '你的密码';
 CREATE DATABASE dstatus OWNER dstatus;
 ```
 
-每次切换前面板都会在 `data` 目录生成一份 `switch-backup-sqlite-时间.db` 备份。切换成功后，失败时留下的备份可以删除。
-
-## 相关
-
-- [安装面板](/quick-start)
-- [升级 Agent](/agent-upgrade)
-- [配置通知](/notification-settings)
-- [网络质量](/monitor)
+重试无需重启面板。切换前会在 `data` 目录留存 `switch-backup-sqlite-时间.db`，切换成功后可删掉失败备份。
+:::
