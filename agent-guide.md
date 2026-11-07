@@ -1,6 +1,6 @@
 # 接入节点
 
-在目标设备上安装探针（监控程序），采集指标连回面板。探针常驻内存约 30 MB，每天双向流量约 80 MB。
+在目标设备上安装探针（监控程序），采集指标连回面板。探针常驻内存约 30 MB，小内存的机器也装得下。
 
 ## 在哪打开
 
@@ -10,13 +10,26 @@
 
 ## 怎么用
 
+### 开始前
+
+| 项目 | 最低准入 | 依据 |
+|---|---|---|
+| 内存 | 空闲 64M 以上 | 3 台 Linux 节点实测常驻 28–42 MB |
+| 硬盘可用空间 | 100M 以上 | 程序约 26–28 MB，升级时新旧两份与备份同时存在 |
+| CPU | 不设门槛 | 容器多的机器上实测约 0.86% |
+| 流量 | 有人看页面时约 80 MB/天（约 2.4G/月） | 没人看时上报降为每 60 秒一次，流量随之大降 |
+
+默认的主动模式下，设备要能访问面板的端口（默认 `5555`）或域名。
+
 ### 一条命令接入
 
 复制安装命令到目标设备执行，即可接入面板开始监控。
 
-1. 在「安装探针」选目标系统，点「复制」生成安装命令。
+1. 在「安装探针」选系统：Linux、macOS、群晖选「Linux / macOS」，Windows 选「Windows」，点「复制」。
 2. 打开设备的终端或 PowerShell，粘贴命令执行。
-3. 在「待审核」点「批准」，或点页面下方「批准接入」。
+3. 回到面板，在「待审核」点「批准」，或点页面下方「批准接入」。
+
+命令跑完后节点不会马上上线：「接入审核」默认开启，批准后才出现在服务器列表。
 
 <figure><img src="/agent-guide-pending-list.webp" alt="在「接入节点」的「待审核」列表批准新设备上线"><figcaption>在「接入节点」的「待审核」列表批准新设备上线</figcaption></figure>
 
@@ -80,7 +93,7 @@ $env:DSTATUS_INSTALL_SCOPE = 'System'
 
 ### 主动模式与被动模式
 
-命令接入默认用「主动模式」，点右上角「接入设置」可修改。
+命令接入默认用「主动模式」，大多数情况保持默认即可。要改，点右上角「接入设置」。
 
 <figure><svg viewBox="0 0 680 204" width="680" height="204" role="img" aria-label="主动模式与被动模式的连接方向对比" style="display:block;width:100%;max-width:680px;height:auto"><rect x="1" y="1" width="678" height="202" rx="8" fill="var(--vp-c-bg-soft)" stroke="var(--vp-c-divider)"/><line x1="20" y1="102" x2="660" y2="102" stroke="var(--vp-c-divider)" stroke-dasharray="4 4"/><text x="24" y="42" fill="var(--vp-c-text-1)" font-size="14" font-weight="600">主动模式（默认）</text><text x="24" y="64" fill="var(--vp-c-text-2)" font-size="12">适合 NAT / 防火墙后设备</text><rect x="184" y="22" width="152" height="58" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="260" y="46" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">目标设备（探针）</text><text x="260" y="66" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">无需开放入站端口</text><text x="418" y="40" text-anchor="middle" fill="var(--vp-c-brand-1)" font-size="11" font-weight="500">主动上报 + 领任务</text><line x1="344" y1="51" x2="484" y2="51" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="482,46 492,51 482,56" fill="var(--vp-c-brand-1)"/><rect x="500" y="22" width="156" height="58" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="578" y="46" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">DStatus 面板</text><text x="578" y="66" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">节点能访问上报地址</text><text x="24" y="144" fill="var(--vp-c-text-1)" font-size="14" font-weight="600">被动模式</text><text x="24" y="166" fill="var(--vp-c-text-2)" font-size="12">适合公网或同内网设备</text><rect x="184" y="124" width="152" height="58" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="260" y="148" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">目标设备（探针）</text><text x="260" y="168" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">放行 API 端口（9999）</text><text x="418" y="136" text-anchor="middle" fill="var(--vp-c-brand-1)" font-size="11" font-weight="500">拉取监控数据</text><line x1="492" y1="145" x2="352" y2="145" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="354,140 344,145 354,150" fill="var(--vp-c-brand-1)"/><line x1="344" y1="165" x2="484" y2="165" stroke="var(--vp-c-text-2)" stroke-width="1" stroke-dasharray="4 3"/><polygon points="482,161 490,165 482,169" fill="var(--vp-c-text-2)"/><text x="418" y="180" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="10">默认仍连面板领任务</text><rect x="500" y="124" width="156" height="58" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="578" y="148" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">DStatus 面板</text><text x="578" y="168" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">能访问节点地址与端口</text></svg><figcaption>主动模式由探针主动连面板，被动模式由面板连探针端口</figcaption></figure>
 
@@ -93,7 +106,7 @@ $env:DSTATUS_INSTALL_SCOPE = 'System'
 | 「通讯方式」 | 选「主动模式」或「被动模式」 | 「主动模式」 |
 | 「授权有效期」 | 安装授权可用时长，可改分钟数或勾选「永久」 | 30 分钟 |
 | 「API 端口」 | 被动模式下面板连接的探针端口 | 9999 |
-| 「上报地址」 | 探针连面板的地址；反代或 CDN 后填对外域名 | 留空用面板地址 |
+| 「上报地址」 | 探针连面板的地址。没有域名就留空；面板放在 CDN 或域名转发后面时，填对外域名 | 留空：用设置中心的「站点网址」，没填就用你打开面板的地址 |
 | 「默认分组」 | 新节点接入后自动归入的 [分组](/groups) | 「默认」 |
 | 「接入审核」 | 勾选「需要审核」后，新节点先进入「待审核」 | 开启 |
 

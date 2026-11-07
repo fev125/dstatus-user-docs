@@ -57,11 +57,11 @@ export default defineConfig({
           text: '开始使用',
           items: [
             { text: 'DStatus 是什么', link: '/' },
-            { text: '获取与激活授权', link: '/license-management' },
             { text: '安装面板', link: '/quick-start' },
             { text: '接入节点', link: '/agent-guide' },
             { text: '配置通知', link: '/notification-settings' },
             { text: '接收外部消息', link: '/notification-inbound' },
+            { text: '获取与激活授权', link: '/license-management' },
           ]
         },
         {

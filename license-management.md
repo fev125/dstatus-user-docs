@@ -8,20 +8,19 @@
 
 | 操作 | 作用 |
 |---|---|
+| [dstatus.sh/pricing](https://dstatus.sh/pricing) | 看价格、各版本节点数与当前优惠 |
 | [用户中心](https://client.vps.mom)「套餐商店」 | 购买新许可证 |
 | [用户中心](https://client.vps.mom)「仪表盘」 | 兑换激活码、复制密钥、生成部署命令、续费、升级或解绑 |
 | 面板后台左侧「授权管理」 | 激活、校验、更换或解绑许可证，开通 [托管展示页](/showcase) |
 
 <figure><svg viewBox="0 0 680 120" width="680" height="120" role="img" aria-label="从获取密钥、面板激活到换机解绑的完整流程" style="display:block;width:100%;max-width:680px;height:auto"><rect x="1" y="1" width="678" height="118" rx="8" fill="var(--vp-c-bg-soft)" stroke="var(--vp-c-divider)"/><rect x="16" y="20" width="142" height="80" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="87" y="46" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">1. 获取密钥</text><text x="87" y="68" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">用户中心购买或兑换</text><text x="87" y="86" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">点卡片密钥条复制</text><line x1="163" y1="60" x2="180" y2="60" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="178,55 186,60 178,65" fill="var(--vp-c-brand-1)"/><rect x="188" y="20" width="142" height="80" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="259" y="46" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">2. 绑定激活</text><text x="259" y="68" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">后台「授权管理」激活</text><text x="259" y="86" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">或部署开「带上密钥」</text><line x1="335" y1="60" x2="352" y2="60" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="350,55 358,60 350,65" fill="var(--vp-c-brand-1)"/><rect x="360" y="20" width="142" height="80" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="431" y="46" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">3. 续费升级</text><text x="431" y="68" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">用户中心原证办理</text><text x="431" y="86" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">保留原密钥与绑定</text><line x1="507" y1="60" x2="524" y2="60" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="522,55 530,60 522,65" fill="var(--vp-c-brand-1)"/><rect x="532" y="20" width="132" height="80" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="598" y="46" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">4. 换机迁移</text><text x="598" y="68" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">先解绑旧面板实例</text><text x="598" y="86" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">再去新面板激活</text></svg><figcaption>从获取密钥、面板激活到换机解绑的完整流程</figcaption></figure>
 
-::: details 免费版与付费套餐的功能区别
-未激活时自动按免费版运行，激活许可证后按所购套餐生效。
+未激活时自动按免费版运行，激活许可证后按所购版本生效。现在售卖的付费版功能都一样，只差节点数和计费方式。
 
 | 版本 | 节点上限 | 可用功能 |
 |---|---|---|
 | 免费版 | 3 台 | 基础监控、自动发现、[网络质量](/monitor)、路由与解锁检测、[账单与商家](/billing-report)、App 推送、大屏、[远程 MCP](/mcp) |
-| 付费套餐 | 按套餐至不限 | 免费版全部功能，另按套餐含网页终端、[AI 功能](/ai)、高级分析、自定义告警、API 访问、去掉品牌标识、[托管展示页](/showcase) |
-:::
+| 付费版 | 按版本，最多不限 | 免费版全部功能，另含网页终端、[AI 功能](/ai)、高级分析、自定义告警、API 访问、去掉品牌标识、[托管展示页](/showcase) |
 
 ## 怎么用
 

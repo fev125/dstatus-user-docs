@@ -5,15 +5,15 @@
 import HomePosters from './HomePosters.vue'
 
 const STEPS = [
-  ['01', '获取授权', '3 台以内免费用；节点更多时购买或兑换许可证。', '/license-management'],
-  ['02', '安装面板', '复制部署命令，在服务器上执行。', '/quick-start'],
-  ['03', '接入节点', '通过自动发现批量接入服务器。', '/agent-guide'],
-  ['04', '配置通知', '接入 Telegram 等渠道，配置告警规则。', '/notification-settings']
+  ['01', '安装面板', '复制部署命令在服务器上执行，3 台以内免费用。', '/quick-start'],
+  ['02', '接入节点', '通过自动发现批量接入服务器。', '/agent-guide'],
+  ['03', '配置通知', '接入 Telegram 等渠道，配置告警规则。', '/notification-settings'],
+  ['04', '获取授权', '节点超过 3 台或要用 AI 时，购买或兑换许可证。', '/license-management']
 ]
 const STATS = [
-  ['500 台', '1 核 1G 主控实测带的节点数', 'CPU 约 62–65%，内存约 340 MB，上报 0 失败'],
-  ['约 30 MB', '探针常驻内存', '3 台 Linux 节点实测 28–42 MB'],
-  ['约 80 MB/天', '每台节点与主控的双向流量', '没人看页面时改为 60 秒上报一次'],
+  ['1 核 1G', '50–100 台节点的推荐配置', '按测试环境实测推算，CPU 约 9–15%'],
+  ['500 台', '1 核 1G 的压测目标', '测试环境已跑通：CPU 平均约 62–65%，上报 0 失败'],
+  ['约 30 MB', '探针常驻内存', '3 台真实 Linux 节点实测 28–42 MB'],
   ['3 台免费', '不激活许可证也能用', '含网络质量、App 推送与远程 MCP']
 ]
 const DAILY = [
@@ -34,9 +34,9 @@ const DAILY = [
     <HomePosters />
 
     <section class="wrap sec">
-      <div class="kicker">实测占用</div>
-      <h2>1 核 1G，带 500 台节点</h2>
-      <p class="sub">下面是压测和真实节点上测到的数字。</p>
+      <div class="kicker">资源占用</div>
+      <h2>按「1 核 1G 带 500 台」的目标开发</h2>
+      <p class="sub">日常 50–100 台，1 核 1G 就够。下面是测试环境和真实节点上的数字。</p>
       <div class="stats">
         <div v-for="[n, t, d] in STATS" :key="n" class="stat"><div class="big">{{ n }}</div><h3>{{ t }}</h3><p>{{ d }}</p></div>
       </div>
@@ -56,7 +56,7 @@ const DAILY = [
     <section class="wrap sec">
       <div class="kicker">核心能力</div>
       <h2>AI 运维</h2>
-      <p class="sub">AI 读取面板的实时数据，可直接在节点上执行命令。</p>
+      <p class="sub">AI 读取面板的实时数据，可直接在节点上执行命令。AI 功能要付费版。</p>
       <div class="bento">
         <a class="card wide" href="/ai">
           <span class="tag">高级分析</span><h3>AI 解读</h3>
@@ -94,10 +94,11 @@ const DAILY = [
     </section>
 
     <section class="wrap foot">
-      <div><strong>帮助与支持</strong><p>常见问题、版本更新与账号管理。</p></div>
+      <div><strong>帮助与支持</strong><p>常见问题、版本更新、价格与账号管理。</p></div>
       <nav>
         <a class="btn ghost" href="/troubleshooting">常见问题</a>
         <a class="btn ghost" href="/changelog">更新日志</a>
+        <a class="btn ghost" href="https://dstatus.sh/pricing" target="_blank" rel="noreferrer">价格 ↗</a>
         <a class="btn ghost" href="https://client.vps.mom" target="_blank" rel="noreferrer">用户中心 ↗</a>
       </nav>
     </section>

@@ -2,11 +2,11 @@
 
 ## 开始使用
 * [DStatus 是什么](index.md)
-* [获取与激活授权](license-management.md)
 * [安装面板](quick-start.md)
 * [接入节点](agent-guide.md)
 * [配置通知](notification-settings.md)
 * [接收外部消息](notification-inbound.md)
+* [获取与激活授权](license-management.md)
 
 ## AI 与自动化
 * [AI 功能](ai.md)
