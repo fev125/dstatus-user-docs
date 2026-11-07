@@ -23,7 +23,8 @@ async function dismiss(page) {
 }
 
 async function clean(page) {
-  await page.addStyleTag({ content: "#wallpaper-layer{display:none!important}" });
+  // 后台壁纸是 #wallpaper-layer；前台（新访客前端）壁纸走根节点的 --wallpaper-image 变量和 .ds-wallpaper-video
+  await page.addStyleTag({ content: "#wallpaper-layer,.ds-wallpaper-video{display:none!important} html{--wallpaper-image:none!important}" });
   await page.evaluate(() => {
     for (const el of document.querySelectorAll("div,p,section")) {
       if (el.childElementCount <= 2 && /官方共享演示环境/.test(el.textContent || "") && el.getBoundingClientRect().height < 80) el.style.display = "none";
