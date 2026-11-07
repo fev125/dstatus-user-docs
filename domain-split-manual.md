@@ -79,22 +79,9 @@
 <template #tab-3>
 
 1. 复制面板生成的「Caddy」片段，粘贴到 `Caddyfile`。
-2. 保留前台块顶部的 `@blocked` 两行，把下半段改成下方写法：
+2. 重载 Caddy 并等待自动签发证书生效。
 
-   ```caddyfile
-   status.example.com {
-     @blocked path ...（保留面板生成的这一整行）
-     respond @blocked 404
-
-     reverse_proxy 127.0.0.1:5555 {
-       header_up Host status.example.com
-       header_up X-Forwarded-Host status.example.com
-       header_up X-Forwarded-Proto {scheme}
-     }
-   }
-   ```
-
-3. 把域名与源站地址换成面板填的值，重载 Caddy 等证书生效。
+生成片段已包含前台、后台两个站点块。不要把它嵌进其他站点块里。
 
 </template>
 </DocTabs>
@@ -142,12 +129,6 @@
 前台反代会拦截探针上报，仍连向前台域名的主动探针会收到 `404`。
 
 从后台域名进 [管理服务器](/server-management)，在节点「编辑 → 连接方式」重装探针即可恢复。后台生成的命令默认连向后台域名。
-:::
-
-::: details 用 Caddy 反代时，预检通过但打开前台首页报 404
-默认「Caddy」片段末尾单独的 `respond 404` 优先级更高，会拦截整个前台。
-
-按上文「Caddy」标签页删掉末尾 `respond 404`，合并成一条 `reverse_proxy` 后重载。
 :::
 
 ::: details 前台打开登录页报 404，或后台域名故障进不去后台
