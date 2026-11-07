@@ -293,4 +293,5 @@ div[class*="language-"] {
 /* 截图与图注（文档更新规范「图文并茂」）：图下方显示一句灰色图注 */
 .vp-doc figure { margin: 16px 0; }
 .vp-doc figure img { display: block; max-width: 100%; border: 1px solid var(--vp-c-divider); border-radius: 8px; }
+.vp-doc figure > svg { display: block; width: 100%; max-width: 680px; height: auto; }
 .vp-doc figure figcaption { margin-top: 6px; font-size: 13px; color: var(--vp-c-text-2); }
