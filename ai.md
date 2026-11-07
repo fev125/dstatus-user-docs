@@ -1,6 +1,6 @@
 # AI 功能
 
-一句话替你排查节点异常并改好面板设置，每一步操作都可控。服务器卡了问一句就找出高占用进程，月底问一句就列出待续费机器。
+一句话替你排查节点异常，或修改面板设置。服务器卡了问一句就找出高占用进程，月底问一句就列出待续费机器。
 
 本页功能需付费版（各档仅差节点数，见 [价格说明](https://dstatus.sh/pricing)）。外部客户端接入见 [远程 MCP](/mcp)。
 
@@ -36,25 +36,25 @@
 
 ### 两个对话入口的执行档位
 
-默认用「确认后执行」，每一步都看得到。
+默认用「确认后执行」，跑命令和改配置前先弹窗。
 
 | 档位与按钮 | 右侧「AI 助手」 | 终端「AI 助手」 |
 |---|---|---|
-| 「确认后执行」（默认） | 查数据直接查；跑命令、测解锁、改设置前先出确认卡 | 每条命令和改文件前都先出确认卡，写明作用与影响 |
-| 「自动执行」 | 常规命令与检测直接跑；改节点、写文件与高危命令仍需确认 | 查看类命令与你明确要求的操作直接跑；高危命令仍需确认 |
+| 「确认后执行」（默认） | 查数据直接查；跑命令、测解锁、改设置前先出确认卡 | 读指标与文件直接读；每条命令和改文件前都先出确认卡 |
+| 「自动执行」 | 普通命令、网络诊断与测解锁直接跑；改节点、写文件与不可撤回命令仍需确认 | 只读命令与本轮祈使句要求的改动直接跑；不可撤回命令仍需确认 |
 | 确认卡按钮 | 点「执行」或「不执行」 | 点「运行」或「不运行」，运行中随时可点「停止」 |
 
 ### AI 助手
 
-在任意页面打开侧边栏。可问「即将到期的服务器」或「把香港的节点都加进『亚太』分组」。
+在任意页面打开侧边栏。可问「即将到期的服务器」或「把香港节点加进『亚太』分组」。
 
-服务器卡了，在节点详情「负载详情」旁点「问 AI」，会带上当前负载一起问，再说「这台为什么卡」。要在服务器上查进程，先给节点配好 SSH。
+在「负载详情」旁点「问 AI」，再说「这台为什么卡」。跑命令需先配好 SSH。
 
 1. 点右侧「AI 助手」，或按 `⌘J`、`Ctrl + J` 打开。
 2. 输入问题，或点输入框上方的示例提问。
 3. 出确认卡时点「执行」或「不执行」。
 
-改完后当前页自动刷新，历史对话与 [App](/apple-app) 同步。
+改完当前页自动刷新，历史对话与 [App](/apple-app) 同步。
 
 ::: details 带上当前页面、密码安全输入与额度提示
 输入框默认带上当前页面或节点，点「×」可取消。负载图、节点抽屉、通知事件和网络详情里，也可点「问 AI」。
@@ -68,7 +68,7 @@
 
 ### 终端 AI 助手
 
-针对单台节点排障。可问「这台机器为什么卡，找出占用最高的进程」或「查看最近的报错日志」。
+针对单台节点排障。可问「找出占用最高的进程」或「查看最近的报错日志」。
 
 1. 在 [管理服务器](/server-management) 配好 SSH，或点终端「连接设置」填临时连接。
 2. 打开节点「终端」标签，在右侧「AI 助手」提问。
@@ -101,12 +101,12 @@
 
 ### AI 解读
 
-一键回答「最近 24 小时有哪些异常要先处理」，列出待处理项与建议。
+一键汇总近 24 小时异常与处理建议。
 
 <figure><img src="/ai-analytics-card.webp" alt="「工具 → 高级分析」页中的「AI 解读」卡片与「开始解读」按钮"><figcaption>「工具 → 高级分析」页中的「AI 解读」卡片与「开始解读」按钮</figcaption></figure>
 
 1. 打开「工具 → 高级分析」，点「开始解读」。
-2. 等 20 至 60 秒生成结果，需要时点「重新解读」。
+2. 等 20 至 60 秒出结果，需要时点「重新解读」。
 
 ::: details 解读结果包含哪些部分
 顶部展示「AI 结论」，下方列出「需要处理」和「值得关注」。中间给出「建议处理顺序」，展开单条可看建议与依据。
@@ -114,26 +114,66 @@
 
 ## AI 是怎么工作的
 
-各入口共用同一套能力清单与权限护栏。命令经面板 SSH 在节点运行，结果脱敏后回到对话。
+各入口共用同一套能力清单，按档位弹窗确认。命令用节点的 SSH 账号运行，输出按规则脱敏后回传。
 
-<figure><svg viewBox="0 0 680 148" width="680" height="148" role="img" aria-label="AI 请求从入口经能力清单、权限确认到 SSH 执行的流程示意" style="display:block;width:100%;max-width:680px;height:auto"><rect x="1" y="1" width="678" height="146" rx="8" fill="var(--vp-c-bg-soft)" stroke="var(--vp-c-divider)"/><rect x="16" y="20" width="136" height="84" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="84" y="44" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">对话入口</text><text x="84" y="64" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">网页 / 终端 AI / App</text><text x="84" y="82" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">Telegram / 远程 MCP</text><line x1="154" y1="62" x2="180" y2="62" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="178,57 186,62 178,67" fill="var(--vp-c-brand-1)"/><rect x="188" y="20" width="144" height="84" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="260" y="44" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">同一套能力清单</text><text x="260" y="64" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">查数据 / 跑命令</text><text x="260" y="82" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">读写文件 / 改设置</text><line x1="334" y1="62" x2="360" y2="62" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="358,57 366,62 358,67" fill="var(--vp-c-brand-1)"/><rect x="368" y="20" width="140" height="84" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="438" y="44" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">权限与确认</text><text x="438" y="64" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">代码判定风险档位</text><text x="438" y="82" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">密码走安全输入代号</text><line x1="510" y1="62" x2="536" y2="62" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="534,57 542,62 534,67" fill="var(--vp-c-brand-1)"/><rect x="544" y="20" width="120" height="84" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="604" y="44" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">服务器执行</text><text x="604" y="64" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">面板 SSH 连接</text><text x="604" y="82" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">写文件前自动备份</text><path d="M 604 106 L 604 128 L 84 128 L 84 108" fill="none" stroke="var(--vp-c-divider)" stroke-width="1.5" stroke-dasharray="4 4"/><polygon points="80,110 84,102 88,110" fill="var(--vp-c-text-2)"/><text x="344" y="123" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">执行结果与输出脱敏后回到对话</text></svg><figcaption>AI 从提问、确认到在服务器执行命令的流程（示意）</figcaption></figure>
+<figure><svg viewBox="0 0 680 148" width="680" height="148" role="img" aria-label="AI 请求从入口经能力清单、权限确认到 SSH 执行的流程示意" style="display:block;width:100%;max-width:680px;height:auto"><rect x="1" y="1" width="678" height="146" rx="8" fill="var(--vp-c-bg-soft)" stroke="var(--vp-c-divider)"/><rect x="16" y="20" width="136" height="84" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="84" y="44" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">对话入口</text><text x="84" y="64" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">网页 / 终端 AI / App</text><text x="84" y="82" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">Telegram / 远程 MCP</text><line x1="154" y1="62" x2="180" y2="62" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="178,57 186,62 178,67" fill="var(--vp-c-brand-1)"/><rect x="188" y="20" width="144" height="84" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="260" y="44" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">同一套能力清单</text><text x="260" y="64" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">查数据 / 跑命令</text><text x="260" y="82" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">读写文件 / 改设置</text><line x1="334" y1="62" x2="360" y2="62" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="358,57 366,62 358,67" fill="var(--vp-c-brand-1)"/><rect x="368" y="20" width="140" height="84" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="438" y="44" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">权限与确认</text><text x="438" y="64" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">按档位弹窗确认</text><text x="438" y="82" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">密码走安全输入代号</text><line x1="510" y1="62" x2="536" y2="62" stroke="var(--vp-c-brand-1)" stroke-width="2"/><polygon points="534,57 542,62 534,67" fill="var(--vp-c-brand-1)"/><rect x="544" y="20" width="120" height="84" rx="8" fill="var(--vp-c-bg)" stroke="var(--vp-c-divider)"/><text x="604" y="44" text-anchor="middle" fill="var(--vp-c-text-1)" font-size="13" font-weight="600">SSH 执行</text><text x="604" y="64" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">改文件前自动备份</text><text x="604" y="82" text-anchor="middle" fill="var(--vp-c-text-2)" font-size="11">输出脱敏后回传</text><path d="M 604 104 L 604 126 L 84 126 L 84 108" fill="none" stroke="var(--vp-c-divider)" stroke-width="1.5" stroke-dasharray="4 4"/><polygon points="80,110 84,104 88,110" fill="var(--vp-c-text-3)"/><text x="344" y="121" text-anchor="middle" fill="var(--vp-c-text-3)" font-size="11">执行结果与状态回到当前对话</text></svg><figcaption>AI 各入口从调用能力、权限确认到 SSH 执行的流程（示意）</figcaption></figure>
 
 | 你关心的事 | 面板怎么做 |
 |---|---|
-| 模型与接口 | 可用授权附带的「内置AI」，或自填 OpenAI、Gemini、Azure OpenAI 与兼容接口；模型接入基于开源的 Vercel AI SDK |
-| 防误操作与安全输入 | 命令风险由面板代码判定，格式化磁盘、删系统目录、关机等高危命令一律先确认；密码和私钥走「安全输入」，只存主控内存、AI 只拿临时代号 |
-| 备份、时效与记录 | 改写节点文件前自动在 `.dstatus/file-backups/` 留最近 3 份备份；全局与 Telegram 确认卡 5 分钟内单次有效（终端运行上下文 30 分钟有效）；终端命令与确认记入审计日志，远程 MCP 写操作记入「调用记录」 |
-| 数据发给谁 | 只发你的问题、相关面板白名单数据和命令输出，后台密码、SSH 私钥、API Key 与探针通信密钥绝不发给模型；「内置AI」经官方授权服务转发，自填接口由你的主控直连所填地址 |
-| 能做与不能做 | 没配 SSH 或关了「网页终端」的节点不能跑命令和改文件；Telegram 只在私聊响应，群聊不启用；「内置AI」额度用完后按提示时间恢复，或切到自有接口 |
+| 执行身份 | 用节点「SSH 连接配置」的账号，与终端同号（临时连接优先）；权限等同该账号，配低权限账号即受限 |
+| 范围与只读开关 | 无只读档，也不能按节点限制或单关 AI 写操作；想禁命令可关「设置中心 → 网页终端」（终端和文件管理同关），或配只读 SSH 账号 |
+| 确认卡与时效 | 展示节点名称与完整命令（不显示 SSH 账号）；右侧「AI 助手」与 Telegram 确认卡 5 分钟单次有效；终端运行上下文 30 分钟有效；单台命令逐台确认，批量升级探针与批量改节点合成一张卡 |
+| 文件备份与回滚 | 仅文件工具覆盖前备份到 SFTP 起始目录 `.dstatus/file-backups/`（留 3 份，保原权限）；删文件、命令（如 `rm`、`sed -i`）及改服务和数据库无备份、不可回滚 |
+| 凭据存放 | 「安全输入」默认存主控内存（最长 2 小时），勾「保存到主控」则加密存面板库；也可存浏览器保险箱，见 [管理服务器](/server-management) 与 [远程 MCP](/mcp) |
+| 数据去向与脱敏 | 面板保存的密码、私钥、Token 与探针密钥不进模型；命令输出与文件内容按规则替换常见密钥，界面与模型同看脱敏结果；规则可能漏掉，勿让 AI 读密钥文件；需数据只走自有服务商时，在「AI 服务」配自有接口（基于 Vercel AI SDK 直连） |
+| 提示词注入防护 | 读外部网页、日志或命令输出都可能夹带恶意指令；无语义清洗，靠确认档拦截；右侧「AI 助手」读过外部网页后本对话后续命令和改动一律弹窗确认；要完全拦截请用默认「确认后执行」 |
+| Telegram 边界 | 仅响应「通知管理」白名单里的私聊 Chat ID，群聊不启用；固定为「确认后执行」，可确认右侧「AI 助手」全部写操作；确认按钮 5 分钟单次有效（点一下即执行，无二次验证），无「只查不执行」开关 |
 
-::: details 安全输入时效、自动执行限制与本地调用统计
+::: details 「自动执行」分类边界、文件手动还原与脱敏识别范围
+右侧「AI 助手」开「自动执行」时，仅命令、网络诊断和测解锁直接跑。改节点、改设置、写文件、带安全输入代号及不可撤回命令仍需确认。
+
+终端「AI 助手」开「自动执行」时，按本轮开头有无「重启」「修改」等祈使词判意图。提问或排查时只直接跑只读命令，改动与未知命令仍需确认。
+
+| 命令分类 | 代表例子 | 「自动执行」下怎么处理 |
+|---|---|---|
+| 只读查看类 | `ls`、`ps`、`df`、`cat`、`grep`、`systemctl status`（无重定向与复合符号） | 两个入口都直接跑 |
+| 改动与未知类 | `systemctl stop/restart`、`rm -rf /var/lib/mysql`、`iptables -F`、`sed -i`、`curl \| bash` 及无法识别的命令 | 右侧「AI 助手」直接跑；终端仅本轮祈使句要求时直接跑，否则需确认 |
+| 高危不可撤回类 | `mkfs`、`wipefs`、`dd` 写盘、递归删或改 `/`、`~` 与系统顶层目录权限、`poweroff`、`shutdown`、fork 炸弹 | 任何入口和档位下一律先出确认卡 |
+
+文件工具不支持删文件，仅覆盖已有文件前自动备份。要还原可让 AI 读备份路径写回，或从 `.dstatus/file-backups/` 用 `cp -p` 拷回。
+
 「安全输入」链接 30 分钟内待填有效。填好后 30 分钟内可用，每次使用顺延 30 分钟（最长 2 小时）。
 
-右侧「AI 助手」在对话里读过外部网页后，后续改动仍会弹窗确认。参数带有安全输入代号时，在「自动执行」下也必须先确认。
+右侧「AI 助手」与 Telegram 确认卡 5 分钟单次有效，绑定会话、节点与命令哈希。终端一轮排查的运行上下文（含步数配额）30 分钟内有效。
 
-「AI 解读」只向模型发送节点状态、负载、流量和告警的白名单摘要。摘要不含节点 IP、主机名和配置原文。
+脱敏规则按固定格式替换输出与文件里的常见密钥。规则可能漏掉，勿让 AI 读密钥文件。
 
-主控本地日志只记录每次 AI 调用的场景、轮数、用量与耗时统计。日志不记录提问和回答正文。
+```text
+已识别并替换为 <REDACTED> 的格式：
+- Authorization: Bearer / Basic / Digest 认证头与 Cookie 头
+- URL 连接串密码（https / ssh / postgres / mysql / redis 等 user:pass@host）
+- -----BEGIN ... PRIVATE KEY----- 私钥块
+- 键名、查询参数或命令行参数：password / passwd / pwd / passphrase / secret / token / api_key / private_key / access_key / client_secret / credential / license_key
+
+不会识别的格式（示例）：
+- /etc/shadow 密码哈希、自定义变量名里的密钥、无字段名的纯随机字符串
+```
+
+「AI 解读」只发白名单摘要，不含节点 IP、主机名和配置原文。
+:::
+
+::: details 各入口的操作记录与保留时长
+在「安全设置 → 登录入口管理 → 历史」点「查看全部审计日志」。审计日志页支持导出 JSON 或 CSV。
+
+| 入口 | 记在哪里 | 在后台哪里看 | 留多久 | 记了什么与不记什么 |
+|---|---|---|---|---|
+| 右侧「AI 助手」 | 确认与拒绝记审计日志；对话历史与步骤记面板本地 | 审计日志看确认事件；侧边栏「历史对话」看过程 | 审计默认 90 天；不活跃对话 90 天；输出文件默认 24 小时 | 审计记操作者、会话 ID、命令哈希与节点 ID（不记命令原文和输出）；对话记命令与脱敏输出 |
+| 终端「AI 助手」 | 命令执行记审计日志；对话历史与步骤记面板本地 | 审计日志看「AI 终端执行命令」；终端「历史对话」或「导出排障包」 | 审计默认 90 天；不活跃对话 90 天；输出文件默认 24 小时 | 审计记操作者、节点、命令前 4096 字（脱敏）、退出码、耗时与输出预览；写文件只记在对话历史 |
+| Telegram | 对话与确认回执记面板本地会话记录 | 无后台查看页，在私聊看历史消息 | 不活跃对话 90 天；输出文件默认 24 小时 | 会话记录记提问、工具步骤与脱敏回执；不写面板审计日志 |
+| iOS / macOS App | 调全局 AI 或终端时，同上方对应入口 | 同上方对应入口 | 同上方对应入口；「只读」设备无法调用 AI 与终端 | 审计日志里操作者标为对应 App 设备 |
+| 远程 MCP | 写操作与读文件记数据库；命令输出存面板本地临时目录 | 「设置中心 → 远程 MCP」点凭据的「调用记录」 | 调用记录 30 天（每凭据最多 200 条）；输出文件默认 24 小时 | 记时间、凭据、工具名、命令前 500 字（脱敏）或文件路径、节点、成败与来源 IP；纯查询（读文件除外）和输出正文不记 |
+
+主控本地运行日志只记每次调用的场景、轮数、用量与耗时统计。日志不记录提问、回答和命令参数。
 :::
 
 ## 常见问题
