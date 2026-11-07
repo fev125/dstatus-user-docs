@@ -107,9 +107,11 @@ async function locate(page, target) {
     }
     const png = path.join(outDir, shot.file.replace(/\.webp$/, ".png"));
     await page.screenshot({ path: png, clip });
-    // 转成 webp（宽 1600、质量 80）；本机没有 cwebp 就保留 png
+    // 转成 webp（质量 80）；比 1600 宽的缩到 1600，窄的裁剪图保持原尺寸不放大；本机没有 cwebp 就保留 png
     const out = path.join(outDir, shot.file.replace(/\.png$/, ".webp"));
-    try { execFileSync("cwebp", ["-quiet", "-q", "80", "-resize", "1600", "0", png, "-o", out]); fs.unlinkSync(png); console.log(`拍好：${out}`); }
+    const width = fs.readFileSync(png).readUInt32BE(16);
+    const resize = width > 1600 ? ["-resize", "1600", "0"] : [];
+    try { execFileSync("cwebp", ["-quiet", "-q", "80", ...resize, png, "-o", out]); fs.unlinkSync(png); console.log(`拍好：${out}`); }
     catch (_) { console.log(`拍好（未转 webp）：${png}`); }
     await page.close();
   }
