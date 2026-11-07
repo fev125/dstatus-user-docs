@@ -74,14 +74,16 @@ async function locate(page, target) {
       catch (_) { console.log(`  点不到：${text}，这张跳过`); skipped = true; break; }
     }
     if (skipped) { await page.close(); continue; }
-    const boxes = [];
+    // 先找到所有要标的元素，只滚到第一个，再一次性取位置：逐个滚动会让前面算好的框错位
+    const targets = [];
     for (const target of shot.highlight || []) {
-      let box = null;
-      try {
-        const el = await locate(page, target);
-        await el.scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {});
-        box = await el.boundingBox({ timeout: 5000 });
-      } catch (_) { box = null; }
+      try { targets.push({ target, el: await locate(page, target) }); } catch (_) { console.log(`  未找到要标的元素：${target}`); }
+    }
+    if (targets.length) await targets[0].el.scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {});
+    await page.waitForTimeout(300);
+    const boxes = [];
+    for (const { target, el } of targets) {
+      const box = await el.boundingBox({ timeout: 5000 }).catch(() => null);
       if (box) boxes.push(box); else console.log(`  未找到要标的元素：${target}`);
     }
     await page.evaluate((list) => {
