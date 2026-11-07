@@ -1,246 +1,277 @@
----
-title: 自定义 CSS
-description: 把这一页发给 AI，描述你想要的效果，它就能帮你写出能用的自定义样式；懂 CSS 的你也可以照着表自己改
----
-
 # 自定义 CSS
 
-把这一页（或本页链接）发给任何 AI，告诉它你想要的效果，它就能生成一份能直接贴进去用的样式代码；懂 CSS 的站长也可以照下面的表自己改。颜色、边框、圆角、阴影、卡片形状都能改。
+用样式代码定制前台的配色、圆角、边框和阴影，不影响管理后台。也可以把本页发给 AI，让它按你的描述直接生成代码。
+
+## 在哪打开
+
+登录后台，点左侧「个性化」，在底部「高级」组找到「自定义 CSS」。常规配色、壁纸与毛玻璃设置见 [外观与个性化](/personalization)。
+
+<figure><img src="/theme-custom-css-card.webp" alt="「个性化」底部「高级」组中的「自定义 CSS」卡片、「更多」按钮与开关"><figcaption>「个性化」底部「高级」组中的「自定义 CSS」卡片、「更多」按钮与开关</figcaption></figure>
 
 ## 怎么用
 
-1. 把本页链接和想要的效果发给 AI，或复制第 6 节的提示词填上需求。
-2. 把生成的 CSS 贴进 个性化 → 高级 →「自定义 CSS」，打开卡片上的开关。
-3. 刷新前台看效果；不满意就关掉开关，前台立即恢复。
+### 粘贴并启用样式
 
-## 1. 怎么打开
+粘贴代码后会自动保存，打开卡片右侧开关即可在前台生效。
 
-1. 管理后台 → **个性化 → 高级 → 自定义 CSS**。
-2. 打开卡片右侧的**开关**——**这步最容易漏**，不开的话贴了代码也没效果。
-3. 点「更多 ›」，在「CSS 内容」里粘贴。**没有保存按钮**，改动自动保存，然后刷新前台看效果。
+1. 让 AI 按下方提示词生成代码，或对照变量表自己编写。
+2. 点「自定义 CSS」行的「更多」，把代码贴进「CSS 内容」。
+3. 打开「自定义 CSS」右侧开关，刷新前台页面查看效果。
 
-只影响访客看到的前台（首页、节点详情、网络质量、服务状态等），不影响管理后台。代码里含 `@import`、外部网址 `url(...)`、`expression` 会**保存失败并提示**（不是静默忽略）。
+<figure><img src="/theme-custom-css-drawer.webp" alt="点「更多」打开「自定义 CSS」抽屉并在「CSS 内容」中输入代码"><figcaption>点「更多」打开「自定义 CSS」抽屉并在「CSS 内容」中输入代码</figcaption></figure>
 
-**改坏了**：关掉开关立即恢复（代码还留着），或清空内容。
+| 选项 | 作用 | 默认 |
+|---|---|---|
+| 卡片右侧开关 | 开启或停用全站前台自定义样式；关闭后代码保留 | 关闭 |
+| 「更多 → CSS 内容」 | 编辑样式代码（上限 128 KB），停手约 1.4 秒自动保存 | 空 |
+| 前台「主题 → 自定义样式」 | 站方开启且有代码时出现；访客改本机显示，管理员改全站开关 | 开启 |
 
-**顶栏「主题」菜单里的「自定义样式」开关**：游客点它只影响自己的浏览器（偏好存在本机，刷新后仍然生效）；管理员点它等于改全站启用状态——关闭后菜单里不再出现这一项，需要回到这里重新打开。
+::: warning 注意
+暂时停用时关掉「自定义 CSS」右侧开关，代码会保留。点「恢复默认外观」里的「恢复默认」，会一并清空已写的样式。
 
-## 2. 颜色怎么改：一套变量 + 三条纪律
+管理员在前台「主题」菜单关掉「自定义样式」，等同关闭全站开关。关闭后菜单不再显示这一项，需回后台重新打开。
+:::
 
-前台用一套语义变量，白天和夜间用同一个名字，分别写在两个选择器里：
+### 颜色变量与日夜写法
 
-```markdown
-| 写在哪 | 管什么 |
-|------|--------|
-| `:root:not(.dark) { }` | 白天（亮色模式）的颜色 |
+前台日间与夜间共用同一套变量名，按模式写在对应的根选择器里。
+
+| 选择器 | 作用 |
+|---|---|
+| `:root:not(.dark) { }` | 日间（浅色模式）的颜色 |
 | `:root.dark { }` | 夜间（深色模式）的颜色 |
-| `:root { --accent-color: … }` | 全站强调色：按钮、选中、链接高亮；日夜要不同时再分写 |
-```
+| `:root { --accent-color: … }` | 全站强调色；日夜用不同颜色时按上面两项分写 |
+| `:root[data-glass="on"]:not(.dark)` / `:root.dark[data-glass="on"]` | 开启毛玻璃且有壁纸时的卡片底色覆盖 |
 
-**纪律一**：日夜颜色必须写在对应选择器里。系统自带的夜间配色写在 `:root.dark` 里，只写在 `:root { }` 的话，到了夜间会被盖掉：
+写颜色时遵守下面三条规则，避免切换模式或开启毛玻璃时失效。
 
-```css
-:root:not(.dark) { --text-color: #1a1a2e; }  /* 白天 */
-:root.dark       { --text-color: #e0f2fe; }  /* 夜间 */
-```
-
-**纪律二**：卡片底色用 `--card-surface-bg`。打开毛玻璃时它由毛玻璃规则单独定义，要连毛玻璃一起覆盖，就把两种情况都写上；想继续透出壁纸，填半透明颜色：
+1. 日夜颜色分开写，只写 `:root` 会在夜间被系统默认色盖掉。
+2. 改卡片底色 `--card-surface-bg` 时，把毛玻璃选择器一起写上。
+3. 做整站暗色只改 `:root.dark` 并设默认「夜间」，日间刷黑会让图表深色字看不清。
 
 ```css
-:root:not(.dark), :root[data-glass="on"]:not(.dark) { --card-surface-bg: rgba(255,255,255,.85); }
-:root.dark, :root.dark[data-glass="on"]             { --card-surface-bg: rgba(15,23,42,.72); }
+/* 日夜文字与卡片底色（同时覆盖实色与毛玻璃状态） */
+:root:not(.dark), :root[data-glass="on"]:not(.dark) {
+  --text-color: #1a1a2e;
+  --card-surface-bg: rgba(255, 255, 255, 0.85);
+}
+:root.dark, :root.dark[data-glass="on"] {
+  --text-color: #e0f2fe;
+  --card-surface-bg: rgba(15, 23, 42, 0.72);
+}
 ```
 
-**纪律三**：想要**整站暗黑风格**，只改 `:root.dark` 一侧，然后把站点默认主题切到夜间模式用。不要在白天一侧写深色——图表坐标轴等组件按"当前模式"选色，白天刷黑后它们照常输出深色文字，会花。另外强调色别用纯白/纯黑，按钮文字会看不见。
+状态色 `--success-color`、`--warning-color`、`--error-color` 与在线色须日夜分写，改后联动徽章和提示框。强调色不用纯白或纯黑，亮霓虹色在日间需加深，按钮字色用 `--on-accent-color`。
 
-状态色 `--success-color`（绿）、`--warning-color`（黄橙）、`--error-color`（红）系统已经日夜各定义一份，**要改就日夜分写**，只写一份到了另一种模式会被系统值盖掉。`--info-color` 默认跟随强调色。改它们会连带徽章、提示框一起变——这是设计如此，不要再单独改徽章。高饱和/霓虹色系尤其要分写：霓虹色在黑底上漂亮，在白底上几乎看不见，白天一侧用同色相的加深版本。
+### 稳定变量与区域选择器
 
-## 3. 稳定可改清单
+优先使用下表中的变量和类名，未列出的内部名称不保证后续兼容。
 
-按用途分组的常用项。表外的变量改了效果没保证。标"日夜分写"的，按第 2 节写在两个选择器里。
+| 变量或类名 | 作用 | 影响范围 |
+|---|---|---|
+| `--bg-color` | 页面背景色（日夜分写） | 所有前台页面底色；开启壁纸时被壁纸盖住 |
+| `--card-surface-bg` | 卡片底色（日夜及毛玻璃分写） | 首页卡片、节点详情与网络质量卡片 |
+| `--fill-1` | 卡内色块底色（日夜分写） | 概况数字小块、网卡卡片、一体列表隔行底色、次要按钮 |
+| `--hover-bg-color` | 悬停叠加底色（日夜分写） | 列表行、菜单项、次要按钮悬停 |
+| `--text-color` / `--secondary-text-color` | 正文与次要文字色（日夜分写） | 全站主文字、辅助说明文字 |
+| `--border-color` / `--border-hover-color` | 外沿边框与悬停边框色（日夜分写） | 卡片、浮层、顶栏下沿、页脚上沿、输入框 |
+| `--divider-color` | 内部分隔线色（日夜分写） | 卡片内部分区、下拉菜单分隔线 |
+| `--accent-color` / `--on-accent-color` | 强调色与实心强调按钮文字色 | 主按钮、链接、选中高亮（亮色强调色需配深色按钮字） |
+| `--success-color` / `--warning-color` / `--error-color` | 成功、警告、错误状态色（日夜分写） | 提示、徽章、超过阈值的用量条 |
+| `--info-color` | 信息色，默认跟随 `--accent-color` | 信息类提示与徽章 |
+| `--status-online-color` / `--status-offline-color` | 在线与离线状态色（日夜分写） | 节点状态圆点与汇总文字 |
+| `--progress-bg-color` | 进度条底色（日夜分写） | 用量条未填充部分与关闭态开关 |
+| `--progress-cpu-color` / `--progress-memory-color` | CPU 与内存条颜色（日夜分写） | 首页卡片正常态用量条；高负载自动切状态色 |
+| `--card-shadow` / `--shadow-md` / `--shadow-lg` | 卡片、浮层、弹窗三档阴影（日夜分写） | 卡片外框、菜单与提示浮层、弹窗（`--shadow-sm` 默认无阴影） |
+| `--navbar-bg` / `--footer-bg` | 顶栏与页脚底色（日夜及毛玻璃分写） | 顶部导航栏背景、底部页脚 |
+| `--font-sans` / `--font-mono` | 正文字体与等宽字体 | 全站文字与数字；只填字体名，不自动下载字体 |
+| `.text-theme-main` / `.text-theme-secondary` | 正文与次要文字颜色类 | 挂了对应类名的文字元素 |
+| `.glass-card` / `.surface-block` / `.surface-tile` | 卡片区块、实色区块与卡内小块 | 各页外层卡片（毛玻璃画在 `.glass-card::before`）、独立页实色块、卡内小块 |
+| `border-radius`（CSS 属性） | 圆角大小 | 选中的元素；节点卡片默认 `1.125rem`，其余卡片 `0.75rem` |
 
-```markdown
-| 变量或类名 | 管什么 | 影响哪里 |
-|-----------|--------|---------|
-| `--bg-color` | 网站背景色（日夜分写） | 所有前台页面底色；开了壁纸时被壁纸盖住 |
-| `--card-surface-bg` | 卡片底色（日夜分写，见纪律二） | 首页卡片、详情页面板 |
-| `--text-color` | 正文文字色（日夜分写） | 全站正文 |
-| `--secondary-text-color` | 次要文字色（日夜分写） | 小字、辅助说明 |
-| `--border-color` | 边框色（日夜分写） | 卡片、输入框边框 |
-| `--accent-color` | 全站强调色 | 按钮、链接、高亮 |
-| `--success-color` / `--warning-color` / `--error-color` | 三类状态色（日夜分写） | 提示、徽章、硬盘用量条 |
-| `--info-color` | 信息色，默认跟随强调色 | 提示、徽章 |
-| `--status-online-color` / `--status-offline-color` | 在线/离线色（日夜分写） | 状态点、部分汇总文字和用量条 |
-| `--progress-bg-color` | 进度条底色（日夜分写） | 用量条未填充部分 |
-| `--progress-cpu-color` / `--progress-memory-color` | CPU、内存用量条颜色（日夜分写） | 首页卡片的 CPU、内存条 |
-| `--hover-bg-color` | 悬停底色 | 列表行、菜单项悬停 |
-| `--shadow-sm` / `--shadow-md` / `--shadow-lg` | 阴影三档 | 读取这几个变量的弹层和组件，不是所有卡片阴影的总开关 |
-| `--font-sans` / `--font-mono` | 正文字体 / 等宽字体 | 全站文字；只写字体名，不会自动下载字体 |
-| `.text-theme-main` / `.text-theme-secondary` | 正文/次要文字（类名版） | 加在元素上直接用 |
-| `.glass-card` / `.surface-card` | 磨砂/实色卡片质感 | 该元素外观；毛玻璃背景画在 `.glass-card::before` 上 |
-| `border-radius`（普通 CSS 属性） | 圆角大小 | 你选中的元素；没有统一的圆角变量 |
-```
-
-## 4. 区域定点改
-
-只想改某一块时，用前缀选择器锁定范围。**通用规则：这些类名和属性名是程序用来识别元素的，别改名、别用 `display:none` 藏结构，只改颜色、圆角、阴影、字体这类外观。**
+只改某一块区域时用前缀选择器，只改外观，不用 `display: none` 隐藏结构。
 
 ```css
-/* 首页·卡片视图：圆角 + 悬停发光 */
+/* 首页·卡片视图：节点卡片圆角、悬停发光、标题与标签 */
 [data-home-shell="1"][data-home-view="card"] .server-card { border-radius: 1rem; }
-[data-home-shell="1"][data-home-view="card"] .server-card:hover { box-shadow: 0 0 20px rgba(0,184,217,.3); }
+[data-home-shell="1"][data-home-view="card"] .server-card:hover { box-shadow: 0 0 20px rgba(0, 184, 217, 0.3); }
+[data-home-shell="1"] .card-title-link { font-weight: 600; }
+[data-home-shell="1"] .dstatus-tag-chip { border-radius: 0.375rem; }
 
-/* 首页·列表视图：行分隔线 + 悬停高亮（列表行是 .ds-list-row） */
-[data-home-view="list"] .ds-list-row { border-bottom-color: rgba(0,184,217,.3); }
-[data-home-view="list"] .ds-list-row:hover { background: var(--hover-bg-color); }
-
-/* 首页顶部概况卡片 */
-.dashboard-card { border-radius: 1rem; }
-
-/* 详情页：标签和卡片 */
-.stat-tab[aria-selected="true"] { color: var(--accent-color); }   /* 容器 .stat-tabs，按钮 .stat-tab */
-.stat-page .surface-card { border-radius: 1rem; }
-
-/* 网络质量页卡片 */
-.nqb .nqb-card { border-radius: .25rem 1.25rem; }
-
-/* 顶栏和页脚 */
-.ds-nav-bg { background-color: rgba(10,25,41,.8); }
-.ds-footer { border-top: 1px solid color-mix(in srgb, var(--accent-color) 20%, var(--border-color)); }
-
-/* 壁纸滤镜（图片壁纸；壁纸本身在后台设置里换） */
-html[data-wallpaper="image"] body::before { filter: saturate(.8) brightness(.9); }
-```
-
-> 标签按钮的三态：`.stat-tab`（常态）、`.stat-tab:hover`（悬停）、`.stat-tab[aria-selected="true"]`（选中）。窄屏时额外标签收进「工具」菜单，里面按钮的选中态是 `[aria-pressed="true"]`。
-
-## 5. 这些不要碰
-
-它们由页面脚本实时读写或用作定位标识，覆盖后轻则设置失灵、重则功能坏掉。
-
-```markdown
-| 名称 | 覆盖后果 |
-|------|---------|
-| `--glass-blur` `--glass-saturation` `--glass-contrast` `--glass-light-opacity` `--glass-dark-opacity` | 后台毛玻璃设置失灵 |
-| `--ds-accent` `--ds-surface` `--ds-surface-rgb` `--ds-surface-dark` `--ds-surface-dark-rgb` `--ds-bg-dark` `--ds-bg-dark-rgb` | 后台改强调色/卡片底色不生效（要改强调色用 `--accent-color`） |
-| `--wallpaper-image` `--wallpaper-filter` | 壁纸设置失效、首屏闪烁 |
-| `--terminal-sidebar-width` | 终端和 AI 助手的分栏拖动错乱 |
-| `data-home-shell` `data-home-view` `data-home-view-slot` `data-glass`（属性名） | 视图切换、毛玻璃开关失效 |
-| `#card-grid-container` `#list-grid-container` `.server-card`（标识） | 首页排序、刷新功能坏掉 |
-| `#download-speed-progress` `#upload-speed-progress` 的位移/过渡样式 | 网速条卡死抖动（脚本每秒重画） |
-```
-
-改这些元素的**外观**（颜色圆角）没问题——用第 4 节的前缀选择器；禁的是覆盖这些**名字本身管的值**（比如写 `--glass-blur: 0`）和改名。
-
-## 6. 片段库 + AI 提示词模板
-
-以下片段可单独复制使用：
-
-```css
-/* 顶栏细线 + 当前页导航变色 */
-.ds-nav { border-bottom: 1px solid color-mix(in srgb, var(--accent-color) 20%, var(--border-color)); }
-.ds-nav-link[aria-current="page"] { color: var(--accent-color); }
-
-/* 主题菜单 */
-.ds-menu { border-radius: .5rem; }
-.ds-menu-item:hover { background: var(--hover-bg-color); }
-
-/* 输入框 */
-input[type="text"], input[type="search"], textarea { border-radius: .5rem; border: 1px solid var(--border-color); }
-
-/* 卡片背景装饰：柔和光晕 */
-[data-home-shell="1"] .server-card {
-  background-image: radial-gradient(circle at 85% 15%, rgba(0,184,217,.08), transparent 50%);
+/* 首页·列表视图：表格 .ds-list（framed 一体 / split 分行），列表行 .ds-list-row */
+[data-home-shell="1"][data-home-view="list"] .ds-list-row { border-bottom-color: rgba(0, 184, 217, 0.3); }
+[data-home-shell="1"][data-home-view="list"] .ds-list-row:hover {
+  background-image: linear-gradient(var(--hover-bg-color), var(--hover-bg-color));
 }
 
-/* 异形卡：八边形切角 */
+/* 首页顶部概况卡片、地区标签行与工具栏 */
+.dashboard-card { border-radius: 1rem; }
+.region-container, #dashboard-toolbar { border-radius: 1rem; }
+
+/* 节点详情页：页签（.stat-tabs > .stat-tab）与外层卡片（.glass-card） */
+.stat-tab[aria-selected="true"] { color: var(--accent-color); }
+.stat-page .glass-card { border-radius: 1rem; }
+
+/* 网络质量页卡片与服务状态页面板 */
+.nqb .nqb-card { border-radius: 0.25rem 1.25rem; }
+.service-status-page .service-status-panel { border-radius: 1rem; }
+
+/* 顶栏背景与页脚 */
+.ds-nav-bg { background-color: rgba(10, 25, 41, 0.8); }
+.ds-footer { border-top: 1px solid color-mix(in srgb, var(--accent-color) 20%, var(--border-color)); }
+
+/* 图片壁纸滤镜（壁纸图片本身在后台设置里更换） */
+html[data-wallpaper="image"] body::before { filter: saturate(0.8) brightness(0.9); }
+```
+
+::: details 禁止覆盖的内部变量与标识
+详情页签常态为 `.stat-tab`，悬停为 `:hover`，选中为 `[aria-selected="true"]`。窄屏收进「更多」或「工具」下拉时，选中项为 `.ds-menu-item[aria-checked="true"]`。
+
+下表名称由脚本读写或定位元素，请勿覆盖变量值或隐藏结构。
+
+| 名称 | 覆盖后果 |
+|---|---|
+| `--glass-blur` `--glass-saturation` `--glass-contrast` `--glass-light-opacity` `--glass-dark-opacity` `--glass-brightness` | 后台毛玻璃参数与日间自动提亮失效 |
+| `--ds-accent` `--ds-surface` `--ds-surface-rgb` `--ds-surface-dark` `--ds-surface-dark-rgb` `--ds-bg-light` `--ds-bg-dark` `--ds-bg-dark-rgb` | 后台改强调色与卡片底色不生效（改强调色请用 `--accent-color`） |
+| `--wallpaper-image` `--wallpaper-filter` `--wallpaper-dominant` `--wallpaper-size` `--wallpaper-repeat` `--wallpaper-position` `--wallpaper-height` | 壁纸显示、亮度模糊与固定定位失效 |
+| `--terminal-sidebar-width` `--app-inset-right` `--card-estimate` `--row-estimate` `--shell-height` | 终端分栏、AI 侧栏让位与列表滚动高度错乱 |
+| `data-home-shell` `data-home-view` `data-home-view-slot` `data-glass` `data-wallpaper` | 视图切换、毛玻璃与壁纸根状态失效 |
+| `#card-grid-container` `#list-grid-container` `.server-card` `.ds-list-row` | 首页筛选、排序与实时刷新异常（只改圆角等外观不影响） |
+| `#download-speed-progress` `#upload-speed-progress` 的位移或过渡样式 | 实时网速条卡顿抖动 |
+:::
+
+::: details 常用样式片段库
+下面的片段可单独复制，贴入「CSS 内容」即可生效。
+
+```css
+/* 顶栏下沿细线与当前页导航变色 */
+.ds-nav-bg { box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--accent-color) 25%, var(--border-color)); }
+.ds-nav-link[aria-current="page"] { color: var(--accent-color); }
+
+/* 顶栏下拉菜单 */
+.ds-menu { border-radius: 0.5rem; }
+.ds-menu-item:hover { background-color: var(--hover-bg-color); }
+
+/* 输入框 */
+input[type="text"], input[type="search"], textarea { border-radius: 0.5rem; border: 1px solid var(--border-color); }
+
+/* 卡片背景装饰：右上角柔和光晕 */
 [data-home-shell="1"] .server-card {
+  background-image: radial-gradient(circle at 85% 15%, rgba(0, 184, 217, 0.08), transparent 50%);
+}
+
+/* 异形卡：首页节点卡与概况卡八边形切角 */
+[data-home-shell="1"] :is(.server-card, .dashboard-card) {
   clip-path: polygon(0% 10px, 10px 0%, calc(100% - 10px) 0%, 100% 10px,
     100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0% calc(100% - 10px));
 }
 
 /* 整站小主题（深海蓝） */
-:root:not(.dark), :root[data-glass="on"]:not(.dark) { --bg-color: #e8f1fa; --card-surface-bg: rgba(255,255,255,.9); --text-color: #0c1220; }
-:root.dark, :root.dark[data-glass="on"] { --bg-color: #030712; --card-surface-bg: rgba(15,23,42,.72); --text-color: #e0f2fe; }
-:root { --accent-color: #22d3ee; }
+:root:not(.dark), :root[data-glass="on"]:not(.dark) {
+  --bg-color: #e8f1fa;
+  --card-surface-bg: rgba(255, 255, 255, 0.9);
+  --text-color: #0c1220;
+}
+:root.dark, :root.dark[data-glass="on"] {
+  --bg-color: #030712;
+  --card-surface-bg: rgba(15, 23, 42, 0.72);
+  --text-color: #e0f2fe;
+}
+:root:not(.dark) { --accent-color: #0891b2; }
+:root.dark { --accent-color: #22d3ee; --on-accent-color: #082f49; }
 ```
+:::
 
-### AI 万能提示词（复制整块，最后一行填上你要的风格，直接发给 AI）
+### 用 AI 生成自定义样式
 
-```
-你是 CSS 主题师。请为我的服务器监控面板写一份自定义 CSS，严格遵守以下规则和清单。
+复制下方提示词，在末行写上风格发给 AI 生成代码。支持联网读取网页的 AI，也可直接发本页网址加你的需求。
+
+```text
+你是 CSS 主题师。请为我的服务器监控面板写一份自定义 CSS，严格遵守下面规则和清单。
 
 【九条硬性规则】
 1. 只用下面【可改清单】里的变量名和【区域选择器】，不用清单以外的。
 2. 不许发明和已有变量相似的新变量名。
-3. 白天颜色写在 :root:not(.dark) { } 里，夜间颜色写在 :root.dark { } 里；变量名日夜相同。
-   只有 --accent-color 可以写在 :root { } 里共用一份。
-   卡片底色 --card-surface-bg 还要写进 :root[data-glass="on"]:not(.dark) 和 :root.dark[data-glass="on"]
-   （可以和前两个选择器用逗号合并），否则开了毛玻璃会被盖掉。
-4.【禁止名单】里的任何名字不许出现在生成的代码里。
-5. 若要整体深色风格：只改 :root.dark 一侧，白天一侧不写成深色；强调色不用纯白或纯黑。
+3. 日间颜色写在 :root:not(.dark) { } 里，夜间颜色写在 :root.dark { } 里；变量名日夜相同。
+   只有 --accent-color 与 --on-accent-color 在日夜相同时可写在 :root { } 里共用一份。
+   卡片底色 --card-surface-bg（及 --navbar-bg / --footer-bg）还要写进 :root[data-glass="on"]:not(.dark)
+   和 :root.dark[data-glass="on"]（可与前两个选择器用逗号合并），否则开启毛玻璃时会被盖掉。
+4.【禁止名单】里的任何名字不许出现在生成的代码里，也不许写 @import 或外部 http(s):// 网址的 url(...)。
+5. 若要整体深色风格：只改 :root.dark 一侧，日间一侧不写成深色；强调色不用纯白或纯黑。
 6. 状态色（--success-color / --warning-color / --error-color）和在线/离线色必须日夜分写；
-   高饱和/霓虹色系尤其如此：霓虹版写进 :root.dark { }，白天一侧用同色相的加深版本。
-7. 底色、卡片色、正文、次要文字、边框是一组配套关系。对比度参考（日夜同标准）：
-   正文对其所在底色 ≥7:1；次要文字、按钮/标签文字 ≥4.5:1；边框在卡片和页面底色上都可见。
+   高饱和或霓虹色系尤其如此：霓虹版写进 :root.dark { }，日间一侧用同色相的加深版本。
+7. 底色、卡片色、卡内色块、正文、次要文字、边框是一组配套关系。对比度参考（日夜同标准）：
+   正文对其所在底色 >=7:1；次要文字、按钮与标签文字 >=4.5:1；边框在卡片和页面底色上都可见。
    没改的项会保持下面【当前默认值】，新值要和它们协调。
-8. 放在强调色底上的文字（选中标签、按钮、悬停高亮）：按强调色的明暗选字色——
-   强调色偏亮（金色、亮青、亮绿等）配深字，偏深配白字；白天和夜间要**分别**核对，
-   两侧都 ≥4.5:1。
+8. 放在实心强调色底上的按钮文字由 --on-accent-color 控制（默认 #ffffff）：
+   强调色偏亮（金色、亮青、亮绿等）时必须设深色 --on-accent-color，偏深时配白色；日间和夜间分别核对对比度 >=4.5:1。
 9. 不许隐藏或移除任何元素：display:none、visibility:hidden、把元素挪出屏幕都不行。
-   如果需求里有做不到的部分（隐藏元素、换壁纸图、调毛玻璃参数、白天刷黑等），
-   在 CSS 最顶部用注释说明：/* 无法实现：xxx，原因 */，然后正常完成其余部分。
+   如果需求里有做不到的部分（隐藏元素、换壁纸图、调毛玻璃参数、日间刷黑等），
+   在 CSS 最顶部用注释说明：/* 无法实现：xxx，原因 */，再正常完成其余部分。
 
-【当前默认值】（你没改的项就是这些值；"微调"以此为基准做相对调整）
-- 白天：页面底 #f8fafc；正文 #1e293b；次要文字 #475569；边框 rgba(148,163,184,.15)
-- 夜间：正文 #ededed；次要文字 #a0a0a0；边框 rgba(255,255,255,.09)
-- 状态色：成功 #10b981(夜 #34d399)、警告 #f59e0b(夜 #fbbf24)、错误 #ef4444(夜 #f87171)
-- 页面底色（夜间）、卡片底色、强调色由站长在后台设置，未知时按常见深色与蓝色系协调
+【当前默认值】（未改项保持这些值）
+- 日间：页面底 #f8f8f9；卡片 #ffffff；卡内色块 rgba(15, 23, 42, 0.04)；正文 #1e293b；次要文字 #475569；外沿边框 rgba(15, 23, 42, 0.1)；内部分隔线 rgba(15, 23, 42, 0.06)；悬停底色 rgba(15, 23, 42, 0.07)
+- 夜间：页面底 #000000；卡片 #0a0a0a；卡内色块 rgba(255, 255, 255, 0.05)；正文 #ededed；次要文字 #a0a0a0；外沿边框 rgba(255, 255, 255, 0.11)；内部分隔线 rgba(255, 255, 255, 0.08)；悬停底色 rgba(255, 255, 255, 0.08)
+- 强调色默认 #3b82f6，实心强调按钮文字 --on-accent-color 默认 #ffffff
+- 状态色：成功 #10b981（夜 #34d399）、警告 #f59e0b（夜 #fbbf24）、错误 #ef4444（夜 #f87171）
 
 【可改清单】（日夜分写的变量，名字相同、分别写在两个选择器里）
-- 页面背景：--bg-color
-- 卡片底色：--card-surface-bg（见规则 3）
+- 页面背景：--bg-color；卡片底色：--card-surface-bg（见规则 3）；卡内色块：--fill-1
+- 顶栏与页脚底色：--navbar-bg / --footer-bg（见规则 3）
 - 正文文字：--text-color；次要文字：--secondary-text-color
-- 边框：--border-color
-- 全站强调色：--accent-color
-- 状态色：--success-color / --warning-color / --error-color；信息色 --info-color（默认跟随强调色）
-- 在线/离线：--status-online-color / --status-offline-color
-- 进度条：--progress-bg-color（底）；--progress-cpu-color / --progress-memory-color
-- 阴影：--shadow-sm / --shadow-md / --shadow-lg
+- 外沿边框：--border-color；悬停边框：--border-hover-color；内部分隔线：--divider-color
+- 全站强调色：--accent-color；实心强调按钮文字：--on-accent-color
+- 状态色：--success-color / --warning-color / --error-color；信息色：--info-color（默认跟随强调色）
+- 在线与离线色：--status-online-color / --status-offline-color
+- 进度条：--progress-bg-color（轨道）；--progress-cpu-color / --progress-memory-color（首页卡片正常态）
+- 阴影：--card-shadow（卡片）/ --shadow-md（浮层）/ --shadow-lg（弹窗）
 - 字体：--font-sans / --font-mono（只写字体名，不引入外部字体）
-- 悬停底色可引用：var(--hover-bg-color)
-- 强调色边框没有现成变量，用 color-mix(in srgb, var(--accent-color) 20%, var(--border-color))
+- 悬停底色：--hover-bg-color（区块级元素悬停用 background-image: linear-gradient(var(--hover-bg-color), var(--hover-bg-color)) 叠加，不替换原底色）
+- 强调色边框用 color-mix(in srgb, var(--accent-color) 20%, var(--border-color))
 
-【区域选择器】（只改颜色/圆角/阴影/字体等外观，别改名、别 display:none）
-- 首页卡片视图：[data-home-shell="1"][data-home-view="card"] .server-card
-- 首页列表视图：[data-home-view="list"] .ds-list-row
-- 首页顶部概况卡片：.dashboard-card
+【区域选择器】（只改颜色/圆角/阴影/字体等外观，别改名、别隐藏）
+- 首页卡片视图：[data-home-shell="1"][data-home-view="card"] .server-card（标题 .card-title-link，标签 .dstatus-tag-chip）
+- 首页列表视图：表格 .ds-list[data-list-style="framed|split"]，行 [data-home-shell="1"][data-home-view="list"] .ds-list-row
+- 首页概况区、地区标签行与工具栏：.dashboard-card、.region-container、#dashboard-toolbar
 - 卡片风格一致性：改 .server-card 的形状（切角/异形）或背景装饰时，同步应用到 .dashboard-card；
-  **详情页卡片（.stat-page .surface-card）不做背景装饰**，只动圆角/边框/阴影，保持信息页面干净
-- 详情页标签：容器 .stat-tabs，按钮 .stat-tab；三态 .stat-tab / .stat-tab:hover / .stat-tab[aria-selected="true"]；
-  ⚠ 改主题时核对标签文字和容器底的对比（常态与选中态都 ≥4.5:1）
-- 网络质量页卡片：.nqb .nqb-card
-- 顶栏：.ds-nav（外框）、.ds-nav-bg（背景）；当前页导航：.ds-nav-link[aria-current="page"]
-- 页脚：.ds-footer
-  顶栏和页脚是装饰安全区，可加边框、CSS 渐变背景、内联 SVG 背景
-  （url("data:image/svg+xml,...") 属于内联不会被拦，外部图片网址才会被拒收）
-- 壁纸：html[data-wallpaper="image"] body::before 只可改 filter / opacity 这类静态外观
-- 主题菜单：.ds-menu；菜单项：.ds-menu-item
+  详情页外层卡片（.stat-page .glass-card）不做背景装饰，只动圆角、边框或阴影，保持信息页面干净
+- 详情页页签：容器 .stat-tabs，按钮 .stat-tab / .stat-tab:hover / .stat-tab[aria-selected="true"]（下拉溢出项为 .ds-menu-item[aria-checked="true"]）；
+  改主题时核对页签文字与容器底的对比（常态与选中态均 >=4.5:1）
+- 网络质量页卡片：.nqb .nqb-card；服务状态页面板：.service-status-page .service-status-panel
+- 顶栏：.ds-nav（外框）、.ds-nav-bg（背景，底线用 box-shadow: inset 0 -1px 0 ...）；当前页导航：.ds-nav-link[aria-current="page"]
+- 页脚：.ds-footer（顶栏与页脚可加 CSS 渐变或内联 url("data:image/svg+xml,...")，禁用外部图片网址）
+- 图片壁纸滤镜：html[data-wallpaper="image"] body::before（仅可改 filter / opacity）
+- 下拉菜单：.ds-menu；菜单项：.ds-menu-item
 - 输入框：input[type="text"], input[type="search"], textarea
-- 磨砂/实色卡：.glass-card / .surface-card
+- 表面外壳：.glass-card（卡片区块）/ .surface-block（独立页实色块）/ .surface-tile（卡内小块）
 
 【禁止名单】（这些名字不许出现在代码里）
---glass-blur --glass-saturation --glass-contrast --glass-light-opacity --glass-dark-opacity
---ds-accent --ds-surface --ds-surface-rgb --ds-surface-dark --ds-surface-dark-rgb --ds-bg-dark --ds-bg-dark-rgb
---wallpaper-image --wallpaper-filter --terminal-sidebar-width
-另外：不许对 #download-speed-progress、#upload-speed-progress 写位移/过渡样式；
-不许修改任何 data-* 属性值或删除/改名清单里的选择器。
+--glass-blur --glass-saturation --glass-contrast --glass-light-opacity --glass-dark-opacity --glass-brightness
+--ds-accent --ds-surface --ds-surface-rgb --ds-surface-dark --ds-surface-dark-rgb --ds-bg-light --ds-bg-dark --ds-bg-dark-rgb
+--wallpaper-image --wallpaper-filter --wallpaper-dominant --wallpaper-size --wallpaper-repeat --wallpaper-position --wallpaper-height
+--terminal-sidebar-width --app-inset-right --card-estimate --row-estimate --shell-height
+另外：不许对 #download-speed-progress、#upload-speed-progress 写位移或过渡样式；
+不许修改任何 data-* 属性值或隐藏清单里的结构元素，总大小不超过 128 KB。
 
 【输出要求】只输出可直接粘贴使用的 CSS 代码，不要解释文字；做不到的需求按规则 9 用顶部 CSS 注释说明。
 
-我的需求：（在这里描述你想要的风格，例如"整体偏暗紫色，卡片圆角大一点"）
+我的需求：（在这里描述你想要的风格，例如“整体偏暗紫色，卡片圆角大一点”）
 ```
 
-> 备选：如果你的 AI 能联网，也可以只发一句"请打开这个网页并按它的规则帮我写自定义 CSS：（贴本页网址）+ 我的需求"。
+## 常见问题
 
-**改坏了**：个性化 → 高级 → 自定义 CSS → 关掉开关，前台立即恢复，代码还留着。
+::: details 保存失败并提示不允许的内容或超出限制
+自定义 CSS 上限为 128 KB，且禁止 `@import`、`expression(...)`、`-moz-binding`、`javascript:`。
+
+`url(...)` 不支持 `http(s)://` 等外部网址。背景图案请改用 CSS 渐变或内联 SVG（`data:image/svg+xml`）。
+:::
+
+::: details 打开了开关但前台没有变化
+先看后台「首页内容」右上角是否显示「保存失败，可重试」。再点前台顶栏「主题」，确认未关掉「自定义样式」，或点「恢复站点默认」。
+
+在后台「插件」启用访客主题包时，自定义 CSS 由该主题决定。针对官方页面写的选择器在主题包下不会生效。
+:::
+
+::: details 样式改乱了怎么恢复
+在后台关掉「自定义 CSS」右侧开关，刷新前台即恢复且代码保留。访客也可在前台「主题」菜单关掉「自定义样式」，仅在当前浏览器停用。
+:::
