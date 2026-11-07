@@ -28,7 +28,7 @@
 3. 面板不在 `/opt/dstatus` 时，修改「安装目录」。
 4. 点「复制命令」，粘贴到面板服务器终端执行。
 
-卸载默认保留数据目录。要一并删除数据，在命令末尾加 `--purge-data --yes`。
+卸载默认保留数据目录。要一并删除数据，在命令末尾加 `--purge-data` 并按提示确认，或加 `--purge-data --yes`。
 
 </template>
 <template #tab-1>
@@ -42,8 +42,8 @@
    # 卸载面板（保留 data、logs、backups 目录）
    curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --uninstall
 
-   # 卸载并删除全部数据
-   curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --uninstall --purge-data --yes
+   # 卸载并删除全部数据（会提示确认；跳过确认再加 --yes）
+   curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --uninstall --purge-data
    ```
 
 2. 面板不在 `/opt/dstatus` 时，在命令末尾加 `--install-dir=/你的安装目录`。
@@ -59,20 +59,20 @@
 1. 执行 `cd /opt/dstatus` 进入目录，开过自动更新先执行 `docker stop watchtower`。
 2. 执行 `docker compose down` 停止面板（旧版用 `docker-compose down`）。
 3. 执行 `ls data/backups/auto/` 找 `auto-pre-upgrade-` 副本，在同名 `.json` 看 `fromVersion`。
-4. 执行 `mv data/db.db data/db.db.broken` 挪开现库，`db.db-wal` 与 `db.db-shm` 一并挪开。
+4. 执行 `mv data/db.db data/db.db.broken` 挪开现库，`db.db-wal`、`db.db-shm` 与 `mastra.db*` 一并挪开。
 5. 按副本后缀解回升级前的数据库文件：
 
    ```bash
    # .db.gz 副本
    gunzip -c data/backups/auto/文件名 > data/db.db
-   # .tar.gz 副本
+   # .dsbak 或 .tar.gz 副本
    tar -xzf data/backups/auto/文件名 -C data
    ```
 
 6. 编辑 `docker-compose.yml`，把镜像标签改成原版本号末段（如 `dev-46`）。
 7. 执行 `docker compose up -d` 启动面板，问题修复后再执行 `docker start watchtower`。
 
-PostgreSQL 仅在升级库结构前生成 `.sql.gz` 副本。停面板后用 `gunzip -c 文件名 | psql 连接参数` 导入。
+PostgreSQL 仅在升级库结构前生成 `.dsbak` 或 `.sql.gz` 副本。停面板后解出 SQL，再用 `psql` 导入。
 :::
 
 ### 备份与恢复
@@ -86,10 +86,10 @@ PostgreSQL 仅在升级库结构前生成 `.sql.gz` 副本。停面板后用 `gu
 | 「设置」 | 打开「备份管理」配置「远程副本（WebDAV）」 |
 | 「备份管理 → 备份文件」 | 查看本地与 WebDAV 备份，点「恢复」直接恢复（无需先下载） |
 | 「备份管理 → 升级与操作前的保护副本」 | 查看升级、恢复、切换数据库、重装或重置密码前的本机副本（最多 3 份） |
-| 「备份管理 → 下载当前数据库」 | 下载到电脑：「压缩备份」（首选）、「完整备份」或「轻量备份」（清空监控数据，仅 SQLite） |
-| 「恢复」 | 上传本地备份恢复（SQLite 支持 `.db`、`.db.gz`、`.zip`、`.tar.gz`；PostgreSQL 支持 `.sql`、`.sql.gz`、`.zip`） |
+| 「备份管理 → 下载当前数据库」 | 下载到电脑：「压缩备份」（首选）、「完整备份」或「轻量备份」（不含监控与 AI 对话，仅 SQLite） |
+| 「恢复」 | 上传本地备份恢复（SQLite 支持 `.dsbak`、`.db`、`.db.gz`、`.zip`、`.tar.gz`；PostgreSQL 支持 `.dsbak`、`.sql`、`.sql.gz`、`.zip`） |
 
-恢复前会自动留存当前数据库，完成后面板自动重启并刷新页面。超过 2 小时未验证身份时，下载备份需先验证管理员身份。
+备份、恢复与切换数据库会一并带上 AI 对话记录（生成 `.dsbak` 备份包）。恢复前自动留存当前数据库，完成后面板自动重启刷新；超 2 小时未验证时，下载备份需先验证身份。
 
 ::: details 设置自动备份与 WebDAV 异地同步
 保护副本只存在本机，防服务器损坏请开启定时备份与 WebDAV 同步。
