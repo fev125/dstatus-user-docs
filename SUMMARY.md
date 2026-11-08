@@ -27,6 +27,8 @@
 * [设置中心](system-settings.md)
 * [升级、备份与迁移](panel-migration.md)
 * [升级 Agent](agent-upgrade.md)
+* [在节点上管理 Agent（dsa 命令）](agent-dsa.md)
+* [让面板在这台机器上运行脚本](agent-allow-exec.md)
 * [安全设置](security-settings.md)
 * [进不去后台怎么办](login-management.md)
 * [工具](tools.md)

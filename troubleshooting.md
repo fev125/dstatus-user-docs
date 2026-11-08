@@ -71,10 +71,12 @@ curl -fsSL https://down.vps.mom/scripts/install-dstatus-agent.sh | ssh root@服�
 2. 打开「服务器列表」，点节点右侧「⋯ → 探针检测」查看断开原因。
 3. 主动模式：在编辑页「高级」看「上报地址」，到节点用 `curl -I` 测连通。
 4. 被动模式：在节点防火墙和安全组，对面板放行「API 端口」（默认 `9999`）。
-5. 在 Linux 节点执行 `systemctl status dstatus-agent`，未运行时执行 `systemctl restart dstatus-agent`。
+5. 在 Linux 节点执行 `sudo dsa status`，未运行时执行 `sudo dsa restart`，用 `sudo dsa logs` 看原因。
 
-::: details 非 systemd 系统重启探针与重装修复
-Alpine 执行 `rc-service dstatus-agent restart`，OpenWrt 执行 `/etc/init.d/dstatus-agent restart`。Windows 在 PowerShell 执行 `Start-ScheduledTask -TaskName DStatusAgent`。
+::: details 没有 dsa 命令的节点、Windows 与重装修复
+旧版 Agent 没有 `dsa`：systemd 执行 `systemctl restart dstatus-agent`，Alpine 执行 `rc-service dstatus-agent restart`。`dsa` 的用法见 [在被控机上管理 Agent](/agent-dsa)。
+
+OpenWrt 执行 `/etc/init.d/dstatus-agent restart`。Windows 在 PowerShell 执行 `Start-ScheduledTask -TaskName DStatusAgent`。
 
 macOS 或改过密钥时，在编辑页「连接方式」点「复制安装命令」重装。关过「设置中心」的「探针长连接」时，重开可恢复被动节点连接。
 :::
