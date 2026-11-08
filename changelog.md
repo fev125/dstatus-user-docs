@@ -5,6 +5,14 @@
   <a class="changelog-switch__item" href="/agent-changelog">被控</a>
 </p>
 
+## 待发布
+
+> 升级须知：「通知管理 → Telegram」里的「允许 Telegram AI 执行节点命令」开关已移除。升级后 Telegram AI 执行命令、改文件和改设置前，仍要先点「执行」。
+
+### 新增
+
+- Telegram AI 可在「通知管理 → Telegram」把「Telegram AI 执行方式」改为「自动执行」，执行命令、改文件和改设置不再逐条确认，多步操作连续做完。
+
 ## 2.26.11.013.dev-53
 
 > 升级须知：AI 助手与终端 AI 助手的「自动执行」改为「YOLO」，开启后执行命令、修改文件和更改设置都会直接执行，不再逐条确认；需要事先把关请保持默认的「需确认」。
