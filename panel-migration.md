@@ -56,7 +56,7 @@
 
 新版本无法启动时，按以下步骤连版本一起退回（以 `/opt/dstatus`、SQLite 为例）：
 
-1. 执行 `cd /opt/dstatus` 进入目录，开过自动更新先执行 `docker stop watchtower`。
+1. 执行 `cd /opt/dstatus` 进入目录，开过自动更新先执行 `docker compose stop watchtower`。
 2. 执行 `docker compose down` 停止面板（旧版用 `docker-compose down`）。
 3. 执行 `ls data/backups/auto/` 找 `auto-pre-upgrade-` 副本，在同名 `.json` 看 `fromVersion`。
 4. 执行 `mv data/db.db data/db.db.broken` 挪开现库，`db.db-wal`、`db.db-shm` 与 `mastra.db*` 一并挪开。
@@ -70,7 +70,7 @@
    ```
 
 6. 编辑 `docker-compose.yml`，把镜像标签改成原版本号末段（如 `dev-46`）。
-7. 执行 `docker compose up -d` 启动面板，问题修复后再执行 `docker start watchtower`。
+7. 执行 `docker compose up -d` 启动面板，问题修复后再执行 `docker compose start watchtower`。
 
 PostgreSQL 仅在升级库结构前生成 `.dsbak` 或 `.sql.gz` 副本。停面板后解出 SQL，再用 `psql` 导入。
 :::
