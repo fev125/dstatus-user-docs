@@ -80,3 +80,7 @@ DStatus Agent · 运行中 · 主动模式 · 面板 https://panel.example.com �
 ::: details 用 `sudo dsa auto-upgrade on` 打开了，还是没有自动升级
 自动升级只对主动模式的节点生效。被动模式的节点在面板里手动 [升级 Agent](/agent-upgrade)。
 :::
+
+::: details 提示「面板没有采纳这项修改」
+面板版本较旧，不支持在节点上改自动升级，这台机器继续按面板上的设置。到面板该节点的编辑页「连接方式」里改「自动升级」，或先升级面板。
+:::
