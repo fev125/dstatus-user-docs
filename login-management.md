@@ -10,7 +10,7 @@
 |---|---|
 | 浏览器打开 `/login`（默认端口 `5555`） | 正常登录后台，或在开启自定义入口后获取入口通知 |
 | 浏览器打开 `/admin-login` | 忘记动态或自定义登录路径时的固定找回页 |
-| 面板服务器终端运行救援脚本 | 重置密码、重新启用密码登录、恢复 `/login` 或关闭 2FA |
+| 面板服务器运行 `sudo ds reset-password` 或救援脚本 | 重置密码、重新启用密码登录、恢复 `/login` 或关闭 2FA |
 | 后台左侧「设置中心」 | 在「基础设置」点「修改密码」更换管理员密码 |
 | 后台左侧「安全访问 → 安全设置」 | 切到「认证与登录」重设入口或重开 2FA（两步验证） |
 
@@ -46,11 +46,15 @@ Telegram 确认与邮件验证码 5 分钟内有效，输错 5 次需重新登�
 
 ### 运行救援脚本
 
-忘记密码或被锁在外面时，在面板服务器以 root 身份运行脚本。
+忘记密码或被锁在外面时，在面板服务器执行 [`ds` 命令](/panel-ds)或下载救援脚本运行：
 
 ```bash
+# 已装 ds 命令（新装或更新过面板后自带）
+sudo ds reset-password
+
+# 还没装 ds 命令时，直接下载运行
 curl -fsSL https://down.vps.mom/scripts/reset-password.sh -o reset-password.sh
-bash reset-password.sh
+sudo bash reset-password.sh
 ```
 
 1. 确认安装目录，默认 `/opt/dstatus` 直接按回车。

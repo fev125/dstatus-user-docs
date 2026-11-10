@@ -90,6 +90,7 @@ export default defineConfig({
           items: [
             { text: '设置中心', link: '/system-settings' },
             { text: '升级、备份与迁移', link: '/panel-migration' },
+            { text: '在服务器上管理面板', link: '/panel-ds' },
             { text: '升级 Agent', link: '/agent-upgrade' },
             { text: '在节点上管理 Agent', link: '/agent-dsa' },
             { text: '让面板在这台机器上运行脚本', link: '/agent-allow-exec' },
