@@ -6,7 +6,7 @@
 // 依赖 Playwright 和本机 Chrome：本仓放在主仓目录里时，直接用主仓 node_modules 里的 Playwright。
 // 只点开界面、不提交：清单里的 before 不要写「保存」「确认删除」这类会真的改数据的按钮，共用 Demo 上不做真实修改。
 // 清单每项：{ file, path, clip: CSS 选择器（裁这个元素的区域，可选，缺省整屏）, pad: 裁剪留白像素,
-//            highlight: [按钮文字，或 css:选择器], before: [先点击的文字或 css:选择器] }
+//            highlight: [按钮文字，或 css:选择器], before: [先点击的文字或 css:选择器，或 fill:选择器=示例值 往输入框填值] }
 // 按钮文字要和界面完全一致；文字后面带数字的（如「选中全部筛选结果（15）」）用 css:button:has-text('选中全部筛选结果')。
 const fs = require("fs");
 const path = require("path");
@@ -70,7 +70,13 @@ async function locate(page, target) {
     await clean(page);
     let skipped = false;
     for (const text of shot.before || []) {
-      try { await (await locate(page, text)).click({ timeout: 8000 }); await page.waitForTimeout(1200); }
+      try {
+        // fill:选择器=值 只往输入框里填示例值（不提交），用于要先填内容界面才出来的画面
+        const fill = text.startsWith("fill:") ? text.slice(5).match(/^(.*?)=(.*)$/s) : null;
+        if (fill) await page.locator(fill[1]).first().fill(fill[2], { timeout: 8000 });
+        else await (await locate(page, text)).click({ timeout: 8000 });
+        await page.waitForTimeout(1200);
+      }
       catch (_) { console.log(`  点不到：${text}，这张跳过`); skipped = true; break; }
     }
     if (skipped) { await page.close(); continue; }
