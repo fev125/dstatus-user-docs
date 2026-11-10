@@ -9,7 +9,7 @@
 | 操作 | 作用 |
 |---|---|
 | 面板后台「设置中心 → 数据与维护」 | 在「面板版本」卡片查看当前版本，有新版本时一键更新 |
-| 面板服务器终端 [`ds` 命令](/panel-ds) | 执行 `sudo ds update` 或 `sudo ds uninstall` 更新、卸载面板 |
+| 面板服务器终端 [`ds` 命令](/panel-ds) | 执行 `ds update` 或 `ds uninstall` 更新、卸载面板 |
 | [用户中心](https://client.vps.mom)「仪表盘 → 部署」 | 生成面板的更新或卸载命令 |
 | 面板后台「设置中心 → 数据库与存储」 | 备份、恢复、配置 WebDAV 与切换数据库 |
 | 面板后台「授权管理」 | 换服务器前解绑旧面板许可证 |
@@ -40,13 +40,13 @@
 
 ```bash
 # 升级面板
-sudo ds update
+ds update
 
 # 卸载面板（保留 data、logs、backups 目录）
-sudo ds uninstall
+ds uninstall
 
 # 卸载并删除全部数据（会提示确认；跳过确认再加 --yes）
-sudo ds uninstall --purge-data
+ds uninstall --purge-data
 ```
 
 还没有 `ds` 命令时，运行一键安装脚本（执行一次更新后会自动装上 `ds`）：
@@ -165,7 +165,7 @@ PostgreSQL 数据不在 `data` 目录，请用「备份恢复（推荐）」。
 ::: details 升级后网页显示「面板升级已暂停」
 打开面板地址，看到「面板升级已暂停」页面，说明升级前的数据库备份没完成，面板没有升级，数据没有改动。最常见的原因是硬盘空间不够。
 
-用 `df -h` 看剩余空间，删掉不用的文件腾出空间，再执行 `sudo ds restart`。面板重启时会重新备份，备份成功就继续升级。
+用 `df -h` 看剩余空间，删掉不用的文件腾出空间，再执行 `ds restart`。面板重启时会重新备份，备份成功就继续升级。
 :::
 
 ::: details 下载备份时弹出「数据库导出前预检」

@@ -8,22 +8,22 @@
 
 在面板服务器用 [`ds` 命令](/panel-ds)检查运行状态与日志，再核对端口放行和域名转发。
 
-1. 执行 `sudo ds status` 看状态，未运行时执行 `sudo ds start`（无 `ds` 时进 `/opt/dstatus` 执行 `docker compose up -d`）。
-2. 启动异常时，执行 `sudo ds logs`（或 `docker logs --tail 100 dstatus`）查看报错日志。
+1. 执行 `ds status` 看状态（不是 root 账号在命令前加 `sudo`），未运行时执行 `ds start`（无 `ds` 时进 `/opt/dstatus` 执行 `docker compose up -d`）。
+2. 启动异常时，执行 `ds logs`（或 `docker logs --tail 100 dstatus`）查看报错日志。
 3. 检查安全组和服务器防火墙，放行面板端口（默认 `5555`）。
 4. 套了反向代理（域名转发）时，先用 `http://服务器地址:5555` 直连测试。
 
 ::: details 升级后网页显示「面板升级已暂停」或短暂打不开
 打开面板地址，看到「面板升级已暂停」页面，说明升级前的数据库备份没完成，面板没有升级，数据没有改动。最常见的原因是硬盘空间不够。
 
-用 `df -h` 看剩余空间，删掉不用的文件腾出空间，再执行 `sudo ds restart`。面板重启时会重新备份，备份成功就继续升级。
+用 `df -h` 看剩余空间，删掉不用的文件腾出空间，再执行 `ds restart`。面板重启时会重新备份，备份成功就继续升级。
 
-旧版 SQLite 升级后首次启动会整理一次数据库（约 600 MB 库在 SSD 约 3 秒、机械盘约 45 秒）。`sudo ds logs` 显示「正在整理数据库文件」时请等待完成；新版本报错需回退见 [升级、备份与迁移](/panel-migration#升级与卸载)。
+旧版 SQLite 升级后首次启动会整理一次数据库（约 600 MB 库在 SSD 约 3 秒、机械盘约 45 秒）。`ds logs` 显示「正在整理数据库文件」时请等待完成；新版本报错需回退见 [升级、备份与迁移](/panel-migration#升级与卸载)。
 :::
 
 ## 忘记密码或登录入口
 
-在面板服务器执行 `sudo ds reset-password` 或运行救援脚本，可重置密码、恢复入口或关闭两步验证，见 [进不去后台怎么办](/login-management#运行救援脚本)。
+在面板服务器执行 `ds reset-password` 或运行救援脚本，可重置密码、恢复入口或关闭两步验证，见 [进不去后台怎么办](/login-management#运行救援脚本)。
 
 ## 安装命令报错
 

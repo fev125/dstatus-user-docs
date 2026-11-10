@@ -6,10 +6,10 @@
 
 ## 在哪打开
 
-登录面板服务器，以 root 身份执行（非 root 账号在命令前加 `sudo`）：
+登录面板服务器执行（不是 root 账号，在命令前加 `sudo`）：
 
 ```bash
-sudo ds status
+ds status
 ```
 
 终端会输出面板当前的运行状态、版本、端口、硬盘剩余空间与网页更新状态：
@@ -30,15 +30,15 @@ sudo ds status
 
 | 命令 | 作用 |
 |---|---|
-| `sudo ds status` | 看面板运行状态、版本、端口、安装目录、硬盘剩余与最近更新结果 |
-| `sudo ds update` | 更新面板；先备份数据库，备份没完成不更新并恢复原版本 |
-| `sudo ds restart` | 重启面板 |
-| `sudo ds stop` | 停止面板 |
-| `sudo ds start` | 启动面板 |
-| `sudo ds logs` | 看最近 100 行日志；加数字指定行数（如 `sudo ds logs 200`），加 `-f` 持续输出 |
-| `sudo ds reset-password` | 打开救援菜单，重置管理员密码、恢复 `/login` 入口或关闭两步验证 |
-| `sudo ds uninstall` | 卸载面板，默认保留 `data`、`logs`、`backups` 数据目录 |
-| `sudo ds uninstall --purge-data` | 卸载面板并删除全部数据（会提示确认，加 `--yes` 跳过确认） |
+| `ds status` | 看面板运行状态、版本、端口、安装目录、硬盘剩余与最近更新结果 |
+| `ds update` | 更新面板；先备份数据库，备份没完成不更新并恢复原版本 |
+| `ds restart` | 重启面板 |
+| `ds stop` | 停止面板 |
+| `ds start` | 启动面板 |
+| `ds logs` | 看最近 100 行日志；加数字指定行数（如 `ds logs 200`），加 `-f` 持续输出 |
+| `ds reset-password` | 打开救援菜单，重置管理员密码、恢复 `/login` 入口或关闭两步验证 |
+| `ds uninstall` | 卸载面板，默认保留 `data`、`logs`、`backups` 数据目录 |
+| `ds uninstall --purge-data` | 卸载面板并删除全部数据（会提示确认，加 `--yes` 跳过确认） |
 | `ds version` | 看 `ds` 命令版本 |
 | `ds help` | 看全部命令与面板安装目录 |
 
@@ -56,12 +56,8 @@ sudo ds status
 `ds` 装在面板服务器上，用来管理面板本身。`dsa` 装在被监控的节点上，用来管理节点探针，见 [在节点上管理 Agent](/agent-dsa)。
 :::
 
-::: details 提示「需要 root 权限」
-ds 的命令要操作 Docker，需要 root 权限。在命令前加 `sudo`，或先执行 `sudo -i` 切到 root。
-:::
-
-::: details `sudo ds status` 的「面板」一行显示「升级已暂停」
+::: details `ds status` 的「面板」一行显示「升级已暂停」
 说明升级前的数据库备份没完成，面板没有升级，数据没有改动。最常见的原因是硬盘空间不够。
 
-用 `df -h` 看剩余空间，删掉不用的文件腾出空间，再执行 `sudo ds restart`。面板重启时会重新备份，备份成功就继续升级。
+用 `df -h` 看剩余空间，删掉不用的文件腾出空间，再执行 `ds restart`。面板重启时会重新备份，备份成功就继续升级。
 :::
