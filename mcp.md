@@ -4,9 +4,9 @@
 
 ## 在哪打开
 
-登录后台点左侧「设置中心」，在「服务与连接」点「远程 MCP」。
+登录后台点左侧「安全访问」，在「AI 与远程操作」点「远程 MCP」。
 
-<figure><img src="/mcp-entry.webp" alt="「设置中心」的「服务与连接 → 远程 MCP」入口"><figcaption>「设置中心」的「服务与连接 → 远程 MCP」入口</figcaption></figure>
+<figure><img src="/mcp-entry.webp" alt="「安全访问」的「AI 与远程操作 → 远程 MCP」入口"><figcaption>「安全访问」的「AI 与远程操作 → 远程 MCP」入口</figcaption></figure>
 
 ## 怎么用
 
@@ -133,7 +133,7 @@ npx --yes dstatus@latest skill install
 :::
 
 ::: details 终端命令和文件读写工具用不了
-去「设置中心」打开「网页终端」，并在 [管理服务器](/server-management) 配好节点 SSH。关闭「网页终端」后，远程 MCP 也不能跑命令或读写文件。
+去 [安全访问](/security-settings) 打开「网页终端与命令执行」，并在 [管理服务器](/server-management) 配好节点 SSH。关闭该开关后，远程 MCP 也不能跑命令或读写文件。
 :::
 
 ::: details 终端命令超过 30 秒没有马上返回结果

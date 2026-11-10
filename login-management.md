@@ -1,6 +1,6 @@
 # 进不去后台怎么办
 
-找回登录入口、重置管理员密码，或解除两步验证与登录限制。日常安全配置见 [安全设置](/security-settings)。
+找回登录入口、重置管理员密码，或解除两步验证与登录限制。日常安全配置见 [安全访问](/security-settings)。
 
 ## 在哪打开
 
@@ -11,8 +11,7 @@
 | 浏览器打开 `/login`（默认端口 `5555`） | 正常登录后台，或在开启自定义入口后获取入口通知 |
 | 浏览器打开 `/admin-login` | 忘记动态或自定义登录路径时的固定找回页 |
 | 面板服务器终端运行救援脚本 | 重置密码、重新启用密码登录、恢复 `/login` 或关闭 2FA |
-| 后台左侧「设置中心」 | 在「基础设置」点「修改密码」更换管理员密码 |
-| 后台左侧「安全访问 → 安全设置」 | 切到「认证与登录」重设入口或重开 2FA（两步验证） |
+| 后台左侧「安全访问」 | 在「登录后台」修改管理密码、重设登录入口或重开 2FA（两步验证） |
 
 ## 怎么用
 
@@ -42,7 +41,7 @@ Telegram 确认与邮件验证码 5 分钟内有效，输错 5 次需重新登�
 
 未配通知或收不到消息时，运行下方救援脚本选 `3` 恢复为 `/login`。
 
-<figure><img src="/login-management-login-entry.webp" alt="在「安全设置 → 认证与登录」查看「登录方式」与「登录入口管理」"><figcaption>在「安全设置 → 认证与登录」查看「登录方式」与「登录入口管理」</figcaption></figure>
+<figure><img src="/login-management-login-entry.webp" alt="在「安全访问 → 登录后台」查看「登录入口」与「GitHub 登录与密码登录」"><figcaption>在「安全访问 → 登录后台」查看「登录入口」与「GitHub 登录与密码登录」</figcaption></figure>
 
 ### 运行救援脚本
 
@@ -85,20 +84,20 @@ bash reset-password.sh --install-dir /你的安装目录
 
 重新进入后台后，按需修改密码并重新开启两步验证。
 
-<figure><img src="/login-management-reset-drawer.webp" alt="在「设置中心 → 基础设置」点「修改密码」，填写后点「保存新密码」"><figcaption>在「设置中心 → 基础设置」点「修改密码」，填写后点「保存新密码」</figcaption></figure>
+<figure><img src="/login-management-reset-drawer.webp" alt="在「安全访问 → 登录后台」点「管理密码」，填写后点「保存新密码」"><figcaption>在「安全访问 → 登录后台」点「管理密码」，填写后点「保存新密码」</figcaption></figure>
 
-1. 在左侧 [设置中心](/system-settings) 点「修改密码」，填写后点「保存新密码」。
-2. 选过 `5` 的打开「安全访问 → 安全设置」，重开 2FA 并保存新备用码。
-3. 确认通知可用后，可在 [安全设置](/security-settings)「登录入口管理」重开「动态入口」。
+1. 在左侧 [安全访问](/security-settings) 点「管理密码」，填写后点「保存新密码」。
+2. 选过 `5` 的打开「安全访问 → 登录后台」，重开 2FA 并保存新备用码。
+3. 确认通知可用后，可在 [安全访问](/security-settings) 打开「登录入口」开关。
 
-<figure><img src="/login-management-2fa.webp" alt="在「安全设置 → 认证与登录」重新开启「2FA（两步验证）」"><figcaption>在「安全设置 → 认证与登录」重新开启「2FA（两步验证）」</figcaption></figure>
+<figure><img src="/login-management-2fa.webp" alt="在「安全访问 → 登录后台」重新开启「2FA（两步验证）」"><figcaption>在「安全访问 → 登录后台」重新开启「2FA（两步验证）」</figcaption></figure>
 
 ## 常见问题
 
 ::: details 2FA 手机丢了，或收不到确认消息
 在登录验证弹窗点「其他验证方式」，切到其他已开启的渠道。也可点「备用码」，输入一次性备用码并点「验证」。
 
-备用码也用完时，运行上方救援脚本选 `5` 关闭 2FA。登录后到 [安全设置](/security-settings) 重新开启 2FA，并保存新的备用码。
+备用码也用完时，运行上方救援脚本选 `5` 关闭 2FA。登录后到 [安全访问](/security-settings) 重新开启 2FA，并保存新的备用码。
 :::
 
 ::: details 页面提示「已禁用密码登录」
@@ -116,7 +115,7 @@ GitHub 登录不可用时，运行救援脚本选 `1` 或 `3` 重新启用密码
 ::: details 提示「登录状态未生效，请使用 HTTPS 访问后重试」
 开启了「强制 Secure Cookie」或「强制 HTTPS 重定向」，但当前用了 HTTP 访问。
 
-改用 `https://` 地址登录，到「安全设置 → 网络与访问」关闭对应开关。修好反向代理的 HTTPS 配置后，再重新开启。
+改用 `https://` 地址登录，到「安全访问 → 网络与数据保护 → HTTPS 与安全响应头」关闭对应开关。修好反向代理的 HTTPS 配置后，再重新开启。
 :::
 
 ::: details 开了「前后台域名分离」后登录页报 404，或后台域名打不开

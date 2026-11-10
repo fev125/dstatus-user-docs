@@ -25,7 +25,7 @@
 | 面板设置或请求情况 | 接口返回结果 |
 |---|---|
 | [访问控制与分享](/access-control) 设为「口令模式」或「严格私有」 | 除 `/api/version` 外均拒绝匿名请求：「口令模式」返回 `401`，「严格私有」返回 `403`；请求 `/stats/…` 需带 `Accept: application/json`，否则 `302` 跳往验证页或登录页 |
-| [外观与个性化](/personalization)「游客可见范围」关闭「节点详情」 | 单节点 `/api/stats/{id}/…` 返回 `404`；单节点 `/stats/{id}/…` 返回 `403`；批量流量接口不受影响 |
+| [安全访问](/security-settings)「访客能看到什么」关闭「节点详情」 | 单节点 `/api/stats/{id}/…` 返回 `404`；单节点 `/stats/{id}/…` 返回 `403`；批量流量接口不受影响 |
 | [外观与个性化](/personalization)「前台导航」设为「仅管理员」 | 「网络质量」设为「仅管理员」时，`overview`、`nodes-overview`、`target/{id}` 返回 `403`；「服务状态」设为「仅管理员」时，`/api/service-status` 系列返回 `403` |
 | 套餐不含网络质量，或 `timeRange` 超出套餐历史上限 | `/api/network-quality/…` 返回 `403`，超上限时响应体附带当前套餐允许的最大范围 |
 | 节点不存在，或设为「私有」「停用」 | 不出现在列表中；单节点 `/api/stats/{id}/…` 返回 `404`，单节点 `/stats/{id}/…` 返回 `403`，批量流量对应项为 `null` |
@@ -84,7 +84,7 @@ GET /api/allnode_status
 | `data[id].sampleUpdatedAt` | number \| null | 主控收到本次采样的时间（Unix 毫秒）；离线时为 `null` |
 | `data[id].expire_time` / `expire` / `days_until_expiry` | number / string / number | 到期时间戳（Unix 秒）、展示文案（如 `30 天`、`永久`）与剩余天数（已过期 `-1`，永久 `999`） |
 | `data[id].protocolBadge` | string | 网络协议：`ipv4`、`ipv6`、`dual` 或 `none` |
-| `data[id].data` | object | `{ location: { code } \| null, tags: [] }`；普通标签受「游客可见范围 → 服务器标签」控制 |
+| `data[id].data` | object | `{ location: { code } \| null, tags: [] }`；普通标签受「安全访问 → 访客能看到什么 → 服务器标签」控制 |
 | `data[id].stat` | object | 实时指标：`offline` 是否离线；`cpu.multi`（`0–1` 比例）与 `cpu.cores`；`mem.virtual`、`mem.swap` 与 `diskSummary`（字节及 `usedPercent` `0–100`）；`net.delta`（`in`、`out` 速率 `B/s`）与 `net.total`（累计字节） |
 | `data[id].traffic_stats` | object | 当期流量：`used`、`used_in`、`used_out`、`today_used`、`limit`、`remaining`（字节），`ratio`（`0–100`），`unlimited`（布尔），`next_reset`（Unix 秒），`status`（`normal` / `warning` / `critical`），`readState`（`ok` / `no_data` / `error`） |
 

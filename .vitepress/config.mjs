@@ -93,7 +93,7 @@ export default defineConfig({
             { text: '升级 Agent', link: '/agent-upgrade' },
             { text: '在节点上管理 Agent', link: '/agent-dsa' },
             { text: '让面板在这台机器上运行脚本', link: '/agent-allow-exec' },
-            { text: '安全设置', link: '/security-settings' },
+            { text: '安全访问', link: '/security-settings' },
             { text: '进不去后台怎么办', link: '/login-management' },
             { text: '工具', link: '/tools' },
           ]
