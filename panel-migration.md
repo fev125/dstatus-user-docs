@@ -8,6 +8,8 @@
 
 | 操作 | 作用 |
 |---|---|
+| 面板后台「设置中心 → 数据与维护」 | 在「面板版本」卡片查看当前版本，有新版本时一键更新 |
+| 面板服务器终端 [`ds` 命令](/panel-ds) | 执行 `ds update` 或 `ds uninstall` 更新、卸载面板 |
 | [用户中心](https://client.vps.mom)「仪表盘 → 部署」 | 生成面板的更新或卸载命令 |
 | 面板后台「设置中心 → 数据库与存储」 | 备份、恢复、配置 WebDAV 与切换数据库 |
 | 面板后台「授权管理」 | 换服务器前解绑旧面板许可证 |
@@ -18,38 +20,64 @@
 
 ### 升级与卸载
 
-在面板服务器上以 root 身份运行命令，非 root 账号先执行 `sudo -i`。
+在后台网页一键升级，或在面板服务器上以 root 身份执行命令。
 
-<DocTabs :tabs="['用户中心生成', '直接执行命令']">
+<DocTabs :tabs="['后台网页更新', '服务器命令行', '用户中心生成']">
 <template #tab-0>
 
-1. 打开 [用户中心](https://client.vps.mom)，在「仪表盘」点许可证卡片上的「部署」。
-2. 在右侧抽屉把「操作」切到「更新」或「卸载」。
-3. 面板不在 `/opt/dstatus` 时，修改「安装目录」。
-4. 点「复制命令」，粘贴到面板服务器终端执行。
+1. 登录后台，点左侧「设置中心」，在「数据与维护」找到「面板版本」。
+2. 有新版本时点右侧「更新」，在弹窗点「更新」并完成管理员身份验证。
+3. 面板自动备份数据库并升级，离线几分钟后页面自动刷新。超过半小时没刷新，手动刷新页面查看结果。
 
-卸载默认保留数据目录。要一并删除数据，在命令末尾加 `--purge-data` 并按提示确认，或加 `--purge-data --yes`。
+卡片右侧显示「更多」时，点「更多」再点「复制」，复制的是下面「服务器命令行」里的升级命令。到面板服务器以 root 身份执行一次。这次更新会自动装上 [`ds` 命令](/panel-ds)，之后有新版本就能直接在网页上点「更新」。
+
+硬盘空间不足时不会开始更新，并提示还差多少空间。更新失败时面板保持原版本并显示原因；非 Docker 安装只显示版本号。
 
 </template>
 <template #tab-1>
 
-1. 按需要复制下方命令，粘贴到面板服务器终端执行。
+在面板服务器上以 root 身份执行，非 root 账号先执行 `sudo -i`。已装 [`ds` 命令](/panel-ds) 的服务器直接运行：
 
-   ```bash
-   # 升级面板
-   curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --update
+```bash
+# 升级面板
+ds update
 
-   # 卸载面板（保留 data、logs、backups 目录）
-   curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --uninstall
+# 卸载面板（保留 data、logs、backups 目录）
+ds uninstall
 
-   # 卸载并删除全部数据（会提示确认；跳过确认再加 --yes）
-   curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --uninstall --purge-data
-   ```
+# 卸载并删除全部数据（会提示确认；跳过确认再加 --yes）
+ds uninstall --purge-data
+```
 
-2. 面板不在 `/opt/dstatus` 时，在命令末尾加 `--install-dir=/你的安装目录`。
+还没有 `ds` 命令时，运行一键安装脚本（执行一次更新后会自动装上 `ds`）：
+
+```bash
+# 升级面板
+curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --update
+
+# 卸载面板（保留 data、logs、backups 目录）
+curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --uninstall
+
+# 卸载并删除全部数据（会提示确认；跳过确认再加 --yes）
+curl -fsSL https://down.vps.mom/downloads/docker-image/install.sh | bash -s -- --uninstall --purge-data
+```
+
+面板不在 `/opt/dstatus` 时，在脚本命令末尾加 `--install-dir=/你的安装目录`。
+
+</template>
+<template #tab-2>
+
+1. 打开 [用户中心](https://client.vps.mom)，在「仪表盘」点许可证卡片上的「部署」。
+2. 在右侧抽屉把「操作」切到「更新」或「卸载」。
+3. 面板不在 `/opt/dstatus` 时，修改「安装目录」。
+4. 点「复制命令」，粘贴到面板服务器终端以 root 执行。
+
+卸载默认保留数据目录。要一并删除数据，在命令末尾加 `--purge-data` 并按提示确认，或加 `--purge-data --yes`。
 
 </template>
 </DocTabs>
+
+升级前会自动备份数据库，备份未完成时不会升级并恢复原版本运行。旧版 SQLite 升级后首次启动会整理一次数据库，库大时启动会多等一会儿。
 
 ::: details 升级后退回旧数据或旧版本
 每次升级前，面板自动在本机留存一份保护副本。面板还能打开时，打开「备份管理」，在保护副本旁点「恢复」即可只退回数据。
@@ -133,6 +161,12 @@ PostgreSQL 数据不在 `data` 目录，请用「备份恢复（推荐）」。
 :::
 
 ## 常见问题
+
+::: details 升级后网页显示「面板升级已暂停」
+打开面板地址，看到「面板升级已暂停」页面，说明升级前的数据库备份没完成，面板没有升级，数据没有改动。最常见的原因是硬盘空间不够。
+
+用 `df -h` 看剩余空间，删掉不用的文件腾出空间，再执行 `ds restart`。面板重启时会重新备份，备份成功就继续升级。
+:::
 
 ::: details 下载备份时弹出「数据库导出前预检」
 导出前会检查登录设置与 SSH 加密，防止迁移后无法登录或解不开凭据。按弹窗按钮一键处理后即自动下载。
