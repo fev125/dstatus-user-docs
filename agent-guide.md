@@ -132,7 +132,7 @@ $env:DSTATUS_INSTALL_SCOPE = 'System'
 2. 在能上网的机器上反代面板：Nginx 或 Caddy 选一份点「复制」，让配置生效并向内网放行端口（命令见下方折叠说明）。
 3. 在要安装的机器上以 root 执行：点「复制」到目标机器以 `root` 执行，再回面板在「待审核」点「批准」（或点「批准接入」）。
 
-装好后节点一直经该地址上报和升级（经面板升级需下一个被控版本起），反代需长期保留。特殊网络节点只报内网 IP、不查公网 IP；要显示地区和国旗，在编辑页「基本信息」填「出口 IP (可选)」（如上网机公网 IP）或手动选国家。
+装好后节点一直经该地址上报和升级，反代需长期保留。特殊网络节点只报内网 IP、不查公网 IP；要显示地区和国旗，在编辑页「基本信息」填「出口 IP (可选)」（如上网机公网 IP）或手动选国家。
 
 ::: details 反代生效、防火墙放行与注意事项
 Nginx 与 Caddy 二选一即可：Nginx 存为 `/etc/nginx/conf.d/dstatus-proxy.conf` 后执行 `nginx -t && systemctl reload nginx`；Caddy 写进 `/etc/caddy/Caddyfile` 后执行 `systemctl reload caddy`。
